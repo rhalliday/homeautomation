@@ -10,6 +10,8 @@ use Test::More;
 
 BEGIN { use_ok("Test::WWW::Mechanize::Catalyst" => "HomeAutomation") }
 
+setup_test();
+
 # Create two 'user agents' to simulate two different users ('test01' & 'test02')
 my $ua1 = Test::WWW::Mechanize::Catalyst->new;
 my $ua2 = Test::WWW::Mechanize::Catalyst->new;
@@ -95,4 +97,14 @@ $ua1->get_ok($delLinks[$#delLinks]->url, 'Delete last appliance');
 $ua1->content_contains("Appliance List", "Appliance List page test");
 $ua1->content_like(qr/Deleted appliance B1/, "Deleted appliance");
 
+tear_down_test();
 done_testing;
+
+sub set_up_test {
+    # create a database from the sql
+    # create a test01 & test02 user
+}
+
+sub tear_down_test {
+    # tear down the db
+}

@@ -65,9 +65,15 @@ __PACKAGE__->table("tasks");
   data_type: 'text'
   is_nullable: 1
 
-=head2 expires
+=head2 recurrence_id
 
-  data_type: 'timestamp'
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 1
+
+=head2 day
+
+  data_type: 'date'
   is_nullable: 1
 
 =cut
@@ -81,8 +87,10 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "time",
   { data_type => "text", is_nullable => 1 },
-  "expires",
-  { data_type => "timestamp", is_nullable => 1 },
+  "recurrence_id",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  "day",
+  { data_type => "date", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -119,34 +127,44 @@ __PACKAGE__->belongs_to(
   },
 );
 
-=head2 tasks_days
+=head2 recurrence
+
+Type: belongs_to
+
+Related object: L<HomeAutomation::Schema::Result::Recurrence>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "recurrence",
+  "HomeAutomation::Schema::Result::Recurrence",
+  { id => "recurrence_id" },
+  {
+    is_deferrable => 0,
+    join_type     => "LEFT",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
+  },
+);
+
+=head2 recurrences
 
 Type: has_many
 
-Related object: L<HomeAutomation::Schema::Result::TasksDay>
+Related object: L<HomeAutomation::Schema::Result::Recurrence>
 
 =cut
 
 __PACKAGE__->has_many(
-  "tasks_days",
-  "HomeAutomation::Schema::Result::TasksDay",
+  "recurrences",
+  "HomeAutomation::Schema::Result::Recurrence",
   { "foreign.task_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 days
 
-Type: many_to_many
-
-Composing rels: L</tasks_days> -> day
-
-=cut
-
-__PACKAGE__->many_to_many("days", "tasks_days", "day");
-
-
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-17 20:45:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/pHo0iAKD1SLWRgQSJi8Aw
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-22 17:26:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BJSoUlqRRJmoloBl24LscQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -173,11 +191,25 @@ Returns a comma separated list of days
 sub all_days {
     my ($self) = @_;
 
+    return q{} unless $self->recurrence_id;
     my @days;
-    for my $day ($self->days) {
+    for my $day ($self->recurrence->days) {
         push @days, $day->day;
     }
     return join ', ', @days;
+}
+
+=head1 recurrence_expiry
+
+Returns the expiry date of a recurrence, if there is one.
+
+=cut
+
+sub recurrence_expiry {
+    my ($self) = @_;
+
+    return q{} unless $self->recurrence_id;
+    return $self->recurrence->expires;
 }
 
 __PACKAGE__->meta->make_immutable;

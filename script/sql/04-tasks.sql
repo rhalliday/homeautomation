@@ -1,20 +1,30 @@
 PRAGMA foreign_keys = ON;
 CREATE TABLE tasks (
-        id            INTEGER PRIMARY KEY,
-        appliance     VARCHAR(3) REFERENCES appliances(address) ON DELETE CASCADE ON UPDATE CASCADE,
-        action        TEXT,
-        time          TEXT,
-        expires       TIMESTAMP
+    id            INTEGER PRIMARY KEY,
+    appliance     VARCHAR(3) REFERENCES appliances(address) ON DELETE CASCADE ON UPDATE CASCADE,
+    action        TEXT,
+    time          TEXT,
+    recurrence_id INTEGER REFERENCES recurrence(id),
+    day           DATE
 );
+
+CREATE TABLE recurrence (
+    id      INTEGER PRIMARY KEY,
+    task_id INTEGER REFERENCES tasks(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    expires DATE
+);
+
 CREATE TABLE days (
-        id   INTEGER PRIMARY KEY,
-        day  TEXT
+    id  INTEGER PRIMARY KEY,
+    day TEXT
 );
+
 CREATE TABLE tasks_day (
-        task_id INTEGER REFERENCES tasks(id) ON DELETE CASCADE ON UPDATE CASCADE,
-        day_id INTEGER REFERENCES days(id) ON DELETE CASCADE ON UPDATE CASCADE,
-        PRIMARY KEY (task_id, day_id)
+    recurrence_id INTEGER REFERENCES recurrence(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    day_id        INTEGER REFERENCES days(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY (recurrence_id, day_id)
 );
+
 --
 -- Add our days
 --

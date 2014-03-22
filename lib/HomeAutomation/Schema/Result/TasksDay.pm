@@ -42,7 +42,7 @@ __PACKAGE__->table("tasks_day");
 
 =head1 ACCESSORS
 
-=head2 task_id
+=head2 recurrence_id
 
   data_type: 'integer'
   is_foreign_key: 1
@@ -57,7 +57,7 @@ __PACKAGE__->table("tasks_day");
 =cut
 
 __PACKAGE__->add_columns(
-  "task_id",
+  "recurrence_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "day_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
@@ -67,7 +67,7 @@ __PACKAGE__->add_columns(
 
 =over 4
 
-=item * L</task_id>
+=item * L</recurrence_id>
 
 =item * L</day_id>
 
@@ -75,7 +75,7 @@ __PACKAGE__->add_columns(
 
 =cut
 
-__PACKAGE__->set_primary_key("task_id", "day_id");
+__PACKAGE__->set_primary_key("recurrence_id", "day_id");
 
 =head1 RELATIONS
 
@@ -94,24 +94,24 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 0, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
-=head2 task
+=head2 recurrence
 
 Type: belongs_to
 
-Related object: L<HomeAutomation::Schema::Result::Task>
+Related object: L<HomeAutomation::Schema::Result::Recurrence>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "task",
-  "HomeAutomation::Schema::Result::Task",
-  { id => "task_id" },
+  "recurrence",
+  "HomeAutomation::Schema::Result::Recurrence",
+  { id => "recurrence_id" },
   { is_deferrable => 0, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-14 14:13:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XVn0MDikOA06oCkyT4/B6g
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-22 17:26:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/QDFCC94kvfrLv51j147dg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

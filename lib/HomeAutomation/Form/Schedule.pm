@@ -9,19 +9,19 @@ use namespace::autoclean;
 
 our $VERSION = '0.01';
 
-has '+item_class' => (default => 'Task');
+has '+item_class'     => (default => 'Task');
 has '+widget_wrapper' => (default => 'Bootstrap');
 
 has_field 'action' => (
-    type     => 'Select',
-    widget   => 'RadioGroup',
-    options  => [ { value => 'on', label => 'on', }, { value => 'off', label => 'off', }, ],
-    required => 1,
+    type          => 'Select',
+    widget        => 'RadioGroup',
+    options       => [ { value => 'on', label => 'on', }, { value => 'off', label => 'off', }, ],
+    required      => 1,
     wrapper_class => ['form-group'],
 );
 
 has_field 'time' => (
-    type => 'Text',
+    type          => 'Text',
     wrapper_class => ['form-group'],
     element_class => ['form-control'],
     element_attr  => { placeholder => 'HH:MM' },
@@ -41,28 +41,37 @@ sub validate_time {
     return 1;
 }
 
-has_field 'expires' => (
-    type => 'Date', 
-    format => 'dd/mm/yy',
+has_field 'day' => (
+    type          => 'Date',
+    format        => 'dd/mm/yy',
     wrapper_class => ['form-group'],
     element_class => ['form-control'],
     element_attr  => { placeholder => 'DD/MM/YYYY' },
 );
 
+has_field 'recurrence' => (type => 'Compound',);
 
-has_field 'days' => (
-    type => 'Select', 
-    label_column => 'day', 
-    sort_column => 'id', 
-    multiple => 1, 
-    widget => 'CheckboxGroup',
+has_field 'recurrence.expires' => (
+    type          => 'Date',
+    format        => 'dd/mm/yy',
+    wrapper_class => ['form-group'],
+    element_class => ['form-control'],
+    element_attr  => { placeholder => 'DD/MM/YYYY' },
+);
+
+has_field 'recurrence.days' => (
+    type          => 'Select',
+    label_column  => 'day',
+    sort_column   => 'id',
+    multiple      => 1,
+    widget        => 'CheckboxGroup',
     wrapper_class => ['form-group'],
 );
 
 has_field 'submit' => (
-    type => 'Submit', 
-    value => 'Submit',
-    element_class => ['btn', 'btn-primary'],
+    type          => 'Submit',
+    value         => 'Submit',
+    element_class => [ 'btn', 'btn-primary' ],
 );
 
 __PACKAGE__->meta->make_immutable;

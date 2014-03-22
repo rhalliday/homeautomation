@@ -8,6 +8,7 @@
             <th>Device</th>
             <th>Action</th>
             <th>Time</th>
+            <th>Day</th>
             <th>Days</th>
             <th>Expires</th>
             <th>Links</th>
@@ -19,8 +20,9 @@
             <td>[% task.appliance.device %]</td>
             <td>[% task.action %]</td>
             <td>[% task.time %]</td>
+            <td>[% task.day %]</td>
             <td>[% task.all_days %]</td>
-            <td>[% task.expires | html %]</td>
+            <td>[% task.recurrence_expiry | html %]</td>
             <td>
                 <a
                     href="[% c.uri_for(c.controller.action_for('delete'), [task.id]) %]"
@@ -43,10 +45,3 @@
 <p>No schedules<p>
 [% END %]
 </div>
-
-[% IF c.check_user_roles('admin') %]
-<hr/>
-<p>
-  <a class="btn btn-primary" href="[% c.uri_for(c.controller.action_for('create')) %]">Create</a>
-</p>
-[% END %]
