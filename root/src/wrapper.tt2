@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>[% template.title or "HomeAutomation Baby!" %]</title>
+        <link rel="stylesheet" href="[% c.uri_for('/static/css/bootstrap.min.css') %]" />
+        <!-- <link rel="stylesheet" href="[% c.uri_for('/static/css/main.css') %]" /> -->
+    </head>
+
+    <body>
+        <div id="outer">
+            <div id="header">
+                <h1>[% template.title or site.title %]</h1>
+            </div>
+
+            <div id="bodyblock">
+                <div id="menu">
+                    <ul class="list-group">
+                        <li class="list-group-item [% IF template.title == 'Appliance List' %]list-group-item-info[% END %]">
+                            <a href="[% c.uri_for('/appliances/list') %]">Appliances</a>
+                        </li>
+                        [% IF c.check_user_roles('schedule') %]
+                            <li class="list-group-item [% IF template.title == 'Schedule List' %]list-group-item-info[% END %]">
+                                <a href="[% c.uri_for('/schedules/list') %]">Schedules</a>
+                            </li>
+                        [% END %]
+                        [% IF c.check_user_roles('usermanagement') %]
+                            <li class="list-group-item [% IF template.title == 'User List' %]list-group-item-info[% END %]">
+                                <a href="[% c.uri_for('/usermanagement/list') %]">Users</a>
+                            </li>
+                        [% END %]
+                        [% IF c.check_user_roles('user') %]
+                            <li class="list-group-item [% IF template.title == 'Change Password' %]list-group-item-info[% END %]">
+                                <a href="[% c.uri_for('/usermanagement/change_password') %]">Change Password</a>
+                            </li>
+                            <li class="list-group-item"><a href="[% c.uri_for('/logout') %]">Logout</a></li>
+                        [% ELSE %]
+                            <li class="list-group-item"><a href="[% c.uri_for('/login') %]">Login</a></li>
+                        [% END %]
+                    </ul>
+                </div>
+
+                <div id="content">
+                    <span class="message">[% status_msg %]</span>
+                    <span class="error">[% error_msg %]</span>
+                    [% content %]
+                </div>
+            </div>
+            <div id="footer">Copyright (c) Rob Halliday</div>
+        </div>
+    </body>
+</html>

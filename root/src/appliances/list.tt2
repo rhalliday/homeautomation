@@ -1,0 +1,98 @@
+[% META title = 'Appliance List'; 
+
+    IF c.check_user_roles('admin');
+        is_admin = 1; 
+    ELSE; 
+        is_admin = 0; 
+    END;
+    IF c.check_user_roles('schedule');
+        is_schedule = 1; 
+    ELSE; 
+        is_schedule = 0; 
+    END;
+-%]
+
+<ul class="nav nav-tabs" id="tabs">
+[% FOREACH room IN rooms %]
+    <li [% IF room.name == selected_room %]class="active"[% END %]>
+        <a href="[%- c.uri_for(c.controller.action_for('list'), [], { room => room.name}) %]">
+            [% room.name | ucfirst %]
+        </a>
+    </li>
+[% END %]
+</ul>
+<div class="tab-content">
+<div id="tab-pane" class="tab-pane active">
+[% IF appliances.size > 0 %]
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            [% IF is_admin %]<th>Address</th>[% END %]
+            [% IF is_admin or is_schedule %]<th>Links</th>[% END %]
+        </tr>
+    </thead>
+    <tbody>
+    [% FOREACH appliance IN appliances -%]
+        <tr>
+            <td>[% appliance.device %]</td>
+            <td>
+                <button
+                    type="button"
+                    onclick="location.href='[% c.uri_for(c.controller.action_for('switch'), [appliance.address]) %]'"
+                    [% IF appliance.status %]
+                        class="btn btn-sm btn-success"
+                    >
+                        On
+                    [% ELSE %]
+                        class="btn btn-sm btn-danger"
+                    >
+                        Off
+                    [% END %]
+                </button>
+            </td>
+            [% IF is_admin %]
+            <td>[% appliance.address %]</td>
+            [% END %]
+            [% IF is_admin or is_schedule %]
+            <td>
+            [% IF is_admin %]
+            <a
+                href="[% c.uri_for(c.controller.action_for('delete'), [appliance.address]) %]"
+                class="btn btn-sm btn-danger"
+            >
+                Delete
+            </a>
+            <a
+                href="[% c.uri_for(c.controller.action_for('edit'), [appliance.address]) %]"
+                class="btn btn-sm btn-info"
+            >
+                Edit
+            </a>
+            [% END %]
+            [% IF is_schedule %]
+                <a 
+                    href="[% c.uri_for(c.controller('Schedules').action_for('create'), [appliance.address]) %]"
+                    class="btn btn-sm btn-primary"
+                >
+                    Schedule
+                </a>
+            [% END %]
+            </td>
+            [% END %]
+        </tr>
+    [% END -%]
+    </tbody>
+</table>
+[% ELSE %]
+<p>No devices in this room<p>
+[% END %]
+</div>
+</div>
+<p>
+[% IF is_admin %]
+  <a class="btn btn-primary" href="[% c.uri_for(c.controller.action_for('create')) %]">Create</a>
+[% END %]
+</p>
+

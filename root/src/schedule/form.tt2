@@ -1,0 +1,4 @@
+[% META title = 'Create/Update Schedule' %]
+<h3>Schedule for device: <strong>[% c.stash.object.appliance.device %]</strong></h3>
+[%# Render the HTML::FormHandler Form %]
+[% form.render %]

@@ -1,0 +1,59 @@
+[% META title = 'User List'; 
+
+    IF c.check_user_roles('admin');
+        is_admin = 1;
+    ELSE;
+        is_admin = 0;
+    END;
+-%]
+
+[% IF c.check_user_roles('usermanagement') %]
+<table>
+    <tr>
+        <th>Username</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email Address</th>
+        <th>Active</th>
+        [% IF is_admin %]
+            <th>Roles</th>
+            <th>Links</th>
+        [% END %]
+    </tr>
+    [% FOREACH user IN users -%]
+        [% NEXT IF user.has_role('admin') && !c.check_user_roles('admin') %]
+        <tr>
+            <td>[% user.username | html %]</td>
+            <td>[% user.first_name | html %]</td>
+            <td>[% user.last_name | html %]</td>
+            <td>[% user.email_address | html %]</td>
+            <td>
+                <button
+                    type="button"
+                    class="active-button"
+                    onclick="location.href='[% c.uri_for(c.controller.action_for('deactivate'), [user.id]) %]'"
+                >
+                [% IF user.active %]
+                    Active
+                [% ELSE %]
+                    Inactive
+                [% END %]
+            </button>
+            </td>
+            [% IF is_admin %]
+                <td>[% user.role_list | html %]</td>
+                <td>
+                    <a href="[% c.uri_for(c.controller.action_for('edit'), [user.id]) %]">Edit</a>
+                    <a href="[% c.uri_for(c.controller.action_for('delete'), [user.id]) %]">Delete</a>
+                </td>
+            [% END %]
+        </tr>
+    [% END -%]
+</table>
+
+[% IF is_admin %]
+<a href="[% c.uri_for(c.controller.action_for('create'), []) %]">Create User</a>
+[% END %]
+[% ELSE %]
+<p>You are not allowed to be here.</p>
+[% END %]

@@ -1,0 +1,3 @@
+[% META title = 'Change password' %]
+[%# Render the HTML::FormHandler Form %]
+[% form.render %]
