@@ -90,9 +90,10 @@
 [% END %]
 </div>
 </div>
-<p>
 [% IF is_admin %]
+<hr/>
+<p>
   <a class="btn btn-primary" href="[% c.uri_for(c.controller.action_for('create')) %]">Create</a>
-[% END %]
 </p>
+[% END %]
 

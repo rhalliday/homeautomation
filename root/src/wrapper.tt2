@@ -7,49 +7,50 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>[% template.title or "HomeAutomation Baby!" %]</title>
         <link rel="stylesheet" href="[% c.uri_for('/static/css/bootstrap.min.css') %]" />
-        <!-- <link rel="stylesheet" href="[% c.uri_for('/static/css/main.css') %]" /> -->
+        <link rel="stylesheet" href="[% c.uri_for('/static/css/main.css') %]" />
     </head>
 
     <body>
-        <div id="outer">
-            <div id="header">
-                <h1>[% template.title or site.title %]</h1>
+        <div id="outer" class="container">
+            <div class="row">
+                <div id="header" class="col-md-9">
+                    <h1 class="text-center">[% template.title or site.title %]</h1>
+                </div>
             </div>
 
-            <div id="bodyblock">
-                <div id="menu">
-                    <ul class="list-group">
-                        <li class="list-group-item [% IF template.title == 'Appliance List' %]list-group-item-info[% END %]">
+            <div id="bodyblock" class="row">
+                <div id="menu" class="col-md-2" style="background-color:#eee">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li [% IF template.title == 'Appliance List' %]class="active"[% END %]>
                             <a href="[% c.uri_for('/appliances/list') %]">Appliances</a>
                         </li>
                         [% IF c.check_user_roles('schedule') %]
-                            <li class="list-group-item [% IF template.title == 'Schedule List' %]list-group-item-info[% END %]">
+                            <li [% IF template.title == 'Schedule List' %]class="active"[% END %]>
                                 <a href="[% c.uri_for('/schedules/list') %]">Schedules</a>
                             </li>
                         [% END %]
                         [% IF c.check_user_roles('usermanagement') %]
-                            <li class="list-group-item [% IF template.title == 'User List' %]list-group-item-info[% END %]">
+                            <li [% IF template.title == 'User List' %]class="active"[% END %]>
                                 <a href="[% c.uri_for('/usermanagement/list') %]">Users</a>
                             </li>
                         [% END %]
                         [% IF c.check_user_roles('user') %]
-                            <li class="list-group-item [% IF template.title == 'Change Password' %]list-group-item-info[% END %]">
+                            <li [% IF template.title == 'Change Password' %]class="active"[% END %]>
                                 <a href="[% c.uri_for('/usermanagement/change_password') %]">Change Password</a>
                             </li>
-                            <li class="list-group-item"><a href="[% c.uri_for('/logout') %]">Logout</a></li>
+                            <li><a href="[% c.uri_for('/logout') %]">Logout</a></li>
                         [% ELSE %]
-                            <li class="list-group-item"><a href="[% c.uri_for('/login') %]">Login</a></li>
+                            <li><a href="[% c.uri_for('/login') %]">Login</a></li>
                         [% END %]
                     </ul>
                 </div>
 
-                <div id="content">
-                    <span class="message">[% status_msg %]</span>
-                    <span class="error">[% error_msg %]</span>
+                <div id="content" class="col-md-9">
+                    <span class="message"><em>[% status_msg %]</em></span>
+                    <span class="error"><em>[% error_msg %]</em></span>
                     [% content %]
                 </div>
             </div>
-            <div id="footer">Copyright (c) Rob Halliday</div>
         </div>
     </body>
 </html>

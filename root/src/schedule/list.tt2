@@ -2,8 +2,18 @@
 
 <div id="tab-content">
 [% IF tasks.size > 0 %]
-<table>
-    <tr><th>Device</th><th>Action</th><th>Time</th><th>Days</th><th>Expires</th><th>Links</th></tr>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Device</th>
+            <th>Action</th>
+            <th>Time</th>
+            <th>Days</th>
+            <th>Expires</th>
+            <th>Links</th>
+        </tr>
+    </thead>
+    <tbody>
     [% FOREACH task IN tasks -%]
         <tr>
             <td>[% task.appliance.device %]</td>
@@ -12,14 +22,31 @@
             <td>[% task.all_days %]</td>
             <td>[% task.expires | html %]</td>
             <td>
-            <a href="[% c.uri_for(c.controller.action_for('delete'), [task.id]) %]">Delete</a>
-            <a href="[% c.uri_for(c.controller.action_for('edit'), [task.id]) %]">Edit</a>
+                <a
+                    href="[% c.uri_for(c.controller.action_for('delete'), [task.id]) %]"
+                    class="btn btn-danger"
+                >
+                    Delete
+                </a>
+                <a
+                    href="[% c.uri_for(c.controller.action_for('edit'), [task.id]) %]"
+                    class="btn btn-info"
+                >
+                    Edit
+                </a>
             </td>
         </tr>
     [% END -%]
+    </tbody>
 </table>
 [% ELSE %]
 <p>No schedules<p>
 [% END %]
 </div>
 
+[% IF c.check_user_roles('admin') %]
+<hr/>
+<p>
+  <a class="btn btn-primary" href="[% c.uri_for(c.controller.action_for('create')) %]">Create</a>
+</p>
+[% END %]
