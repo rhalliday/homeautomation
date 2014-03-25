@@ -166,6 +166,7 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-22 17:26:20
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BJSoUlqRRJmoloBl24LscQ
 
+use DateTime;
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
@@ -210,6 +211,52 @@ sub recurrence_expiry {
 
     return q{} unless $self->recurrence_id;
     return $self->recurrence->expires;
+}
+
+=head1 full_calendar(context, start, end)
+
+Returns an arrayref containing a hashref of all the dates
+that fall within the start and end date.
+
+=cut
+
+sub full_calendar {
+    my($self, $c, $start, $end) = @_;
+
+    my @data;
+
+    # set up a title and a url
+    my $title = $self->appliance->device . q{ } . $self->action;
+    my $url = $c->uri_for($c->controller->action_for('view'), [$self->id])->as_string;
+
+    # if it's a task that is for a specific date
+    if($self->day) {
+        # just add the relevant data to the arrayref
+        # make a ISO 8601 by substituting the time into the value returned for day
+        my $time = $self->day;
+        my $time_string = $self->time;
+        $time =~ s/00:00/$time_string/;
+        $time .= q{Z};
+        push @data, {title => $title, start => $time, url => $url};
+    } else {
+
+        # otherwise it's a recurring schedule so figure out the days
+        my $dt = DateTime->from_epoch(epoch => $start, time_zone => 'Europe/London');
+        my $dt_end = DateTime->from_epoch(epoch => $end, time_zone => 'Europe/London');
+
+        my %days = map { $_->id => 1 } $self->recurrence->days->all;
+
+        # go through the days adding them to the calendar data until it expires
+        while( $dt < $self->recurrence->expires && $dt < $dt_end ) {
+            if(exists $days{$dt->dow}) {
+                my $time = $dt->ymd . q{T} . $self->time . q{:00Z};
+                push @data, {title => $title, start => $time, url => $url};
+            }
+            $dt = $dt->add( days => 1 );
+        }
+    }
+
+    return \@data;
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -8,6 +8,26 @@
         <title>[% template.title or "HomeAutomation Baby!" %]</title>
         <link rel="stylesheet" href="[% c.uri_for('/static/css/bootstrap.min.css') %]" />
         <link rel="stylesheet" href="[% c.uri_for('/static/css/main.css') %]" />
+        [% IF template.calendar_enabled %]
+            <link rel="stylesheet" href="[% c.uri_for('/static/css/jquery-ui-1.10.4.custom.min.css') %]" />
+            <link rel="stylesheet" href="[% c.uri_for('/static/css/fullcalendar.css') %]" />
+            <script type="text/javascript" src="[% c.uri_for('/static/js/jquery-1.10.2.js') %]"></script>
+            <script type="text/javascript" src="[% c.uri_for('/static/js/jquery-ui-1.10.4.custom.min.js') %]"></script>
+            <script type="text/javascript" src="[% c.uri_for('/static/js/fullcalendar.min.js') %]"></script>
+            <script type="text/javascript">
+                $(function() {
+                $( "#day" ).datepicker({ dateFormat: "dd/mm/yy" });
+                $( "#recurrence\\.expires" ).datepicker({ dateFormat: "dd/mm/yy" });
+                });
+            </script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#calendar').fullCalendar({
+                        events: '[% c.uri_for(c.controller.action_for('event_data')) %]'
+                    });
+                });
+            </script>
+        [% END %]
     </head>
 
     <body>

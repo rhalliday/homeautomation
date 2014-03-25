@@ -66,6 +66,14 @@ __PACKAGE__->config(
     },
 );
 
+# Configure View JSON
+__PACKAGE__->config(
+    'View::JSON' => {
+        # only json_data in the stash will be exposed
+        expose_stash => 'json_data',
+    },
+);
+
 # Configure SimpleDB Authentication
 __PACKAGE__->config(
     'Plugin::Authentication' => {
@@ -76,6 +84,8 @@ __PACKAGE__->config(
         },
     },
 );
+
+__PACKAGE__->config( default_view => 'HTML' );
 
 # Start the application
 __PACKAGE__->setup();

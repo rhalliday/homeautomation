@@ -18,7 +18,8 @@ requires 'Catalyst::Plugin::Authentication';
 requires 'Catalyst::Plugin::Authorization::Roles';
 requires 'Catalyst::Plugin::Session';
 requires 'Catalyst::Plugin::Session::Store::File';
-requires 'Catalyst::Plugin::Session::State::Cookie'
+requires 'Catalyst::Plugin::Session::State::Cookie';
+requires 'Catalyst::View::JSON';
 requires 'HTML::FormHandler::Model::DBIC';
 requires 'HTML::FormHandler::Widget::Theme::Bootstrap3';
 requires 'Perl6::Junction';

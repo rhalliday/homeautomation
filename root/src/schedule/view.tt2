@@ -1,0 +1,59 @@
+[% META title = 'Schedule View'; -%]
+
+[% task = c.stash.object %]
+
+<div id="tab-content">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Device:</label>
+        <div class="col-sm-10">
+            <p class"form-control-static">[% task.appliance.device %]</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Action:</label>
+        <div class="col-sm-10">
+            <p class"form-control-static">[% task.action %]</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Time:</label>
+        <div class="col-sm-10">
+            <p class"form-control-static">[% task.time %]</p>
+        </div>
+    </div>
+    [% IF task.day %]
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Day:</label>
+            <div class="col-sm-10">
+                <p class"form-control-static">[% task.day %]</p>
+            </div>
+        </div>
+    [% ELSE %]
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Days:</label>
+            <div class="col-sm-10">
+                <p class"form-control-static">[% task.all_days %]</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Expires:</label>
+            <div class="col-sm-10">
+                <p class"form-control-static">[% task.recurrence_expiry %]</p>
+            </div>
+        </div>
+    [% END %]
+    <div>
+        <a
+            href="[% c.uri_for(c.controller.action_for('delete'), [task.id]) %]"
+            class="btn btn-danger"
+        >
+            Delete
+        </a>
+        <a
+            href="[% c.uri_for(c.controller.action_for('edit'), [task.id]) %]"
+            class="btn btn-info"
+        >
+            Edit
+        </a>
+    </div>
+</div>

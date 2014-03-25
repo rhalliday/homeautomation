@@ -2,7 +2,10 @@ package HomeAutomation::Controller::Schedules;
 use Moose;
 use namespace::autoclean;
 
+use Carp;
+
 use HomeAutomation::Form::Schedule;
+use DateTime;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -77,11 +80,35 @@ Display all the tasks (will need to make this an API for a calendar)
 sub list : Chained('base') : PathPart('list') : Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash(tasks => [ $c->stash->{resultset}->all ]);
-
     $c->stash(template => 'schedule/list.tt2');
 
     return 1;
+}
+
+=head2 event_data
+
+Returns a JSON data structure for all the dates within the 
+start and end params
+
+=cut
+
+sub event_data : Chained('base') : PathPart('event_data') : Args(0) {
+    my ($self, $c) = @_;
+
+    my $start = $c->req->param('start')
+        or croak('start parameter is required');
+    my $end = $c->req->param('end')
+        or croak('end parameter is required');
+
+    my @data;
+    my $rs = $c->stash->{resultset}->scheduled_tasks($start, $end);
+    print join(q{ }, q{found:}, $rs->count, q{records}),"\n";
+    while( my $rec = $rs->next() ){
+        push @data, @{$rec->full_calendar($c, $start, $end)};
+    }
+
+    $c->stash->{json_data} = \@data;
+    $c->forward('View::JSON');
 }
 
 =head2 create
@@ -100,6 +127,19 @@ sub create : Chained('base') : PathPart('create') : Args(1) {
     $c->stash->{object} = $schedule;
 
     return $self->form($c, $schedule);
+}
+
+=head2 view
+
+View an existing schedule.
+
+=cut
+
+sub view : Chained('object') PathPart('view') Args(0) {
+    my ($self, $c) = @_;
+
+    # template will use the already stashed objec to display
+    $c->stash(template => 'schedule/view.tt2');
 }
 
 =head2 edit
