@@ -3,13 +3,18 @@ package HomeAutomation::Model::DB;
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
 
+# control db connection through env variables
+my $dsn  = $ENV{HA_DSN}  || 'dbi:SQLite:ha.db';
+my $usr  = $ENV{HA_USER} || '';
+my $pass = $ENV{HA_PASS} || '';
+
 __PACKAGE__->config(
     schema_class => 'HomeAutomation::Schema',
-    
+
     connect_info => {
-        dsn => 'dbi:SQLite:ha.db',
-        user => '',
-        password => '',
+        dsn           => $dsn,
+        user          => $user,
+        password      => $pass,
         on_connect_do => q{PRAGMA foreign_keys = ON},
     }
 );
