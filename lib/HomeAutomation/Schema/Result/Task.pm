@@ -226,7 +226,7 @@ sub full_calendar {
     my @data;
 
     # set up a title and a url
-    my $title = $self->appliance->device . q{ } . $self->action;
+    my $title = $self->time . q{: } . $self->appliance->device . q{ } . $self->action;
     my $url = $c->uri_for($c->controller->action_for('view'), [$self->id])->as_string;
 
     # if it's a task that is for a specific date

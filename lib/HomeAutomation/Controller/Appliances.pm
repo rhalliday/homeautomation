@@ -95,7 +95,7 @@ Create a new appliance
 sub create : Chained('base') : PathPart('create') : Args(0) {
     my ($self, $c) = @_;
 
-    my $appliance = $c->model('DB::Appliance')->search({ device => undef, })->first;
+    my $appliance = $c->stash->{resultset}->next_appliance;
 
     $c->detach('/default') unless $appliance;
 

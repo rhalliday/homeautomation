@@ -25,7 +25,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Day:</label>
             <div class="col-sm-10">
-                <p class"form-control-static">[% task.day %]</p>
+                <p class"form-control-static">[% task.day.ymd %]</p>
             </div>
         </div>
     [% ELSE %]
@@ -38,7 +38,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Expires:</label>
             <div class="col-sm-10">
-                <p class"form-control-static">[% task.recurrence_expiry %]</p>
+                <p class"form-control-static">[% task.recurrence_expiry.ymd %]</p>
             </div>
         </div>
     [% END %]

@@ -28,4 +28,16 @@ sub appliances_in_room {
     return $self->search( { 'room.name' => $room}, { join => 'room' });
 }
 
+=head2 next_appliance
+
+Returns the next available appliance, undef if there isn't one
+
+=cut
+
+sub next_appliance {
+    my ($self) = @_;
+
+    return $self->search({ device => undef, })->first || undef;
+}
+
 1;

@@ -13,7 +13,7 @@ __PACKAGE__->config(
 
     connect_info => {
         dsn           => $dsn,
-        user          => $user,
+        user          => $usr,
         password      => $pass,
         on_connect_do => q{PRAGMA foreign_keys = ON},
     }
