@@ -20,6 +20,7 @@ CREATE TABLE user_role (
 --
 -- Add our roles
 --
-INSERT INTO role VALUES (1, 'user');
-INSERT INTO role VALUES (2, 'admin');
-INSERT INTO role VALUES (3, 'usermanagement');
+INSERT INTO role VALUES (1, 'admin');
+INSERT INTO role VALUES (2, 'schedule');
+INSERT INTO role VALUES (3, 'user');
+INSERT INTO role VALUES (4, 'usermanagement');

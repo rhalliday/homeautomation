@@ -204,7 +204,9 @@ Sets a user to (in)active.
 sub deactivate {
     my ($self) = @_;
 
-    $self->active(!$self->active);
+    # suppress warnings about the wrong type
+    my $active = $self->active ? 0 : 1;
+    $self->active($active);
     $self->update;
 
     return 1;
