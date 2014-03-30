@@ -62,7 +62,8 @@ sub object : Chained('base') : PathPart('id') : CaptureArgs(1) {
     my ($self, $c, $id) = @_;
 
     $c->detach('/error_noperms')
-        unless $c->check_user_roles('schedule');
+      unless $c->check_user_roles('schedule');
+
     # Find the task object and store it in the stash
     $c->stash(object => $c->stash->{resultset}->find($id));
 
@@ -96,19 +97,21 @@ sub event_data : Chained('base') : PathPart('event_data') : Args(0) {
     my ($self, $c) = @_;
 
     my $start = $c->req->param('start')
-        or croak('start parameter is required');
+      or croak('start parameter is required');
     my $end = $c->req->param('end')
-        or croak('end parameter is required');
+      or croak('end parameter is required');
 
     my @data;
     my $rs = $c->stash->{resultset}->scheduled_tasks($start, $end);
-    print join(q{ }, q{found:}, $rs->count, q{records}),"\n";
-    while( my $rec = $rs->next() ){
-        push @data, @{$rec->full_calendar($c, $start, $end)};
+    print join(q{ }, q{found:}, $rs->count, q{records}), "\n";
+    while (my $rec = $rs->next()) {
+        push @data, @{ $rec->full_calendar($c, $start, $end) };
     }
 
     $c->stash->{json_data} = \@data;
     $c->forward('View::JSON');
+
+    return 1;
 }
 
 =head2 create
@@ -120,7 +123,7 @@ Create a new schedule
 sub create : Chained('base') : PathPart('create') : Args(1) {
     my ($self, $c, $appliance_id) = @_;
 
-    my $schedule = $c->stash->{resultset}->new_result({ appliance => $appliance_id});
+    my $schedule = $c->stash->{resultset}->new_result({ appliance => $appliance_id });
 
     $c->detach('/default') unless $schedule;
 
@@ -140,6 +143,8 @@ sub view : Chained('object') PathPart('view') Args(0) {
 
     # template will use the already stashed objec to display
     $c->stash(template => 'schedule/view.tt2');
+
+    return 1;
 }
 
 =head2 edit

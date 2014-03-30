@@ -69,6 +69,7 @@ __PACKAGE__->config(
 # Configure View JSON
 __PACKAGE__->config(
     'View::JSON' => {
+
         # only json_data in the stash will be exposed
         expose_stash => 'json_data',
     },
@@ -85,7 +86,7 @@ __PACKAGE__->config(
     },
 );
 
-__PACKAGE__->config( default_view => 'HTML' );
+__PACKAGE__->config(default_view => 'HTML');
 
 # Start the application
 __PACKAGE__->setup();

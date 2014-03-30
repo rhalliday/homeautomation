@@ -77,9 +77,9 @@ sub list : Chained('base') : PathParth('list') : Args(0) {
 
     my $room = $c->req->param('room') || 'Lounge';
 
-    $c->stash(rooms => [ $c->model('DB::Room')->all ]);
+    $c->stash(rooms         => [ $c->model('DB::Room')->all ]);
     $c->stash(selected_room => $room);
-    $c->stash(appliances => [ $c->stash->{resultset}->appliances_in_room($room)->all ]);
+    $c->stash(appliances    => [ $c->stash->{resultset}->appliances_in_room($room)->all ]);
 
     $c->stash(template => 'appliances/list.tt2');
 

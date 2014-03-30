@@ -4,9 +4,11 @@ use namespace::autoclean;
 
 extends 'Catalyst::View::TT';
 
+our $VERSION = '0.01';
+
 __PACKAGE__->config(
     TEMPLATE_EXTENSION => '.tt2',
-    render_die => 1,
+    render_die         => 1,
 );
 
 =head1 NAME
@@ -19,7 +21,7 @@ TT View for HomeAutomation.
 
 =head1 SEE ALSO
 
-L<HomeAutomation>
+L<HomeAutomation|HomeAutomation>
 
 =head1 AUTHOR
 

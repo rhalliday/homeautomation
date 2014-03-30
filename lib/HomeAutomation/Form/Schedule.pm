@@ -6,6 +6,10 @@ use warnings;
 use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
 use namespace::autoclean;
+use Readonly;
+
+Readonly::Scalar my $MAX_HOURS => 23;
+Readonly::Scalar my $MAX_MINS  => 59;
 
 our $VERSION = '0.01';
 
@@ -31,10 +35,12 @@ sub validate_time {
     my ($self, $field) = @_;
 
     if ($field->value =~ /^(\d{2}):(\d{2})$/) {
-        $field->add_error('Must be within 24 hours')
-          unless $1 > -1 && $1 < 24;
-        $field->add_error('Must be within 60 minutes')
-          unless $2 > -1 && $2 < 60;
+        if ($1 < 0 && $1 > $MAX_HOURS) {
+            $field->add_error('Must be within 24 hours');
+        }
+        if ($2 < 0 && $1 > $MAX_MINS) {
+            $field->add_error('Must be within 60 minutes');
+        }
     } else {
         $field->add_error('Time must have HH:MM format');
     }

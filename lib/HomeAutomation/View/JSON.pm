@@ -1,5 +1,9 @@
 package HomeAutomation::View::JSON;
+use strict;
+use warnings;
 use base qw( Catalyst::View::JSON );
+
+our $VERSION = '0.01';
 
 1;
 

@@ -13,9 +13,9 @@ our $VERSION = '0.01';
 has user => (is => 'ro');
 
 has_field 'current_password' => (
-    type => 'Password', 
-    label => 'Current Password',
-    required => 1,
+    type          => 'Password',
+    label         => 'Current Password',
+    required      => 1,
     element_class => ['form-control'],
     element_attr  => { placeholder => 'Current Password' },
     wrapper_class => ['form-group'],
@@ -27,14 +27,15 @@ sub validate_old_password {
     unless ($self->item->check_password($field->value)) {
         $field->add_error('incorrect password');
     }
+    return 1;
 }
 
 #chance to update their password
 has_field 'new_password' => (
-    type     => 'Password',
-    label    => 'New Password',
-    apply    => [ NoSpaces, NotAllDigits ],
-    required => 1,
+    type          => 'Password',
+    label         => 'New Password',
+    apply         => [ NoSpaces, NotAllDigits ],
+    required      => 1,
     element_class => ['form-control'],
     element_attr  => { placeholder => 'New Password' },
     wrapper_class => ['form-group'],
@@ -46,14 +47,14 @@ has_field 'new_password_conf' => (
     messages       => { required => 'You must enter the password a second time' },
     password_field => 'new_password',
     required       => 1,
-    element_class => ['form-control'],
-    element_attr  => { placeholder => 'Confirm Password' },
-    wrapper_class => ['form-group'],
+    element_class  => ['form-control'],
+    element_attr   => { placeholder => 'Confirm Password' },
+    wrapper_class  => ['form-group'],
 );
 
 has_field 'submit' => (
-    type => 'Submit',
-    value => 'Submit',
+    type          => 'Submit',
+    value         => 'Submit',
     element_class => [ 'btn', 'btn-primary' ],
 );
 

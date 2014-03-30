@@ -175,8 +175,7 @@ sub deactivate : Chained('object') : PathPart('deactivate') : Args(0) {
     $c->stash->{object}->deactivate();
 
     # Redirect to the list action/method in this controller
-    $c->response->redirect(
-        $c->uri_for($self->action_for('list')));
+    $c->response->redirect($c->uri_for($self->action_for('list')));
 
     return 1;
 }
@@ -209,7 +208,7 @@ sub change_form {
     return unless $form->process(params => $c->req->params);
 
     # update the password
-    $c->user->update({password => $form->field('new_password')->value});
+    $c->user->update({ password => $form->field('new_password')->value });
 
     # Set a status message for the user & return to appliances list
     $c->response->redirect($c->uri_for('/appliances/list', { mid => $c->set_status_msg(q{Password Changed}) }));
