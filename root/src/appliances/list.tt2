@@ -35,6 +35,7 @@
     </thead>
     <tbody>
     [% FOREACH appliance IN appliances -%]
+        [% NEXT UNLESS appliance.device %]
         <tr>
             <td>[% appliance.device %]</td>
             <td>
