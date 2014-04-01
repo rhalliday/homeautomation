@@ -94,7 +94,7 @@
 [% IF is_admin %]
 <hr/>
 <p>
-  <a class="btn btn-primary" href="[% c.uri_for(c.controller.action_for('create')) %]">Create</a>
+  <a href="[% c.uri_for(c.controller.action_for('create')) %]" class="btn btn-primary">Create</a>
 </p>
 [% END %]
 
