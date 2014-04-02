@@ -39,9 +39,8 @@
         <tr>
             <td>[% appliance.device %]</td>
             <td>
-                <button
-                    type="button"
-                    onclick="location.href='[% c.uri_for(c.controller.action_for('switch'), [appliance.address]) %]'"
+                <a
+                    href="[% c.uri_for(c.controller.action_for('switch'), [appliance.address]) %]"
                     [% IF appliance.status %]
                         class="btn btn-sm btn-success"
                     >
@@ -51,7 +50,7 @@
                     >
                         Off
                     [% END %]
-                </button>
+                </a>
             </td>
             [% IF is_admin %]
             <td>[% appliance.address %]</td>
@@ -87,7 +86,7 @@
     </tbody>
 </table>
 [% ELSE %]
-<p>No devices in this room<p>
+<p>No devices in this room</p>
 [% END %]
 </div>
 </div>

@@ -22,9 +22,9 @@ has_field 'current_password' => (
 );
 
 # make sure the user knows their password
-sub validate_old_password {
+sub validate_current_password {
     my ($self, $field) = @_;
-    unless ($self->item->check_password($field->value)) {
+    unless ($self->user->check_password($field->value)) {
         $field->add_error('incorrect password');
     }
     return 1;
