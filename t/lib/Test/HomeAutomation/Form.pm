@@ -1,4 +1,4 @@
-package Test::HomeAutomation::Schema;
+package Test::HomeAutomation::Form;
 
 use Test::Class::Moose extends => 'Test::HomeAutomation';
 
@@ -8,10 +8,10 @@ __END__
 
 =head1 NAME
 
-Test::HomeAutomation::Schema
+Test::HomeAutomation::Form
 
 =head2 DESCRIPTION
 
-Base class for the schema tests.
+Base class for the form tests.
 
 =cut
