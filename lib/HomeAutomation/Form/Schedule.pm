@@ -3,6 +3,7 @@ package HomeAutomation::Form::Schedule;
 use strict;
 use warnings;
 
+use 5.010;
 use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
 use namespace::autoclean;
@@ -26,6 +27,7 @@ has_field 'action' => (
 
 has_field 'time' => (
     type          => 'Text',
+    required      => 1,
     wrapper_class => ['form-group'],
     element_class => ['form-control'],
     element_attr  => { placeholder => 'HH:MM' },
@@ -34,15 +36,18 @@ has_field 'time' => (
 sub validate_time {
     my ($self, $field) = @_;
 
-    if ($field->value =~ /^(\d{2}):(\d{2})$/) {
-        if ($1 < 0 && $1 > $MAX_HOURS) {
+    if ($field->value =~ /^(?<hour>\d{2}):(?<min>\d{2})$/) {
+        if ($+{hour} < 0 || $+{hour} > $MAX_HOURS) {
             $field->add_error('Must be within 24 hours');
+            return 0;
         }
-        if ($2 < 0 && $1 > $MAX_MINS) {
+        if ($+{min} < 0 || $+{min} > $MAX_MINS) {
             $field->add_error('Must be within 60 minutes');
+            return 0;
         }
     } else {
         $field->add_error('Time must have HH:MM format');
+        return 0;
     }
     return 1;
 }
