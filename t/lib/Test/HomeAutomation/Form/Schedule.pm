@@ -48,10 +48,9 @@ sub test_successful_change {
     my ($self) = @_;
 
     my $params = {
-        action => 'on',
-        time => '16:00',
-        day => '25/09/2125',
-        recurrence => {},
+        action     => 'on',
+        time       => '16:00',
+        day        => '25/09/2125',
     };
 
     ok $self->{form}->process(params => $params), q{form processes with correct data};
@@ -64,37 +63,56 @@ sub test_bad_time {
 
     my $params = {
         action => 'on',
-        time => '16:00:00',
-        day => '25/09/2125',
+        time   => '16:00:00',
+        day    => '25/09/2125',
     };
 
     ok !$self->{form}->process(params => $params), q{form doesn't process with incorrect time format};
     ok $self->{form}->field(q{time})->has_errors, q{time has errors - bad format};
-    eq_or_diff $self->{form}->field(q{time})->errors, [q{Time must have HH:MM format}], q{correct error message for bad format};
+    eq_or_diff $self->{form}->field(q{time})->errors, [q{Time must have HH:MM format}],
+      q{correct error message for bad format};
 
     $params = {
         action => 'on',
-        time => '16:62',
-        day => '25/09/2125',
+        time   => '16:62',
+        day    => '25/09/2125',
     };
 
     ok !$self->{form}->process(params => $params), q{form doesn't process with incorrect minutes};
     ok $self->{form}->field(q{time})->has_errors, q{time has errors - incorrect minutes};
-    eq_or_diff $self->{form}->field(q{time})->errors, [q{Must be within 60 minutes}], q{correct error message for incorrect minutes};
+    eq_or_diff $self->{form}->field(q{time})->errors, [q{Must be within 60 minutes}],
+      q{correct error message for incorrect minutes};
 
     $params = {
         action => 'on',
-        time => '25:00',
-        day => '25/09/2125',
+        time   => '25:00',
+        day    => '25/09/2125',
     };
 
     ok !$self->{form}->process(params => $params), q{form doesn't process with incorrect hours};
     ok $self->{form}->field(q{time})->has_errors, q{time has errors - incorrect hours};
-    eq_or_diff $self->{form}->field(q{time})->errors, [q{Must be within 24 hours}], q{correct error message for incorrect hours};
+    eq_or_diff $self->{form}->field(q{time})->errors, [q{Must be within 24 hours}],
+      q{correct error message for incorrect hours};
 
     return 1;
 }
 
+sub test_bad_day {
+    my ($self) = @_;
+
+    my $params = {
+        action => 'on',
+        time   => '16:10',
+        day    => '25-09-2125',
+    };
+
+    ok !$self->{form}->process(params => $params), q{form doesn't process with incorrect date format};
+    ok $self->{form}->field(q{day})->has_errors, q{day has errors - bad format};
+    eq_or_diff $self->{form}->field(q{day})->errors, [q{Your datetime does not match your pattern.}],
+      q{correct error message for bad format};
+
+    return 1;
+}
 
 1;
 

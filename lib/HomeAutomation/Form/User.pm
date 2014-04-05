@@ -26,6 +26,7 @@ has_field 'username' => (
 
 has_field 'password' => (
     type          => 'Password',
+    required      => 1,
     apply         => [ NoSpaces, NotAllDigits ],
     element_class => ['form-control'],
     wrapper_class => ['form-group'],
