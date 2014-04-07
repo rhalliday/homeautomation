@@ -37,11 +37,11 @@ sub validate_time {
     my ($self, $field) = @_;
 
     if ($field->value =~ /^(?<hour>\d{2}):(?<min>\d{2})$/) {
-        if ($+{hour} < 0 || $+{hour} > $MAX_HOURS) {
+        if ($+{hour} > $MAX_HOURS) {
             $field->add_error('Must be within 24 hours');
             return 0;
         }
-        if ($+{min} < 0 || $+{min} > $MAX_MINS) {
+        if ($+{min} > $MAX_MINS) {
             $field->add_error('Must be within 60 minutes');
             return 0;
         }

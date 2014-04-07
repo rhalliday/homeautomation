@@ -27,7 +27,7 @@ Catalyst Controller for CRUD of appliances.
 sub index : Path : Args(0) {
     my ($self, $c) = @_;
 
-    $c->response->body('Matched HomeAutomation::Controller::Appliances in Appliances.');
+    $c->response->redirect(q{/appliances/list});
 
     return 1;
 }

@@ -31,9 +31,7 @@
             <td>[% user.last_name | html %]</td>
             <td>[% user.email_address | html %]</td>
             <td>
-                <button
-                    type="button"
-                    onclick="location.href='[% c.uri_for(c.controller.action_for('deactivate'), [user.id]) %]'"
+                <a href='[% c.uri_for(c.controller.action_for('deactivate'), [user.id]) %]'
                 [% IF user.active %]
                     class="btn btn-sm btn-success"
                 >
@@ -43,7 +41,7 @@
                 >
                     Inactive
                 [% END %]
-            </button>
+                </a>
             </td>
             [% IF is_admin %]
                 <td>[% user.role_list | html %]</td>

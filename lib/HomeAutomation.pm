@@ -1,4 +1,5 @@
 package HomeAutomation;
+use 5.014;
 use Moose;
 use namespace::autoclean;
 
