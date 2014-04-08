@@ -67,21 +67,6 @@ sub test_successful_change {
     return 1;
 }
 
-sub test_bad_current_password {
-    my ($self) = @_;
-
-    my $params = {
-        current_password  => q{pwdpass},
-        new_password      => q{newpass},
-        new_password_conf => q{newpass},
-    };
-
-    ok !$self->{form}->process(params => $params), q{form doesn't process with incorrect current_password};
-    ok $self->{form}->field(q{current_password})->has_errors, q{current_password has errors};
-
-    return 1;
-}
-
 sub test_mismatch_new_passwords {
     my ($self) = @_;
 

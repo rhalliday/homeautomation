@@ -149,10 +149,13 @@ subtest q{basic_user} => sub {
             password => q{mypass},
         }
     );
+    $ua->title_is(q{Appliance List}, q{Check redirect to appliance list after log in});
+    $ua->get_ok(q{http://localhost/}, q{Check index page});
+    $ua->content_contains(q{HomeAutomation}, q{index page shows some stuff});
 
     subtest q{appliance list} => sub {
         # appliance list page contents
-        $ua->title_is(q{Appliance List}, q{Check redirect to appliance list after log in});
+        $ua->get(q{/appliances/list});
         $ua->content_lacks(q{/schedules/list">Schedules</a>},  q{'test03' should NOT be able to see the schedules});
         $ua->content_lacks(q{/usermanagement/list">Users</a>}, q{'test03' should NOT be able to see the other users});
         $ua->content_contains(q{/usermanagement/change_password">Change Password</a>},
@@ -189,7 +192,51 @@ subtest q{basic_user} => sub {
     subtest q{change password} => sub {
         $ua->follow_link_ok({ text => q{Change Password} }, q{can get to the change password form});
         $ua->title_is(q{Change Password}, q{check we are actually on the change password page});
-        # note can't actually check that the form works, see the tests for the change password form for that
+        $ua->submit_form(
+            fields => {
+                current_password  => q{mypass},
+                new_password      => q{newpass},
+                new_password_conf => q{newpass},
+            }
+        );
+        $ua->get(q{/logout});
+        $ua->submit_form(
+            fields => {
+                username => q{test03},
+                password => q{newpass},
+            }
+        );
+        $ua->title_is(q{Appliance List}, q{can change password});
+        $ua->follow_link_ok({ text => q{Change Password} }, q{can get to the change password form});
+        $ua->submit_form(
+            fields => {
+                current_password  => q{mypass},
+                new_password      => q{newpass},
+                new_password_conf => q{newpass},
+            }
+        );
+        $ua->content_contains(q{incorrect password}, q{using old password says they're incorrect});
+        $ua->submit_form(
+            fields => {
+                current_password  => q{newpass},
+                new_password      => q{mypass},
+                new_password_conf => q{newpass},
+            }
+        );
+        $ua->content_contains(q{The password confirmation does not match the password}, q{password mismatch});
+        $ua->submit_form(
+            fields => {
+                current_password  => q{newpass},
+                new_password      => q{mypass},
+                new_password_conf => q{mypass},
+            }
+        );
+        $ua->content_contains(q{Password Changed}, q{password changed successfully});
+    };
+
+    subtest q{user management} => sub {
+        $ua->get(q{/usermanagement/id/2/deactivate});
+        $ua->content_contains(q{Permission Denied}, q{test01 gets permission denied if they try to deactivate a user});
     };
 
     # log out
@@ -246,9 +293,13 @@ subtest q{privileged_user} => sub {
         # room with no device
         $ua->get_ok(q{/appliances/list?room=Master}, q{can get to the master room});
         $ua->content_contains(q{<p>No devices in this room</p>}, q{master room has no devices});
+
+        $ua->get(q{/appliances/address/F1/delete});
+        $ua->content_contains(q{Permission Denied}, q{test02 gets permission denied if they try to delete});
     };
 
     subtest q{change password} => sub {
+        $ua->get(q{/appliances/list});
         $ua->follow_link_ok({ text => q{Change Password} }, q{can get to the change password form});
         $ua->title_is(q{Change Password}, q{check we are actually on the change password page});
         # note can't actually check that the form works, see the tests for the change password form for that
@@ -256,6 +307,7 @@ subtest q{privileged_user} => sub {
 
     # test user management, should only be able to make them active/inactive
     subtest q{user management} => sub {
+        $ua->get(q{/appliances/list});
         $ua->follow_link_ok({ text => q{Users} }, q{can get to the user management page});
         $ua->title_is(q{User List}, q{check we are on the user management page});
         $ua->content_contains(q{test02}, q{we should be able to see ourselves});
@@ -269,6 +321,8 @@ subtest q{privileged_user} => sub {
         @switch_links = $ua->find_all_links(text => 'Inactive');
         $ua->get_ok($switch_links[0]->url, q{can reactivate a user});
         $ua->content_lacks(q{Inactive}, q{all users are now active});
+        $ua->get_ok(q{/usermanagement}, q{can get usermanagement base url});
+        $ua->title_is(q{User List}, q{base url redirects to user list});
     };
 
     # test schedule, should be able to schedule a device
@@ -378,6 +432,27 @@ subtest q{admin_user} => sub {
 
         $ua->get(q{/appliances/address/F30/edit});
         $ua->content_contains(q{Page not found}, q{page not found is returned for an unknown device});
+
+        # fill up all the devices
+        for my $address (3..16) {
+            $ua->get(qq{/appliances/address/F${address}/edit});
+            $ua->submit_form(
+                fields => {
+                    device   => 'blah',
+                    room     => 7,
+                    status   => 1,
+                    protocol => 'pl',
+                }
+            );
+        }
+        # check a redirect for no more devices
+        $ua->get(q{/appliances/create});
+        #TODO: need to change what happens when we run out
+        $ua->content_contains(q{Page not found}, q{page not found is returned when we run out of devices});
+        # clear the devices
+        for my $address (3..16) {
+            $ua->get(qq{/appliances/address/F${address}/delete});
+        }
     };
 
     subtest q{change password} => sub {

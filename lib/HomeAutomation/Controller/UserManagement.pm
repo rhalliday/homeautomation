@@ -28,7 +28,7 @@ Catalyst Controller.
 sub index : Path : Args(0) {
     my ($self, $c) = @_;
 
-    $c->response->body('Matched HomeAutomation::Controller::UserManagement in UserManagement.');
+    $c->response->redirect(q{/usermanagement/list});
 
     return 1;
 }
@@ -205,10 +205,17 @@ sub change_form {
 
     # Set the template
     $c->stash(template => 'usermanagement/change_form.tt2', form => $form);
-    return unless $form->process(params => $c->req->params);
+
+
+    return unless $form->process(posted => ($c->req->method eq 'POST'), params => $c->req->params, no_update => 1);
+    unless ($c->authenticate({ username => $c->user->username, password => $c->req->param('current_password')})) {
+        $form->field('current_password')->add_error('incorrect password');
+        return;
+    }
 
     # update the password
-    $c->user->update({ password => $form->field('new_password')->value });
+    $user->update({ password => $form->field('new_password')->value });
+    $c->user->persist_user();
 
     # Set a status message for the user & return to appliances list
     $c->response->redirect($c->uri_for('/appliances/list', { mid => $c->set_status_msg(q{Password Changed}) }));

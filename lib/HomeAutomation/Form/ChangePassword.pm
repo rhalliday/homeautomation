@@ -10,7 +10,10 @@ use namespace::autoclean;
 
 our $VERSION = '0.01';
 
-has user => (is => 'ro');
+has user => (
+    is  => 'ro',
+    isa => 'HomeAutomation::Schema::Result::User',
+);
 
 has_field 'current_password' => (
     type          => 'Password',
@@ -22,13 +25,13 @@ has_field 'current_password' => (
 );
 
 # make sure the user knows their password
-sub validate_current_password {
-    my ($self, $field) = @_;
-    unless ($self->user->check_password($field->value)) {
-        $field->add_error('incorrect password');
-    }
-    return 1;
-}
+#sub validate_current_password {
+#    my ($self, $field) = @_;
+#    unless ($self->user->check_password($field->value)) {
+#        $field->add_error('incorrect password');
+#    }
+#    return 1;
+#}
 
 #chance to update their password
 has_field 'new_password' => (
