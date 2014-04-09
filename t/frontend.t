@@ -141,7 +141,7 @@ subtest q{basic_user} => sub {
     my $ua = Test::WWW::Mechanize::Catalyst->new;
 
     # Login
-    $ua->get_ok(q{http://localhost/}, q{Check redirect of base URL});
+    $ua->get_ok(q{http://localhost/login}, q{Check redirect of base URL});
     $ua->title_is(q{Login}, q{Check for login title});
     $ua->submit_form(
         fields => {
@@ -250,7 +250,7 @@ subtest q{privileged_user} => sub {
     my $ua = Test::WWW::Mechanize::Catalyst->new;
 
     # Login
-    $ua->get_ok(q{http://localhost/}, q{Check redirect of base URL});
+    $ua->get_ok(q{http://localhost/login}, q{Check redirect of base URL});
     $ua->title_is(q{Login}, q{Check for login title});
     $ua->submit_form(
         fields => {
@@ -323,6 +323,8 @@ subtest q{privileged_user} => sub {
         $ua->content_lacks(q{Inactive}, q{all users are now active});
         $ua->get_ok(q{/usermanagement}, q{can get usermanagement base url});
         $ua->title_is(q{User List}, q{base url redirects to user list});
+        $ua->get(q{/usermanagement/id/3/delete});
+        $ua->content_contains(q{Permission Denied}, q{not allowed to delete users});
     };
 
     # test schedule, should be able to schedule a device
@@ -346,7 +348,7 @@ subtest q{admin_user} => sub {
     my $ua = Test::WWW::Mechanize::Catalyst->new;
 
     # Login
-    $ua->get_ok(q{http://localhost/}, q{Check redirect of base URL});
+    $ua->get_ok(q{http://localhost/login}, q{Can get to login});
     $ua->title_is(q{Login}, q{Check for login title});
     $ua->submit_form(
         fields => {
@@ -459,7 +461,6 @@ subtest q{admin_user} => sub {
         $ua->get(q{/appliances});
         $ua->follow_link_ok({ text => q{Change Password} }, q{can get to the change password form});
         $ua->title_is(q{Change Password}, q{check we are actually on the change password page});
-        # note can't actually check that the form works, see the tests for the change password form for that
     };
 
     # test user management, should only be able to make them active/inactive
@@ -477,6 +478,50 @@ subtest q{admin_user} => sub {
         @switch_links = $ua->find_all_links(text => 'Inactive');
         $ua->get_ok($switch_links[0]->url, q{can reactivate a user});
         $ua->content_lacks(q{Inactive}, q{all users are now active});
+        # user doesn't exist
+        $ua->get(q{/usermanagement/id/22/edit});
+        $ua->content_contains(q{Page not found}, q{trying to edit a user that doesn't exist});
+
+        $ua->get_ok(q{/usermanagement/create}, q{admin user can create other users});
+        $ua->title_is(q{Create/Update User}, q{we definitely have the create form});
+        $ua->submit_form_ok(
+            {
+                fields => {
+                    username      => q{test04},
+                    password      => q{mypass},
+                    first_name    => q{bob},
+                    last_name     => q{e},
+                    email_address => q{bob.e@example.com},
+                    active        => 1,
+                    
+                }
+            },
+            q{can submit the create user form}
+        );
+        $ua->title_is(q{User List}, q{back on user list form});
+        $ua->content_contains(q{test04}, q{did create a test04 user});
+
+        $ua->get_ok(q{/usermanagement/id/4/edit}, q{admin user can edit other users});
+        $ua->title_is(q{Create/Update User}, q{we definitely have the edit form});
+        $ua->submit_form_ok(
+            {
+                fields => {
+                    username      => q{test04},
+                    password      => q{mypass},
+                    first_name    => q{bobert},
+                    last_name     => q{e},
+                    email_address => q{bob.e@example.com},
+                    active        => 1,
+                    
+                }
+            },
+            q{can submit the create user form}
+        );
+        $ua->title_is(q{User List}, q{back on user list form - after edit});
+        $ua->content_contains(q{bobert}, q{did edit test04 user});
+        
+        $ua->get_ok(q{/usermanagement/id/4/delete}, q{can delete the new user});
+        $ua->content_lacks(q{test04}, q{test04 has now gone});
     };
 
     # test schedule, should be able to schedule a device
