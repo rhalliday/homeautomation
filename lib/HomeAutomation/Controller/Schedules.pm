@@ -30,7 +30,7 @@ Catalyst Controller for CRUD of schedules.
 sub index : Path : Args(0) {
     my ($self, $c) = @_;
 
-    $c->response->body('Matched HomeAutomation::Controller::Schedules in Schedules.');
+    $c->response->redirect(q{/schedules/list});
 
     return 1;
 }
@@ -124,8 +124,6 @@ sub create : Chained('base') : PathPart('create') : Args(1) {
     my ($self, $c, $appliance_id) = @_;
 
     my $schedule = $c->stash->{resultset}->new_result({ appliance => $appliance_id });
-
-    $c->detach('/default') unless $schedule;
 
     $c->stash->{object} = $schedule;
 

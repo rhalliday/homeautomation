@@ -32,8 +32,21 @@ sub test_shutdown {
         $appliance->clear;
     }
 
+    $self->next::method();
+
     return 1;
 }
+
+sub test_teardown {
+    my ($self) = @_;
+
+    $self->{resultset}->delete_all;
+
+    $self->next::method();
+
+    return 1;
+}
+
 
 sub test_one_time_task {
     my ($self) = @_;
@@ -51,8 +64,6 @@ sub test_one_time_task {
     is $task->recurrence_expiry, q{}, q{one off event shouldn't have a recurrence expiry};
     is $self->{resultset}->scheduled_tasks($self->{last_week}->epoch, $self->{next_week}->epoch)->count, 1,
       q{scheduled task is returned};
-
-    $self->{resultset}->delete_all;
 
     return 1;
 }
@@ -77,7 +88,39 @@ sub test_recurring_task {
     is $self->{resultset}->scheduled_tasks($self->{last_week}->epoch, $self->{next_week}->epoch)->count, 1,
       q{scheduled task returns a recurring task};
 
-    $self->{resultset}->delete_all;
+    return 1;
+}
+
+sub test_delete_allowed_by {
+    my ($self) = @_;
+
+    my $user = $self->{schema}->resultset(q{User})->create(
+        {
+            username => q{bob},
+            password => q{mypass},
+            email_address => q{bob@example.com},
+            first_name => q{bob},
+            last_name => q{user},
+            active => 1,
+        }
+    );
+    my $role_rs = $self->{schema}->resultset(q{Role})->find({ role => q{user} });
+    $user->add_to_roles($role_rs);
+
+    my $task = $self->{resultset}->create(
+        {
+            appliance => $self->{appliances}[0],
+            action    => 'on',
+            time      => '16:00',
+            day       => $self->{today}->ymd,
+        }
+    );
+
+    ok !$task->delete_allowed_by($user), q{non schedule user is not allowed to delete a schedule};
+
+    $role_rs = $self->{schema}->resultset(q{Role})->find({ role => q{schedule} });
+    $user->add_to_roles($role_rs);
+    ok $task->delete_allowed_by($user), q{schedule user is allowed to delete};
 
     return 1;
 }

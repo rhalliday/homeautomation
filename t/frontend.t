@@ -70,6 +70,7 @@ END {
 
 use Test::More;
 use Test::WWW::Mechanize::Catalyst q{HomeAutomation};
+use DateTime;
 
 subtest q{bad logins} => sub {
     my $ua = Test::WWW::Mechanize::Catalyst->new;
@@ -239,6 +240,11 @@ subtest q{basic_user} => sub {
         $ua->content_contains(q{Permission Denied}, q{test01 gets permission denied if they try to deactivate a user});
     };
 
+    subtest q{schedules} => sub {
+        $ua->get(q{/schedules/id/2/view});
+        $ua->content_contains(q{Permission Denied}, q{test01 gets permission denied if they try to look at a schedule});
+    };
+
     # log out
     $ua->follow_link_ok({ url_regex => qr/logout/ }, q{can log out again});
 
@@ -334,7 +340,10 @@ subtest q{privileged_user} => sub {
         $ua->title_is(q{Appliance List}, q{make sure we're on the appliance page});
         $ua->follow_link_ok({ text => q{Schedule} }, q{can get to the schedule page});
         $ua->title_is(q{Create/Update Schedule}, q{check we are on the right page});
-        # actual scheduling is done through the form
+
+
+        $ua->get_ok(q{/schedules}, q{getting schedules index});
+        $ua->title_is(q{Schedule List}, q{have the right page});
     };
 
     # log out
@@ -531,10 +540,30 @@ subtest q{admin_user} => sub {
         $ua->title_is(q{Appliance List}, q{make sure we're on the appliance page});
         $ua->follow_link_ok({ text => q{Schedule} }, q{can get to the schedule page});
         $ua->title_is(q{Create/Update Schedule}, q{check we are on the right page});
-        # actual scheduling is done through the form
+        my $today = DateTime->now(time_zone => 'Europe/London');
+        $ua->submit_form_ok(
+            {
+                fields => {
+                    action    => 'on',
+                    time      => '16:00',
+                    day       => $today->dmy('/'),
+                }
+            },
+            q{can submit the schedule create form}
+        );
+        $ua->title_is(q{Schedule List}, q{redirected to the schedule list after creation});
+        $ua->get_ok(q{/schedules/id/1/view}, q{can view a schedule});
+        $ua->title_is(q{Schedule View}, q{viewing a schedule});
+        $ua->get_ok(q{/schedules/id/1/edit}, q{can edit a schedule});
+        $ua->title_is(q{Create/Update Schedule}, q{editing a schedule});
+        $ua->get_ok(q{/schedules/id/1/delete}, q{can delete a schedule});
+        $ua->title_is(q{Schedule List}, q{deleting a schedule});
+        $ua->get(q{/schedules/id/22322/edit});
+        $ua->content_contains(q{Page not found}, q{redirect to default if schedule doesn't exist});
     };
 
     # log out
+    $ua->get(q{/appliances/list});
     $ua->follow_link_ok({ url_regex => qr/logout/ }, q{can log out again});
 
     $ua = undef;
