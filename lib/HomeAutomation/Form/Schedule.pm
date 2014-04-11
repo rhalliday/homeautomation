@@ -87,3 +87,53 @@ has_field 'submit' => (
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+HomeAutomation::Form::Shedule - Form for setting up scheduled tasks
+
+=head2 Description
+
+Form to set up times for actions to take place. This means you can
+schedule the curtains to close at a certain time and turn the lights on.
+
+=head2 Fields
+
+=over
+
+=item action
+
+action to perform on the device.
+
+=item time
+
+time to perform the action.
+
+=item day
+
+day to perform the action on.
+
+=item recurrence-expires
+
+if you want to perform the action on multiple days, leave day blank
+and set the expire for a recurrence.
+
+=item recurrence-days
+
+set which days to perform the task on.
+
+=back
+
+=head2 validation
+
+=over
+
+=item validate_time
+
+Time should be in HH:MM format.
+
+=back
+
+=cut

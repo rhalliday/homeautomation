@@ -170,7 +170,11 @@ use DateTime;
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-=head1 delete_allowed_by
+=head1 Methods
+
+=over
+
+=item delete_allowed_by
 
 Can the specified user delete the current task?
 
@@ -183,7 +187,7 @@ sub delete_allowed_by {
     return $user->has_role('schedule');
 }
 
-=head1 all_days
+=item all_days
 
 Returns a comma separated list of days
 
@@ -200,7 +204,7 @@ sub all_days {
     return join ', ', @days;
 }
 
-=head1 recurrence_expiry
+=item recurrence_expiry
 
 Returns the expiry date of a recurrence, if there is one.
 
@@ -213,7 +217,7 @@ sub recurrence_expiry {
     return $self->recurrence->expires;
 }
 
-=head1 full_calendar(context, start, end)
+=item full_calendar(context, start, end)
 
 Returns an arrayref containing a hashref of all the dates
 that fall within the start and end date.
@@ -257,6 +261,10 @@ sub full_calendar {
 
     return \@data;
 }
+
+=back
+
+=cut
 
 __PACKAGE__->meta->make_immutable;
 1;

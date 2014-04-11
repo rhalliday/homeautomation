@@ -24,15 +24,6 @@ has_field 'current_password' => (
     wrapper_class => ['form-group'],
 );
 
-# make sure the user knows their password
-#sub validate_current_password {
-#    my ($self, $field) = @_;
-#    unless ($self->user->check_password($field->value)) {
-#        $field->add_error('incorrect password');
-#    }
-#    return 1;
-#}
-
 #chance to update their password
 has_field 'new_password' => (
     type          => 'Password',
@@ -63,3 +54,37 @@ has_field 'submit' => (
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+HomeAutomation::Form::ChangePassword - Form for changing a users password
+
+=head2 Description
+
+Form to allow a user to change their password. It is not a DBIC sub-class
+so controllers using the form will need to update the password themselves.
+
+=head2 Fields
+
+=over
+
+=item current_password
+
+Current password
+
+B<Note: no checks are performed to make sure this is correct so this needs
+to be handled in the controller>
+
+=item new_password
+
+The new password, must be alpha-numeric with no spaces.
+
+=item new_password_conf
+
+Checked to make sure it is the same as new_password.
+
+=back
+
+=cut

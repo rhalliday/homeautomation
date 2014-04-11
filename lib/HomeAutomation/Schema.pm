@@ -14,6 +14,15 @@ __PACKAGE__->load_namespaces;
 # Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-02-24 21:22:39
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1CcXQI4sLhczqQl0uARu0Q
 
+=head1 NAME
+
+HomeAutomation::Schema
+
+=head1 Description
+
+Base class for the resultsets.
+
+=cut
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

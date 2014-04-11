@@ -81,3 +81,47 @@ has_field 'submit' => (
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+HomeAutomation::Form::User - Form for creating/updating a user.
+
+=head2 Description
+
+Form for user management.
+
+=head2 Fields
+
+=over
+
+=item username
+
+username is unique
+
+=item password
+
+self explanatory
+
+=item first_name
+
+again first name
+
+=item last_name
+
+last name
+
+=item email_address
+
+email address
+
+=item roles
+
+permissions list to control access to different parts of the app.
+
+=item active
+
+turn this on and off to allow access to the app.
+
+=back
+
+=cut

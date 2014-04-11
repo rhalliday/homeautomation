@@ -50,3 +50,37 @@ has_field 'submit' => (
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+HomeAutomation::Form::Appliance - Form for the creation of appliances
+
+=head2 Description
+
+Form to cover the creation/update of appliances in the web application.
+
+=head2 Fields
+
+=over
+
+=item device
+
+Name of the appliance
+
+=item room
+
+Room the appliance is in
+
+=item status
+
+Whether the device is on or off
+
+=item protocol
+
+One of power line or radio frequency
+
+=back
+
+=cut

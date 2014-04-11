@@ -157,7 +157,11 @@ __PACKAGE__->add_columns(
     },
 );
 
-=head2 has_role
+=head2 Methods
+
+=over
+
+=item has_role
 
 Check if a user has the specified role
 
@@ -224,7 +228,7 @@ sub full_name {
     return join q{ }, $self->first_name, $self->last_name;
 }
 
-=head2 role_list
+=item role_list
  
 Return a comma-separated list of roles for the current user
  
@@ -240,6 +244,10 @@ sub role_list {
  
     return join(', ', @roles);
 }
+
+=back
+
+=cut
 
 __PACKAGE__->meta->make_immutable;
 1;
