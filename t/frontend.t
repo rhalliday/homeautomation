@@ -541,6 +541,8 @@ subtest q{admin_user} => sub {
         $ua->follow_link_ok({ text => q{Schedule} }, q{can get to the schedule page});
         $ua->title_is(q{Create/Update Schedule}, q{check we are on the right page});
         my $today = DateTime->now(time_zone => 'Europe/London');
+        my $last_week = $today->subtract(weeks => 1);
+        my $next_week = $today->add(weeks => 1);
         $ua->submit_form_ok(
             {
                 fields => {
@@ -556,6 +558,18 @@ subtest q{admin_user} => sub {
         $ua->title_is(q{Schedule View}, q{viewing a schedule});
         $ua->get_ok(q{/schedules/id/1/edit}, q{can edit a schedule});
         $ua->title_is(q{Create/Update Schedule}, q{editing a schedule});
+
+        my $event_url = q{/schedules/event_data?start=} . $last_week->epoch . q{&end=} . $next_week->epoch;
+        $ua->get_ok($event_url, q{can get the event data});
+
+        $event_url = q{/schedules/event_data?start=} . $last_week->epoch;
+        $ua->get($event_url);
+        $ua->content_contains(q{Page not found}, q{missing end param results in an error});
+
+        $event_url = q{/schedules/event_data?end=} . $last_week->epoch;
+        $ua->get($event_url);
+        $ua->content_contains(q{Page not found}, q{missing start param results in an error});
+        
         $ua->get_ok(q{/schedules/id/1/delete}, q{can delete a schedule});
         $ua->title_is(q{Schedule List}, q{deleting a schedule});
         $ua->get(q{/schedules/id/22322/edit});

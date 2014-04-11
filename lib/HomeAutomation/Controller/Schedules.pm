@@ -97,15 +97,16 @@ sub event_data : Chained('base') : PathPart('event_data') : Args(0) {
     my ($self, $c) = @_;
 
     my $start = $c->req->param('start')
-      or croak('start parameter is required');
+      or $c->detach('/default');
     my $end = $c->req->param('end')
-      or croak('end parameter is required');
+      or $c->detach('/default');
 
     my @data;
     my $rs = $c->stash->{resultset}->scheduled_tasks($start, $end);
     print join(q{ }, q{found:}, $rs->count, q{records}), "\n";
     while (my $rec = $rs->next()) {
-        push @data, @{ $rec->full_calendar($c, $start, $end) };
+        my $url = $c->uri_for($c->controller->action_for('view'), [$rec->id])->as_string;
+        push @data, @{ $rec->full_calendar($url, $start, $end) };
     }
 
     $c->stash->{json_data} = \@data;

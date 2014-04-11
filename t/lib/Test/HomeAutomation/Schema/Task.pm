@@ -19,8 +19,8 @@ sub test_startup {
 
     # set up a load of useful? DateTime objects
     $self->{today} = DateTime->from_epoch(epoch => 1396041043, time_zone => 'Europe/London');    # is a friday
-    $self->{last_week} = $self->{today}->subtract(weeks => 1);
-    $self->{next_week} = $self->{today}->add(weeks => 1);
+    $self->{last_week} = 1395436243;
+    $self->{next_week} = 1396645843;
 
     return 1;
 }
@@ -47,7 +47,6 @@ sub test_teardown {
     return 1;
 }
 
-
 sub test_one_time_task {
     my ($self) = @_;
 
@@ -62,8 +61,13 @@ sub test_one_time_task {
 
     is $task->all_days,          q{}, q{all days should return an empty string for one off events};
     is $task->recurrence_expiry, q{}, q{one off event shouldn't have a recurrence expiry};
-    is $self->{resultset}->scheduled_tasks($self->{last_week}->epoch, $self->{next_week}->epoch)->count, 1,
-      q{scheduled task is returned};
+    my $start = $self->{last_week};
+    my $end   = $self->{next_week};
+    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1, q{scheduled task is returned};
+
+    my $url = q{http://example.com/task/view};
+    eq_or_diff $task->full_calendar($url, $start, $end),
+      [ { start => q{2014-03-28T16:00:00Z}, title => q{16:00: Lights on}, url => $url, } ], q{full_calendar check};
 
     return 1;
 }
@@ -85,8 +89,53 @@ sub test_recurring_task {
 
     is $task->all_days, q{Monday, Wednesday, Friday}, q{all days returns a comma separated list of days};
     is $task->recurrence_expiry->ymd, q{2014-03-28}, q{recurrence_expiry returns the correct date};
-    is $self->{resultset}->scheduled_tasks($self->{last_week}->epoch, $self->{next_week}->epoch)->count, 1,
+    my $start = $self->{last_week};
+    my $end   = $self->{next_week};
+    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1,
       q{scheduled task returns a recurring task};
+
+    my $url = q{http://example.com/task/view};
+    eq_or_diff $task->full_calendar($url, $start, $end),
+      [ 
+          { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+      ],
+      q{full_calendar check};
+
+    return 1;
+}
+
+sub test_recurring_task_in_the_future {
+    my ($self) = @_;
+
+    my $today = DateTime->now(time_zone => 'Europe/London');
+    my $task = $self->{resultset}->create(
+        {
+            appliance  => $self->{appliances}[0],
+            action     => 'on',
+            time       => '12:00',
+            recurrence => {
+                expires    => $today->ymd,
+                tasks_days => [ { day_id => 1 }, { day_id => 3 }, { day_id => 5 }, ],
+            },
+        }
+    );
+
+    my $start = $self->{last_week};
+    my $end   = $self->{next_week};
+    my $url = q{http://example.com/task/view};
+    eq_or_diff $task->full_calendar($url, $start, $end),
+      [ 
+          { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+          { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+      ],
+      q{full_calendar check};
 
     return 1;
 }
@@ -96,12 +145,12 @@ sub test_delete_allowed_by {
 
     my $user = $self->{schema}->resultset(q{User})->create(
         {
-            username => q{bob},
-            password => q{mypass},
+            username      => q{bob},
+            password      => q{mypass},
             email_address => q{bob@example.com},
-            first_name => q{bob},
-            last_name => q{user},
-            active => 1,
+            first_name    => q{bob},
+            last_name     => q{user},
+            active        => 1,
         }
     );
     my $role_rs = $self->{schema}->resultset(q{Role})->find({ role => q{user} });

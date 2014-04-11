@@ -221,13 +221,12 @@ that fall within the start and end date.
 =cut
 
 sub full_calendar {
-    my($self, $c, $start, $end) = @_;
+    my($self, $url, $start, $end) = @_;
 
     my @data;
 
-    # set up a title and a url
+    # set up a title
     my $title = $self->time . q{: } . $self->appliance->device . q{ } . $self->action;
-    my $url = $c->uri_for($c->controller->action_for('view'), [$self->id])->as_string;
 
     # if it's a task that is for a specific date
     if($self->day) {

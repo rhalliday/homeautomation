@@ -26,7 +26,7 @@
 #     VERSION_FROM => q[lib/HomeAutomation.pm]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
 #     realclean => { FILES=>q[MYMETA.yml] }
-#     test => { TESTS=>q[t/01app.t t/02pod.t t/03podcoverage.t t/controller_Appliances.t t/controller_Login.t t/controller_Logout.t t/controller_UserManagement.t t/frontend.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t] }
+#     test => { TESTS=>q[t/01app.t t/02pod.t t/03podcoverage.t t/frontend.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -954,7 +954,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/01app.t t/02pod.t t/03podcoverage.t t/controller_Appliances.t t/controller_Login.t t/controller_Logout.t t/controller_UserManagement.t t/frontend.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t
+TEST_FILES = t/01app.t t/02pod.t t/03podcoverage.t t/frontend.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
