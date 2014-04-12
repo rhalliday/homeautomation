@@ -159,8 +159,8 @@ sub test_delete_allowed_by {
     my $task = $self->{resultset}->create(
         {
             appliance => $self->{appliances}[0],
-            action    => 'on',
-            time      => '16:00',
+            action    => q{on},
+            time      => q{16:00},
             day       => $self->{today}->ymd,
         }
     );
@@ -170,6 +170,32 @@ sub test_delete_allowed_by {
     $role_rs = $self->{schema}->resultset(q{Role})->find({ role => q{schedule} });
     $user->add_to_roles($role_rs);
     ok $task->delete_allowed_by($user), q{schedule user is allowed to delete};
+
+    return 1;
+}
+
+sub test_active_tasks {
+    my ($self) = @_;
+    
+    my @tasks = $self->{resultset}->active_tasks();
+    is scalar @tasks, 0, q{no pending tasks};
+
+    my $dt = DateTime->now(time_zone => 'Europe/London');
+    my $time = sprintf('%02d:%02d', $dt->hour, $dt->minute);
+
+    my $task = $self->{resultset}->create(
+        {
+            appliance => $self->{appliances}[0],
+            action    => q{on},
+            time      => $time,
+            day       => $dt->ymd,
+        }
+    );
+
+    @tasks = $self->{resultset}->active_tasks();
+    is scalar @tasks, 1, q{we have a pending task};
+    is $tasks[0]->action, q{on}, q{get back the right action};
+    is $tasks[0]->appliance->device, $self->{appliances}[0]->device, q{get back the right device};
 
     return 1;
 }
