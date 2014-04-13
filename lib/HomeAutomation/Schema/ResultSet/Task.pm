@@ -50,10 +50,13 @@ sub active_tasks {
             time => $time,
             -or => [
                 day                  => $dt->ymd,
-                'recurrence.expires' => { '>=' => $dt->ymd },
+                -and => [
+                    'recurrence.expires' => { '>=' => $dt->ymd },
+                    'tasks_days.day_id' => $dt->dow, 
+                ],
             ],
         },
-        { join => 'recurrence' }
+        { join => { recurrence => 'tasks_days' } }
     );      
 }
 

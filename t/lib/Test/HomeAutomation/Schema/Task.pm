@@ -200,4 +200,45 @@ sub test_active_tasks {
     return 1;
 }
 
+sub test_active_tasks_recurring {
+    my ($self) = @_;
+
+    my $dt = DateTime->now(time_zone => 'Europe/London');
+    my $time = sprintf('%02d:%02d', $dt->hour, $dt->minute);
+    my $dow = $dt->dow;
+    my $tomorrow = ($dow % 7) + 1;
+
+    $self->{resultset}->populate(
+        [
+            {
+                appliance  => $self->{appliances}[0],
+                action     => q{on},
+                time       => $time,
+                recurrence => {
+                    id         => 1,
+                    expires    => $dt->add( days => 1 ),
+                    tasks_days => [ { day_id => $dow }, ],
+                },
+            },
+            {
+                appliance  => $self->{appliances}[0],
+                action     => q{off},
+                time       => $time,
+                recurrence => {
+                    id         => 2,
+                    expires    => $dt->add( days => 1 ),
+                    tasks_days => [ { day_id => $tomorrow }, ],
+                },
+            },
+        ]
+    );
+
+    my @tasks = $self->{resultset}->active_tasks();
+    is scalar @tasks, 1, q{we have just one pending task};
+    is $tasks[0]->action, q{on}, q{get back the right action};
+    is $tasks[0]->appliance->device, $self->{appliances}[0]->device, q{get back the right device};
+
+    return 1;
+}
+
 1;
