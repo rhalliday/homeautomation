@@ -16,7 +16,7 @@
 #     BUILD_REQUIRES => { Test::More=>q[0.88], ExtUtils::MakeMaker=>q[6.59] }
 #     CONFIGURE_REQUIRES => {  }
 #     DISTNAME => q[HomeAutomation]
-#     EXE_FILES => [q[script/create_admin_user.pl], q[script/homeautomation_cgi.pl], q[script/homeautomation_create.pl], q[script/homeautomation_fastcgi.pl], q[script/homeautomation_server.pl], q[script/homeautomation_test.pl]]
+#     EXE_FILES => [q[script/create_admin_user.pl], q[script/homeautomation_cgi.pl], q[script/homeautomation_create.pl], q[script/homeautomation_fastcgi.pl], q[script/homeautomation_server.pl], q[script/homeautomation_test.pl], q[script/run_scheduled_tasks.pl]]
 #     LICENSE => q[perl]
 #     MIN_PERL_VERSION => q[5.014]
 #     NAME => q[HomeAutomation]
@@ -26,7 +26,7 @@
 #     VERSION_FROM => q[lib/HomeAutomation.pm]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
 #     realclean => { FILES=>q[MYMETA.yml] }
-#     test => { TESTS=>q[t/01app.t t/02pod.t t/03podcoverage.t t/frontend.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t] }
+#     test => { TESTS=>q[t/02pod.t t/03podcoverage.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -180,7 +180,12 @@ MAN3PODS = lib/HomeAutomation.pm \
 	lib/HomeAutomation/Controller/Root.pm \
 	lib/HomeAutomation/Controller/Schedules.pm \
 	lib/HomeAutomation/Controller/UserManagement.pm \
+	lib/HomeAutomation/Form/Appliance.pm \
+	lib/HomeAutomation/Form/ChangePassword.pm \
+	lib/HomeAutomation/Form/Schedule.pm \
+	lib/HomeAutomation/Form/User.pm \
 	lib/HomeAutomation/Model/DB.pm \
+	lib/HomeAutomation/Schema.pm \
 	lib/HomeAutomation/Schema/Result/Appliance.pm \
 	lib/HomeAutomation/Schema/Result/Day.pm \
 	lib/HomeAutomation/Schema/Result/Recurrence.pm \
@@ -525,12 +530,15 @@ manifypods : pure_all  \
 	script/homeautomation_test.pl \
 	script/homeautomation_fastcgi.pl \
 	lib/HomeAutomation/Controller/Root.pm \
+	lib/HomeAutomation/Schema.pm \
 	lib/HomeAutomation/Schema/Result/User.pm \
+	lib/HomeAutomation/Form/Appliance.pm \
 	lib/HomeAutomation/Controller/Logout.pm \
 	lib/HomeAutomation/Controller/Appliances.pm \
 	lib/HomeAutomation/Schema/Result/TasksDay.pm \
 	lib/HomeAutomation/Schema/Result/Role.pm \
 	lib/HomeAutomation/Schema/Result/Room.pm \
+	lib/HomeAutomation/Form/ChangePassword.pm \
 	lib/HomeAutomation/View/JSON.pm \
 	lib/HomeAutomation/Schema/Result/Recurrence.pm \
 	lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
@@ -540,10 +548,12 @@ manifypods : pure_all  \
 	lib/HomeAutomation/Controller/Login.pm \
 	lib/HomeAutomation/View/HTML.pm \
 	lib/HomeAutomation/Controller/Schedules.pm \
+	lib/HomeAutomation/Form/User.pm \
 	lib/HomeAutomation.pm \
 	lib/HomeAutomation/Controller/UserManagement.pm \
 	lib/HomeAutomation/Schema/Result/UserRole.pm \
 	lib/HomeAutomation/Schema/Result/Appliance.pm \
+	lib/HomeAutomation/Form/Schedule.pm \
 	lib/HomeAutomation/Schema/Result/Day.pm \
 	lib/HomeAutomation/Schema/ResultSet/Task.pm
 	$(NOECHO) $(POD2MAN) --section=1 --perm_rw=$(PERM_RW) \
@@ -554,12 +564,15 @@ manifypods : pure_all  \
 	  script/homeautomation_fastcgi.pl $(INST_MAN1DIR)/homeautomation_fastcgi.pl.$(MAN1EXT) 
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
 	  lib/HomeAutomation/Controller/Root.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Root.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema.pm $(INST_MAN3DIR)/HomeAutomation::Schema.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/User.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::User.$(MAN3EXT) \
+	  lib/HomeAutomation/Form/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Form::Appliance.$(MAN3EXT) \
 	  lib/HomeAutomation/Controller/Logout.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Logout.$(MAN3EXT) \
 	  lib/HomeAutomation/Controller/Appliances.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Appliances.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/TasksDay.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::TasksDay.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/Role.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Role.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/Room.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Room.$(MAN3EXT) \
+	  lib/HomeAutomation/Form/ChangePassword.pm $(INST_MAN3DIR)/HomeAutomation::Form::ChangePassword.$(MAN3EXT) \
 	  lib/HomeAutomation/View/JSON.pm $(INST_MAN3DIR)/HomeAutomation::View::JSON.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/Recurrence.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Recurrence.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/ResultSet/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Schema::ResultSet::Appliance.$(MAN3EXT) \
@@ -569,10 +582,12 @@ manifypods : pure_all  \
 	  lib/HomeAutomation/Controller/Login.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Login.$(MAN3EXT) \
 	  lib/HomeAutomation/View/HTML.pm $(INST_MAN3DIR)/HomeAutomation::View::HTML.$(MAN3EXT) \
 	  lib/HomeAutomation/Controller/Schedules.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Schedules.$(MAN3EXT) \
+	  lib/HomeAutomation/Form/User.pm $(INST_MAN3DIR)/HomeAutomation::Form::User.$(MAN3EXT) \
 	  lib/HomeAutomation.pm $(INST_MAN3DIR)/HomeAutomation.$(MAN3EXT) \
 	  lib/HomeAutomation/Controller/UserManagement.pm $(INST_MAN3DIR)/HomeAutomation::Controller::UserManagement.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/UserRole.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::UserRole.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Appliance.$(MAN3EXT) \
+	  lib/HomeAutomation/Form/Schedule.pm $(INST_MAN3DIR)/HomeAutomation::Form::Schedule.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/Day.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Day.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/ResultSet/Task.pm $(INST_MAN3DIR)/HomeAutomation::Schema::ResultSet::Task.$(MAN3EXT) 
 
@@ -584,22 +599,29 @@ manifypods : pure_all  \
 
 # --- MakeMaker installbin section:
 
-EXE_FILES = script/create_admin_user.pl script/homeautomation_cgi.pl script/homeautomation_create.pl script/homeautomation_fastcgi.pl script/homeautomation_server.pl script/homeautomation_test.pl
+EXE_FILES = script/create_admin_user.pl script/homeautomation_cgi.pl script/homeautomation_create.pl script/homeautomation_fastcgi.pl script/homeautomation_server.pl script/homeautomation_test.pl script/run_scheduled_tasks.pl
 
-pure_all :: $(INST_SCRIPT)/homeautomation_cgi.pl $(INST_SCRIPT)/homeautomation_server.pl $(INST_SCRIPT)/homeautomation_create.pl $(INST_SCRIPT)/create_admin_user.pl $(INST_SCRIPT)/homeautomation_test.pl $(INST_SCRIPT)/homeautomation_fastcgi.pl
+pure_all :: $(INST_SCRIPT)/homeautomation_cgi.pl $(INST_SCRIPT)/run_scheduled_tasks.pl $(INST_SCRIPT)/homeautomation_server.pl $(INST_SCRIPT)/homeautomation_create.pl $(INST_SCRIPT)/create_admin_user.pl $(INST_SCRIPT)/homeautomation_test.pl $(INST_SCRIPT)/homeautomation_fastcgi.pl
 	$(NOECHO) $(NOOP)
 
 realclean ::
 	$(RM_F) \
-	  $(INST_SCRIPT)/homeautomation_cgi.pl $(INST_SCRIPT)/homeautomation_server.pl \
-	  $(INST_SCRIPT)/homeautomation_create.pl $(INST_SCRIPT)/create_admin_user.pl \
-	  $(INST_SCRIPT)/homeautomation_test.pl $(INST_SCRIPT)/homeautomation_fastcgi.pl 
+	  $(INST_SCRIPT)/homeautomation_cgi.pl $(INST_SCRIPT)/run_scheduled_tasks.pl \
+	  $(INST_SCRIPT)/homeautomation_server.pl $(INST_SCRIPT)/homeautomation_create.pl \
+	  $(INST_SCRIPT)/create_admin_user.pl $(INST_SCRIPT)/homeautomation_test.pl \
+	  $(INST_SCRIPT)/homeautomation_fastcgi.pl 
 
 $(INST_SCRIPT)/homeautomation_cgi.pl : script/homeautomation_cgi.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_cgi.pl
 	$(CP) script/homeautomation_cgi.pl $(INST_SCRIPT)/homeautomation_cgi.pl
 	$(FIXIN) $(INST_SCRIPT)/homeautomation_cgi.pl
 	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_cgi.pl
+
+$(INST_SCRIPT)/run_scheduled_tasks.pl : script/run_scheduled_tasks.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/run_scheduled_tasks.pl
+	$(CP) script/run_scheduled_tasks.pl $(INST_SCRIPT)/run_scheduled_tasks.pl
+	$(FIXIN) $(INST_SCRIPT)/run_scheduled_tasks.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/run_scheduled_tasks.pl
 
 $(INST_SCRIPT)/homeautomation_server.pl : script/homeautomation_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_server.pl
@@ -954,7 +976,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/01app.t t/02pod.t t/03podcoverage.t t/frontend.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t
+TEST_FILES = t/02pod.t t/03podcoverage.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
