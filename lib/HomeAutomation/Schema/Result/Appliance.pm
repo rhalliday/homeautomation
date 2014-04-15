@@ -149,7 +149,40 @@ __PACKAGE__->has_many(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-=head2 clear
+=head1 Non-database columns
+
+=over
+
+=item hardware
+
+An object used to interface with the actual hardware
+
+=cut
+
+has q{hardware} => (
+    is       => 'ro',
+    isa      => 'Mochad',
+    required => 1,
+    lazy     => 1,
+    builder  => '_build_hardware',
+);
+
+sub _build_hardware {
+    my ($self) = @_;
+
+    return Mochad->new(
+        {
+            address => $self->address,
+            via => $self->protocol
+        }
+    );
+}
+
+=head1 Methods
+
+=over
+
+=item clear
 
 Acts as a delete but clears all the fields barring the primary key so it can be used again.
 
@@ -165,7 +198,7 @@ sub clear {
     return 1;
 }
 
-=head2 delete_allowed_by
+=item delete_allowed_by
 
 Can the specified user delete the current book?
 
@@ -178,7 +211,28 @@ sub delete_allowed_by {
     return $user->has_role('admin');
 }
 
-=head2 switch
+=item control
+
+Takes an action to perform, sends that action to hardware and updates the record
+
+=cut
+
+sub control {
+    my ($self, $action) = @_;
+    # send the action to the hardware
+    $self->hardware->$action;
+    # update self
+    if($action eq q{off}) {
+        $self->status(0);
+    } else {
+        $self->status(1);
+    }
+    $self->update();
+
+    return 1;
+}
+
+=item switch
 
 Changes the status of the appliance
 
@@ -189,12 +243,21 @@ sub switch {
 
     # switch the status
     $self->status(!$self->status);
-
-    # in the future we will need to send the message to the device
-
     $self->update();
+
+    # send the message to the hardware
+    if($self->status) {
+        $self->hardware->on();
+    } else {
+        $self->hardware->off();
+    }
+
     return 1;
 }
+
+=back
+
+=cut
 
 __PACKAGE__->meta->make_immutable;
 1;

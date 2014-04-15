@@ -86,6 +86,9 @@ Defaults to an IO::Socket::INET on localhost port 1099.
 
 =cut
 
+# we only want one connection
+my $singleton_connection;
+
 has q{connection} => (
     is      => q{ro},
     isa     => q{IO::Socket},
@@ -93,11 +96,30 @@ has q{connection} => (
 );
 
 sub _connection_builder {    ## no critic qw(Subroutines::ProhibitUnusedPrivateSubroutines)
-    return IO::Socket::INET->new(
+    # only make a new connection if we don't already have one
+    $singleton_connection = IO::Socket::INET->new(
         LocalAddr => q{localhost},
         LocalPort => 9000,
         Proto     => q{tcp}
-    );
+    ) unless $singleton_connection;
+
+    return $singleton_connection;
+}
+
+sub BUILD {
+    my ($self, $args) = @_;
+
+    # if we were passed connection as the constructor, then make sure we are using the singleton
+    if( $args->{connection} ){
+        # if $singleton_connection is set then we need to set connection to the singleton
+        if($singleton_connection) {
+            $self->{connection} = $singleton_connection;
+        # else we need to set the singleton to this connection
+        } else {
+            $singleton_connection = $self->connection;
+        }
+    }
+    return 1;
 }
 
 =back

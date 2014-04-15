@@ -46,6 +46,12 @@ sub test_get_new_appliance {
             status   => 1,
         }
     );
+    isa_ok($first_appliance->hardware, q{Mochad}, q{hardware is a Mochad object});
+    ok $first_appliance->hardware->on(), q{can turn the appliance on};
+    is ${$self->{message}}, q{pl F1 on}."\n", q{appliance on sends the correct message};
+    ok $first_appliance->control(q{off}), q{can call the control method};
+    is $first_appliance->status, 0, q{first appliance status is now off};
+    is ${$self->{message}}, q{pl F1 off}."\n", q{control off sends the correct message};
 
     my $second_appliance = $self->{resultset}->next_appliance;
     is($second_appliance->address, q{F2}, q{next_appliance returns F2 when F1 is filled});
@@ -55,15 +61,17 @@ sub test_get_new_appliance {
             device => 'Curtain',
             room_id => 2,
             protocol => 'pl',
-            status => 0,
+            status => 1,
         }
     );
 
-    $first_appliance->switch;
-    ok(!$first_appliance->status, q{just turned the lights out});
+    $second_appliance->switch;
+    ok(!$second_appliance->status, q{just turned the lights out});
+    is ${$self->{message}}, q{pl F2 off}."\n", q{switch off sends the correct message};
     
-    $first_appliance->switch;
-    ok($first_appliance->status, q{now they're on again});
+    $second_appliance->switch;
+    ok($second_appliance->status, q{now they're on again});
+    is ${$self->{message}}, q{pl F2 on}."\n", q{switch on sends the correct message};
 
     my $all_appliances = $self->{resultset}->all_appliances;
 
