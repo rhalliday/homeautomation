@@ -206,9 +206,8 @@ sub change_form {
     # Set the template
     $c->stash(template => 'usermanagement/change_form.tt2', form => $form);
 
-
     return unless $form->process(posted => ($c->req->method eq 'POST'), params => $c->req->params, no_update => 1);
-    unless ($c->authenticate({ username => $c->user->username, password => $c->req->param('current_password')})) {
+    unless ($c->authenticate({ username => $c->user->username, password => $c->req->param('current_password') })) {
         $form->field('current_password')->add_error('incorrect password');
         return;
     }

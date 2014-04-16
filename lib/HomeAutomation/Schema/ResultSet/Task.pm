@@ -6,6 +6,8 @@ use base 'DBIx::Class::ResultSet';
 
 use DateTime;
 
+our $VERSION = '0.01';
+
 =head2 Methods
 
 =over
@@ -48,16 +50,16 @@ sub active_tasks {
     return $self->search(
         {
             time => $time,
-            -or => [
-                day                  => $dt->ymd,
+            -or  => [
+                day  => $dt->ymd,
                 -and => [
                     'recurrence.expires' => { '>=' => $dt->ymd },
-                    'tasks_days.day_id' => $dt->dow, 
+                    'tasks_days.day_id'  => $dt->dow,
                 ],
             ],
         },
         { join => { recurrence => 'tasks_days' } }
-    );      
+    );
 }
 
 =back

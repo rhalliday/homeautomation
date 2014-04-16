@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use base 'DBIx::Class::ResultSet';
 
+our $VERSION = '0.01';
+
 =head2 all_appliances
 
 Returns a list of all the appliances ordered by room.
@@ -13,7 +15,7 @@ Returns a list of all the appliances ordered by room.
 sub all_appliances {
     my ($self) = @_;
 
-    return $self->search({ device => { '!=' => undef, }, }, { order_by => 'room_id' });
+    return $self->search({ device => { q{!=} => undef, }, }, { order_by => q{room_id} });
 }
 
 =head2 appliances_in_room
@@ -25,7 +27,7 @@ Returns a list of all the appliances in the specified room.
 sub appliances_in_room {
     my ($self, $room) = @_;
 
-    return $self->search( { 'room.name' => $room}, { join => 'room' });
+    return $self->search({ q{room.name} => $room }, { join => q{room} });
 }
 
 =head2 next_appliance

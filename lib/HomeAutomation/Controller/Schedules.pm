@@ -105,7 +105,7 @@ sub event_data : Chained('base') : PathPart('event_data') : Args(0) {
     my $rs = $c->stash->{resultset}->scheduled_tasks($start, $end);
     print join(q{ }, q{found:}, $rs->count, q{records}), "\n";
     while (my $rec = $rs->next()) {
-        my $url = $c->uri_for($c->controller->action_for('view'), [$rec->id])->as_string;
+        my $url = $c->uri_for($c->controller->action_for('view'), [ $rec->id ])->as_string;
         push @data, @{ $rec->full_calendar($url, $start, $end) };
     }
 

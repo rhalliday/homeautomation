@@ -36,7 +36,7 @@ has_field 'time' => (
 sub validate_time {
     my ($self, $field) = @_;
 
-    if ($field->value =~ /^(?<hour>\d{2}):(?<min>\d{2})$/) {
+    if ($field->value =~ /^(?<hour>\d{2}):(?<min>\d{2})$/x) {
         if ($+{hour} > $MAX_HOURS) {
             $field->add_error('Must be within 24 hours');
             return 0;
@@ -92,7 +92,7 @@ __END__
 
 =head1 NAME
 
-HomeAutomation::Form::Shedule - Form for setting up scheduled tasks
+HomeAutomation::Form::Schedule - Form for setting up scheduled tasks
 
 =head2 Description
 
