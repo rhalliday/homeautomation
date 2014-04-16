@@ -8,7 +8,6 @@ use IO::Socket::INET;
 
 use Mochad;
 
-
 subtest q{initialise everthing} => sub {
     plan tests => 5;
     my $mochad;
@@ -30,3 +29,5 @@ subtest q{initialise everthing} => sub {
     ok $mochad->can_dim, q{can set can_dim};
     isa_ok $mochad->connection, q{IO::Socket::INET}, q{can set the connection to an IO::Socket::INET};
 };
+
+1;

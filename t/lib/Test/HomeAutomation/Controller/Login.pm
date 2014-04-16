@@ -1,6 +1,11 @@
 package Test::HomeAutomation::Controller::Login;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Controller';
+
+our $VERSION = '1.00';
 
 sub test_empty_creds {
     my ($self) = @_;
@@ -89,6 +94,7 @@ sub test_good_login {
 
     my $ua = $self->{ua};
     $ua->get(q{/login});
+
     # login properly
     $ua->submit_form(
         fields => {
@@ -96,6 +102,7 @@ sub test_good_login {
             password => q{mypass},
         }
     );
+
     # navigate back to the login page and submit an empty form, we should still be redirected
     $ua->get_ok(q{/login}, q{get the login page});
     $ua->submit_form(
@@ -104,7 +111,8 @@ sub test_good_login {
             password => q{},
         }
     );
-    $ua->content_lacks(q{Empty username or password.}, q{empty username and password gets no error, as we're already logged in});
+    $ua->content_lacks(q{Empty username or password.},
+        q{empty username and password gets no error, as we're already logged in});
 
     return 1;
 }

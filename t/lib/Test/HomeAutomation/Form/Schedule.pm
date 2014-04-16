@@ -1,7 +1,12 @@
 package Test::HomeAutomation::Form::Schedule;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Form';
 use HomeAutomation::Form::Schedule;
+
+our $VERSION = '1.00';
 
 sub test_startup {
     my ($self) = @_;
@@ -48,9 +53,9 @@ sub test_successful_change {
     my ($self) = @_;
 
     my $params = {
-        action     => 'on',
-        time       => '16:00',
-        day        => '25/09/2125',
+        action => 'on',
+        time   => '16:00',
+        day    => '25/09/2125',
     };
 
     ok $self->{form}->process(params => $params), q{form processes with correct data};

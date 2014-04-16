@@ -1,10 +1,15 @@
 package Test::HomeAutomation::Schema::User;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Schema';
 
 use Readonly;
 
 Readonly my @ROLES => (qw(admin schedule user usermanagement));
+
+our $VERSION = '1.00';
 
 sub test_startup {
     my ($self) = @_;
@@ -54,15 +59,14 @@ sub test_all_roles {
     # create a user with the user role
     my $user = $self->{resultset}->create(
         {
-            username => q{test},
-            password => q{mypass},
+            username      => q{test},
+            password      => q{mypass},
             email_address => q{test@example.com},
-            first_name => q{test},
-            last_name => q{user},
-            active => 1,
+            first_name    => q{test},
+            last_name     => q{user},
+            active        => 1,
         }
     );
-
 
     my @roles = $self->{schema}->resultset('Role')->all;
     $user->set_roles(\@roles);
@@ -74,7 +78,7 @@ sub test_all_roles {
     is $user->role_list, join(q{, }, @ROLES), q{correct role list is returned};
 
     ok $user->deactivate_allowed_by($user), q{usermanagement can deactivate a user};
-    ok $user->delete_allowed_by($user), q{admin can delete a user};
+    ok $user->delete_allowed_by($user),     q{admin can delete a user};
 
     $user->delete;
     return 1;
@@ -85,16 +89,16 @@ sub _role_test {
 
     my $user = $self->{resultset}->create(
         {
-            username => $role,
-            password => q{mypass},
-            email_address => $role . q{@example.com},
-            first_name => $role,
-            last_name => q{user},
-            active => 1,
+            username      => $role,
+            password      => q{mypass},
+            email_address => qq{$role\@example.com},
+            first_name    => $role,
+            last_name     => q{user},
+            active        => 1,
         }
     );
 
-    my $role_rs = $self->{schema}->resultset('Role')->find({role => $role});
+    my $role_rs = $self->{schema}->resultset('Role')->find({ role => $role });
     $user->add_to_roles($role_rs);
 
     # run the same test on each role
@@ -109,13 +113,13 @@ sub _role_test {
     is $user->full_name, $role . q{ user}, q{correct full name is returned};
     is $user->role_list, $role, q{correct role list is returned};
 
-    if ( $role eq q{usermanagement} ) {
+    if ($role eq q{usermanagement}) {
         ok $user->deactivate_allowed_by($user), q{only usermanagement can deactivate a user};
     } else {
         ok !$user->deactivate_allowed_by($user), q{only usermanagement can deactivate a user};
     }
 
-    if ( $role eq q{admin} ) {
+    if ($role eq q{admin}) {
         ok $user->delete_allowed_by($user), q{only admin can delete a user};
     } else {
         ok !$user->delete_allowed_by($user), q{only admin can delete a user};

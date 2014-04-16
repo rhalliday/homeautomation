@@ -1,7 +1,12 @@
 package Test::HomeAutomation::Form::User;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Form';
 use HomeAutomation::Form::User;
+
+our $VERSION = '1.00';
 
 sub test_startup {
     my ($self) = @_;

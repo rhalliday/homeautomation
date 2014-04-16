@@ -1,7 +1,12 @@
 package Test::HomeAutomation::Controller;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => q{Test::HomeAutomation};
 use Test::WWW::Mechanize::Catalyst q{HomeAutomation};
+
+our $VERSION = '1.00';
 
 sub test_startup {
     my ($self) = @_;
@@ -56,7 +61,7 @@ sub test_startup {
     my $second_appliance = $schema->resultset(q{Appliance})->next_appliance();
     $second_appliance->update({ device => 'Lights', room_id => 1, protocol => q{pl}, status => 1 });
 
-    $self->{appliances} = [$first_appliance, $second_appliance];
+    $self->{appliances} = [ $first_appliance, $second_appliance ];
 
     $self->{ua} = Test::WWW::Mechanize::Catalyst->new;
 
@@ -68,7 +73,7 @@ sub test_shutdown {
 
     $self->{schema}->resultset(q{User})->delete_all;
 
-    for my $appliance (@{$self->{appliances}}) {
+    for my $appliance (@{ $self->{appliances} }) {
         $appliance->clear;
     }
 

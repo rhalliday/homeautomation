@@ -1,6 +1,11 @@
 package Test::HomeAutomation::Form;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation';
+
+our $VERSION = '1.00';
 
 1;
 

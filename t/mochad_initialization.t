@@ -25,3 +25,4 @@ subtest q{basic initialisation} => sub {
     isa_ok $mochad->connection, q{IO::Socket}, q{defaults to an IO::Socket (or subclass)};
 };
 
+1;

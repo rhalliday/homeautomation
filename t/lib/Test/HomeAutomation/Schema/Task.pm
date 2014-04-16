@@ -1,8 +1,19 @@
 package Test::HomeAutomation::Schema::Task;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Schema';
 
 use DateTime;
+use Readonly;
+
+Readonly::Scalar my $TODAY_EPOCH  => 1_396_041_043;
+Readonly::Scalar my $START_EPOCH  => 1_395_436_243;
+Readonly::Scalar my $END_EPOCH    => 1_396_645_843;
+Readonly::Scalar my $DAYS_IN_WEEK => 7;
+
+our $VERSION = '1.00';
 
 sub test_startup {
     my ($self) = @_;
@@ -18,9 +29,9 @@ sub test_startup {
     ];
 
     # set up a load of useful? DateTime objects
-    $self->{today} = DateTime->from_epoch(epoch => 1396041043, time_zone => 'Europe/London');    # is a friday
-    $self->{last_week} = 1395436243;
-    $self->{next_week} = 1396645843;
+    $self->{today}     = DateTime->from_epoch(epoch => $TODAY_EPOCH, time_zone => 'Europe/London');    # is a friday
+    $self->{last_week} = $START_EPOCH;
+    $self->{next_week} = $END_EPOCH;
 
     return 1;
 }
@@ -91,15 +102,14 @@ sub test_recurring_task {
     is $task->recurrence_expiry->ymd, q{2014-03-28}, q{recurrence_expiry returns the correct date};
     my $start = $self->{last_week};
     my $end   = $self->{next_week};
-    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1,
-      q{scheduled task returns a recurring task};
+    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1, q{scheduled task returns a recurring task};
 
     my $url = q{http://example.com/task/view};
     eq_or_diff $task->full_calendar($url, $start, $end),
-      [ 
-          { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+      [
+        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
       ],
       q{full_calendar check};
 
@@ -124,16 +134,16 @@ sub test_recurring_task_in_the_future {
 
     my $start = $self->{last_week};
     my $end   = $self->{next_week};
-    my $url = q{http://example.com/task/view};
+    my $url   = q{http://example.com/task/view};
     eq_or_diff $task->full_calendar($url, $start, $end),
-      [ 
-          { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-          { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+      [
+        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
       ],
       q{full_calendar check};
 
@@ -176,7 +186,7 @@ sub test_delete_allowed_by {
 
 sub test_active_tasks {
     my ($self) = @_;
-    
+
     my @tasks = $self->{resultset}->active_tasks();
     is scalar @tasks, 0, q{no pending tasks};
 
@@ -204,9 +214,9 @@ sub test_active_tasks_recurring {
     my ($self) = @_;
 
     my $dt = DateTime->now(time_zone => 'Europe/London');
-    my $time = sprintf('%02d:%02d', $dt->hour, $dt->minute);
-    my $dow = $dt->dow;
-    my $tomorrow = ($dow % 7) + 1;
+    my $time     = sprintf('%02d:%02d', $dt->hour, $dt->minute);
+    my $dow      = $dt->dow;
+    my $tomorrow = ($dow % $DAYS_IN_WEEK) + 1;
 
     $self->{resultset}->populate(
         [
@@ -216,7 +226,7 @@ sub test_active_tasks_recurring {
                 time       => $time,
                 recurrence => {
                     id         => 1,
-                    expires    => $dt->add( days => 1 ),
+                    expires    => $dt->add(days => 1),
                     tasks_days => [ { day_id => $dow }, ],
                 },
             },
@@ -226,7 +236,7 @@ sub test_active_tasks_recurring {
                 time       => $time,
                 recurrence => {
                     id         => 2,
-                    expires    => $dt->add( days => 1 ),
+                    expires    => $dt->add(days => 1),
                     tasks_days => [ { day_id => $tomorrow }, ],
                 },
             },

@@ -1,12 +1,18 @@
 package Test::HomeAutomation;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose;
 use HomeAutomation::Schema;
 use Test::MockObject::Extends;
 use IO::Socket;
 use Mochad;
 
+our $VERSION = '1.00';
+
 my $message = q{};
+
 # set up an IO::Socket object to intercept the messages
 my $io_socket = IO::Socket->new();
 $io_socket = Test::MockObject::Extends->new($io_socket);
@@ -21,8 +27,8 @@ sub test_startup {
     my ($self) = @_;
     my $connect_info = {
         dsn           => $ENV{HA_DSN},
-        user          => '',
-        password      => '',
+        user          => q{},
+        password      => q{},
         on_connect_do => q{PRAGMA foreign_keys = ON},
     };
     $self->{schema} = HomeAutomation::Schema->connect($connect_info);

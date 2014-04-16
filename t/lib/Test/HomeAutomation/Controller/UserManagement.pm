@@ -1,6 +1,11 @@
 package Test::HomeAutomation::Controller::UserManagement;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Controller';
+
+our $VERSION = '1.00';
 
 sub test_basic_user {
     my ($self) = @_;
@@ -26,7 +31,7 @@ sub test_privileged_user {
     $ua->content_contains(q{test03}, q{we should be able to see another user});
     $ua->content_lacks(q{test01}, q{we should not be able to see admin users});
     $ua->content_lacks(q{Delete}, q{we aren't allowed to delete anybody});
-    $ua->content_lacks(q{Edit}, q{we aren't allowed to edit anybody});
+    $ua->content_lacks(q{Edit},   q{we aren't allowed to edit anybody});
     my @switch_links = $ua->find_all_links(text => 'Active');
     $ua->get_ok($switch_links[0]->url, q{can deactivate a user});
     $ua->content_contains(q{Inactive}, q{user is now inactive});
@@ -52,13 +57,14 @@ sub test_admin_user {
     $ua->content_contains(q{test03}, q{we should be able to see another user});
     $ua->content_contains(q{test01}, q{we should be able to see admin users});
     $ua->content_contains(q{Delete}, q{we are allowed to delete anybody});
-    $ua->content_contains(q{Edit}, q{we are allowed to edit anybody});
+    $ua->content_contains(q{Edit},   q{we are allowed to edit anybody});
     my @switch_links = $ua->find_all_links(text => 'Active');
     $ua->get_ok($switch_links[0]->url, q{can deactivate a user});
     $ua->content_contains(q{Inactive}, q{user is now inactive});
     @switch_links = $ua->find_all_links(text => 'Inactive');
     $ua->get_ok($switch_links[0]->url, q{can reactivate a user});
     $ua->content_lacks(q{Inactive}, q{all users are now active});
+
     # user doesn't exist
     $ua->get(q{/usermanagement/id/22/edit});
     $ua->content_contains(q{Page not found}, q{trying to edit a user that doesn't exist});
@@ -74,7 +80,7 @@ sub test_admin_user {
                 last_name     => q{e},
                 email_address => q{bob.e@example.com},
                 active        => 1,
-                
+
             }
         },
         q{can submit the create user form}
@@ -93,14 +99,14 @@ sub test_admin_user {
                 last_name     => q{e},
                 email_address => q{bob.e@example.com},
                 active        => 1,
-                
+
             }
         },
         q{can submit the create user form}
     );
     $ua->title_is(q{User List}, q{back on user list form - after edit});
     $ua->content_contains(q{bobert}, q{did edit test04 user});
-    
+
     $ua->get_ok(q{/usermanagement/id/4/delete}, q{can delete the new user});
     $ua->content_lacks(q{test04}, q{test04 has now gone});
 

@@ -1,7 +1,12 @@
 package Test::HomeAutomation::Form::ChangePassword;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Form';
 use HomeAutomation::Form::ChangePassword;
+
+our $VERSION = '1.00';
 
 sub test_startup {
     my ($self) = @_;

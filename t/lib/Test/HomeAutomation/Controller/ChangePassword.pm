@@ -1,6 +1,11 @@
 package Test::HomeAutomation::Controller::ChangePassword;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Controller';
+
+our $VERSION = '1.00';
 
 sub test_basic_user {
     my ($self) = @_;

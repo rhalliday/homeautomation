@@ -1,7 +1,12 @@
 package Test::HomeAutomation::Controller::Schedules;
 
+use strict;
+use warnings;
+
 use Test::Class::Moose extends => 'Test::HomeAutomation::Controller';
 use DateTime;
+
+our $VERSION = '1.00';
 
 sub test_basic_user {
     my ($self) = @_;
@@ -46,9 +51,9 @@ sub test_admin_user {
     $ua->submit_form_ok(
         {
             fields => {
-                action    => 'on',
-                time      => '16:00',
-                day       => $today->dmy('/'),
+                action => 'on',
+                time   => '16:00',
+                day    => $today->dmy(q{/}),
             }
         },
         q{can submit the schedule create form}
@@ -69,7 +74,7 @@ sub test_admin_user {
     $event_url = q{/schedules/event_data?end=} . $last_week->epoch;
     $ua->get($event_url);
     $ua->content_contains(q{Page not found}, q{missing start param results in an error});
-    
+
     $ua->get_ok(q{/schedules/id/1/delete}, q{can delete a schedule});
     $ua->title_is(q{Schedule List}, q{deleting a schedule});
     $ua->get(q{/schedules/id/22322/edit});
@@ -84,10 +89,10 @@ __END__
 
 =head1 NAME
 
-Test::HomeAutomation::Controller::Appliances
+Test::HomeAutomation::Controller::Schedules
 
 =head2 DESCRIPTION
 
-Test class for all the appliance tests.
+Test class for all the schedule tests.
 
 =cut
