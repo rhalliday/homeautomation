@@ -5,6 +5,7 @@ use warnings;
 
 use Test::More tests => 3;
 use Test::Exception;
+use IO::Socket::INET;
 
 use Mochad;
 
@@ -13,6 +14,14 @@ throws_ok { Mochad->new() } qr/Attribute \(address\) is required/, 'address is a
 
 subtest q{basic initialisation} => sub {
     plan tests => 5;
+    my $server = IO::Socket::INET->new(
+        LocalHost => q{localhost},
+        LocalPort => q{1099},
+        Proto     => q{tcp},
+        Listen    => 1,
+        Reuse     => 1,
+    ) or diag(q{something is already connected to 1099});
+
     my $mochad;
     ok $mochad = Mochad->new({ address => q{A1} }), q{can initialise with just an address};
 

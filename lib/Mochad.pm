@@ -4,6 +4,7 @@ use 5.014002;
 use Moose;
 use namespace::autoclean;
 use IO::Socket::INET;
+use Carp;
 
 =head1 NAME
 
@@ -97,11 +98,13 @@ has q{connection} => (
 
 sub _connection_builder {    ## no critic qw(Subroutines::ProhibitUnusedPrivateSubroutines)
                              # only make a new connection if we don't already have one
-    $singleton_connection = IO::Socket::INET->new(
-        PeerAddr => q{localhost},
-        PeerPort => 1099,
-        Proto     => q{tcp}
-    ) unless $singleton_connection;
+     unless ($singleton_connection) {
+         $singleton_connection = IO::Socket::INET->new(
+            PeerAddr => q{localhost},
+            PeerPort => 1099,
+            Proto     => q{tcp}
+        ) or croak 'Connection failed! ',$@;
+    }
 
     return $singleton_connection;
 }
