@@ -98,8 +98,8 @@ has q{connection} => (
 sub _connection_builder {    ## no critic qw(Subroutines::ProhibitUnusedPrivateSubroutines)
                              # only make a new connection if we don't already have one
     $singleton_connection = IO::Socket::INET->new(
-        LocalAddr => q{localhost},
-        LocalPort => 9000,
+        PeerAddr => q{localhost},
+        PeerPort => 1099,
         Proto     => q{tcp}
     ) unless $singleton_connection;
 
