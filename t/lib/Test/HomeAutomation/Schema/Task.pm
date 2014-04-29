@@ -150,6 +150,43 @@ sub test_recurring_task_in_the_future {
     return 1;
 }
 
+sub test_recurring_task_no_expiry {
+    my ($self) = @_;
+
+    my $task = $self->{resultset}->create(
+        {
+            appliance  => $self->{appliances}[0],
+            action     => 'on',
+            time       => '12:00',
+            recurrence => {
+                expires    => undef,
+                tasks_days => [ { day_id => 1 }, { day_id => 3 }, { day_id => 5 }, ],
+            },
+        }
+    );
+
+    is $task->all_days, q{Monday, Wednesday, Friday}, q{all days returns a comma separated list of days};
+    ok !$task->recurrence_expiry, q{there is no expiry for this task};
+    my $start = $self->{last_week};
+    my $end   = $self->{next_week};
+    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1, q{scheduled task returns a recurring task};
+
+    my $url = q{http://example.com/task/view};
+    eq_or_diff $task->full_calendar($url, $start, $end),
+      [
+        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+      ],
+      q{full_calendar check};
+
+    return 1;
+}
+
 sub test_delete_allowed_by {
     my ($self) = @_;
 
@@ -227,6 +264,46 @@ sub test_active_tasks_recurring {
                 recurrence => {
                     id         => 1,
                     expires    => $dt->add(days => 1),
+                    tasks_days => [ { day_id => $dow }, ],
+                },
+            },
+            {
+                appliance  => $self->{appliances}[0],
+                action     => q{off},
+                time       => $time,
+                recurrence => {
+                    id         => 2,
+                    expires    => $dt->add(days => 1),
+                    tasks_days => [ { day_id => $tomorrow }, ],
+                },
+            },
+        ]
+    );
+
+    my @tasks = $self->{resultset}->active_tasks();
+    is scalar @tasks, 1, q{we have just one pending task};
+    is $tasks[0]->action, q{on}, q{get back the right action};
+    is $tasks[0]->appliance->device, $self->{appliances}[0]->device, q{get back the right device};
+
+    return 1;
+}
+
+sub test_active_tasks_recurring_no_expires {
+    my ($self) = @_;
+
+    my $dt = DateTime->now(time_zone => 'Europe/London');
+    my $time     = sprintf('%02d:%02d', $dt->hour, $dt->minute);
+    my $dow      = $dt->dow;
+    my $tomorrow = ($dow % $DAYS_IN_WEEK) + 1;
+
+    $self->{resultset}->populate(
+        [
+            {
+                appliance  => $self->{appliances}[0],
+                action     => q{on},
+                time       => $time,
+                recurrence => {
+                    id         => 1,
                     tasks_days => [ { day_id => $dow }, ],
                 },
             },

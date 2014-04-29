@@ -27,8 +27,8 @@ sub scheduled_tasks {
     return $self->search(
         {
             -or => [
-                day                  => { -between => [ $dt_start, $dt_end ] },
-                'recurrence.expires' => { '>='     => $dt_start },
+                day => { -between => [ $dt_start, $dt_end ] },
+                'recurrence.expires' => [ { '>=' => $dt_start }, { '=' => undef } ],
             ]
         },
         { join => 'recurrence' }

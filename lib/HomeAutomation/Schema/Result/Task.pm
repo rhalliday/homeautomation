@@ -250,7 +250,7 @@ sub full_calendar {
         my %days = map { $_->id => 1 } $self->recurrence->days->all;
 
         # go through the days adding them to the calendar data until it expires
-        while( $dt < $self->recurrence->expires && $dt < $dt_end ) {
+        while( (!$self->recurrence->expires || $dt < $self->recurrence->expires) && $dt < $dt_end ) {
             if(exists $days{$dt->dow}) {
                 my $time = $dt->ymd . q{T} . $self->time . q{:00Z};
                 push @data, {title => $title, start => $time, url => $url};

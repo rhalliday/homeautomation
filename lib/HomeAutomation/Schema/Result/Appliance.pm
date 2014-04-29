@@ -149,6 +149,8 @@ __PACKAGE__->has_many(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
+use Mochad;
+
 =head1 Non-database columns
 
 =over
