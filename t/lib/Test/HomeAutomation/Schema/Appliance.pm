@@ -112,4 +112,28 @@ sub test_fill_all_appliances {
     return 1;
 }
 
+sub test_appliance_with_timings {
+    my ($self) = @_;
+
+    my $appliance = $self->{resultset}->next_appliance;
+    is($appliance->address, q{F1}, q{next_appliance returns the appliance at address F1});
+
+    # give the appliance some details
+    $appliance->update(
+        {
+            device   => 'Curtain',
+            room_id  => 1,
+            protocol => 'pl',
+            status   => 0,
+            timings  => 1,
+        }
+    );
+    $appliance->switch;
+    ok($appliance->status, q{switch turns the curtain on});
+    is ${ $self->{message} }, q{pl F1 off} . "\n",
+      q{the last message sent should be an off one despite the status being on};
+
+    return 1;
+}
+
 1;

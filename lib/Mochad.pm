@@ -185,6 +185,22 @@ sub brighten {
     return $self->_send_message(q{bright});
 }
 
+=head2 timer
+
+$lamp->timer($time_in_seconds);
+
+Sends the on message, waits for $time_in_seconds, then sends the off message
+
+=cut
+
+sub timer {
+    my ($self, $time) = @_;
+
+    $self->on();
+    sleep($time);
+    return $self->off();
+}
+
 sub _send_message {
     my ($self, $type) = @_;
 

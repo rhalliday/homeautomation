@@ -6,7 +6,10 @@ CREATE TABLE appliances (
     room_id  INTEGER REFERENCES rooms(id) ON DELETE CASCADE ON UPDATE CASCADE,
     protocol CHAR(2),
     status   BOOLEAN,
-    setting  SMALLINT
+    setting  SMALLINT,
+    dimable  BOOLEAN,
+    timings  SMALLINT,
+    colour   CHAR(7)
 );
 
 -- insert the 16 records we can have for an address

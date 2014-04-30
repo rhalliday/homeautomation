@@ -76,6 +76,22 @@ __PACKAGE__->table("appliances");
   data_type: 'smallint'
   is_nullable: 1
 
+=head2 dimable
+
+  data_type: 'boolean'
+  is_nullable: 1
+
+=head2 timings
+
+  data_type: 'smallint'
+  is_nullable: 1
+
+=head2 colour
+
+  data_type: 'char'
+  is_nullable: 1
+  size: 7
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -91,6 +107,12 @@ __PACKAGE__->add_columns(
   { data_type => "boolean", is_nullable => 1 },
   "setting",
   { data_type => "smallint", is_nullable => 1 },
+  "dimable",
+  { data_type => "boolean", is_nullable => 1 },
+  "timings",
+  { data_type => "smallint", is_nullable => 1 },
+  "colour",
+  { data_type => "char", is_nullable => 1, size => 7 },
 );
 
 =head1 PRIMARY KEY
@@ -143,8 +165,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-17 20:45:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:00u+Ps4U0NwYuNgYweBEpw
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-04-30 21:42:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rGpJ1YXTvx6xKJvU4VhJSg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -193,7 +215,7 @@ Acts as a delete but clears all the fields barring the primary key so it can be 
 sub clear {
     my ($self) = @_;
 
-    for my $field (qw/ device protocol status setting /) {
+    for my $field (qw/ device protocol status setting timings dimable /) {
         $self->$field(undef);
     }
     $self->update();
@@ -241,18 +263,26 @@ Changes the status of the appliance
 =cut
 
 sub switch {
-    my ( $self ) = @_;
+    my ($self) = @_;
 
     # switch the status
     $self->status(!$self->status);
-    $self->update();
 
-    # send the message to the hardware
-    if($self->status) {
-        $self->hardware->on();
+    # if the device should only be on for a specified time
+    if ($self->timings) {
+        $self->hardware->timer($self->timings);
     } else {
-        $self->hardware->off();
+
+        # send the message to the hardware
+        if ($self->status) {
+            $self->hardware->on();
+        } else {
+            $self->hardware->off();
+        }
     }
+
+    # call update last so that we only update if nothing went wrong
+    $self->update();
 
     return 1;
 }
