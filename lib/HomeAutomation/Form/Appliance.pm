@@ -42,6 +42,23 @@ has_field 'protocol' => (
     wrapper_class => ['form-group'],
 );
 
+has_field 'timings' => (
+    type          => 'PosInteger',
+    element_class => ['form-control'],
+    element_attr  => { placeholder => 'Seconds' },
+    wrapper_class => ['form-group'],
+);
+
+has_field 'colour' => (
+    type          => 'Text',
+    maxlength     => 7,
+    minlength     => 7,
+    apply         => [ { check => qr/^#[A-F\d]{6}$/, message => q{Colour must be like '#000000'} } ],
+    wrapper_class => ['form-group'],
+    element_class => ['form-control'],
+    element_attr  => { placeholder => '#000000' },
+);
+
 has_field 'submit' => (
     type          => 'Submit',
     value         => 'Submit',
@@ -80,6 +97,12 @@ Whether the device is on or off
 =item protocol
 
 One of power line or radio frequency
+
+=item timings
+
+Number of seconds a timed device should be on for before turning off.
+
+Useful for things like curtains.
 
 =back
 

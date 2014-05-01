@@ -243,10 +243,18 @@ Takes an action to perform, sends that action to hardware and updates the record
 
 sub control {
     my ($self, $action) = @_;
-    # send the action to the hardware
-    $self->hardware->$action;
+
+    # if the device should only be on for a specified time
+    if ($self->timings) {
+        $self->hardware->timer($self->timings);
+    } else {
+
+        # send the action to the hardware
+        $self->hardware->$action;
+    }
+
     # update self
-    if($action eq q{off}) {
+    if ($action eq q{off}) {
         $self->status(0);
     } else {
         $self->status(1);
@@ -265,26 +273,11 @@ Changes the status of the appliance
 sub switch {
     my ($self) = @_;
 
-    # switch the status
-    $self->status(!$self->status);
+    # if we are on turn us off
+    return $self->control(q{off}) if $self->status;
 
-    # if the device should only be on for a specified time
-    if ($self->timings) {
-        $self->hardware->timer($self->timings);
-    } else {
-
-        # send the message to the hardware
-        if ($self->status) {
-            $self->hardware->on();
-        } else {
-            $self->hardware->off();
-        }
-    }
-
-    # call update last so that we only update if nothing went wrong
-    $self->update();
-
-    return 1;
+    # otherwise turn us on
+    return $self->control(q{on});
 }
 
 =back

@@ -41,16 +41,52 @@ sub test_teardown {
 sub test_successful_change {
     my ($self) = @_;
 
-    my $params = {
-        device   => 'Lights',
-        room     => 7,
-        status   => 1,
-        protocol => 'pl',
-    };
+    my $params = _good_params();
 
     ok $self->{form}->process(params => $params), q{form processes with correct data};
 
     return 1;
+}
+
+sub test_bad_timing {
+    my ($self) = @_;
+
+    my $params = _good_params();
+    $params->{timings} = q{hello};
+
+    ok !$self->{form}->process(params => $params), q{form doesn't process when timing is a string};
+    ok $self->{form}->field(q{timings})->has_errors, q{time has errors - not int};
+    eq_or_diff $self->{form}->field(q{timings})->errors,
+      [q{Value must be an integer}, q{Value must be a positive integer}],
+      q{correct error message for not int};
+
+    return 1;
+}
+
+sub test_bad_colour {
+    my ($self) = @_;
+
+    my $params = _good_params();
+    $params->{colour} = q{hello};
+
+    ok !$self->{form}->process(params => $params), q{form doesn't process when colour does not match format};
+    ok $self->{form}->field(q{colour})->has_errors, q{colour has errors - not right format};
+    eq_or_diff $self->{form}->field(q{colour})->errors,
+      [ q{Colour must be like '#000000'}, q{Field must be at least 7 characters. You entered 5} ],
+      q{correct error message for bad format};
+
+    return 1;
+}
+
+sub _good_params {
+    return {
+        device   => q{Lights},
+        room     => 7,
+        status   => 1,
+        timings  => 10,
+        colour   => q{#000000},
+        protocol => q{pl},
+    };
 }
 
 1;
