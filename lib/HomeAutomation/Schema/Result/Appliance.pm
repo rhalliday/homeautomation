@@ -202,6 +202,35 @@ sub _build_hardware {
     );
 }
 
+=item text_colour
+
+Returns a text colour suitable for the colour
+
+=cut
+
+has q{text_colour} => (
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    builder => '_build_text_colour',
+);
+
+sub _build_text_colour {
+    my ($self) = @_;
+
+    # default to white
+    return '#FFF' unless $self->colour;
+
+    my $rgb_hex = $self->colour;
+    $rgb_hex =~ s/^#//;
+    # convert the colour to rgb
+    my @rgb = map $_ / 255, unpack 'C*', pack 'H*', $rgb_hex;
+
+    return 0.213 * $rgb[0] + 0.715 * $rgb[1] + 0.072 * $rgb[2] < 0.5 ? '#FFF' : '#000';
+}
+
+=back
+
 =head1 Methods
 
 =over

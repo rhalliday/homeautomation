@@ -55,7 +55,7 @@ has_field 'colour' => (
     minlength     => 7,
     apply         => [ { check => qr/^#[A-F\d]{6}$/, message => q{Colour must be like '#000000'} } ],
     wrapper_class => ['form-group'],
-    element_class => ['form-control'],
+    element_class => ['form-control color {hash:true}'],
     element_attr  => { placeholder => '#000000' },
 );
 

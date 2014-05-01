@@ -240,7 +240,12 @@ sub full_calendar {
         my $time_string = $self->time;
         $time =~ s/00:00/$time_string/;
         $time .= q{Z};
-        push @data, {title => $title, start => $time, url => $url};
+        my $result_hash = {title => $title, start => $time, url => $url};
+        if( $self->appliance->colour ) {
+            $result_hash->{backgroundColor} = $self->appliance->colour;
+            $result_hash->{textColor} = $self->appliance->text_colour;
+        }
+        push @data, $result_hash;
     } else {
 
         # otherwise it's a recurring schedule so figure out the days
@@ -253,7 +258,12 @@ sub full_calendar {
         while( (!$self->recurrence->expires || $dt < $self->recurrence->expires) && $dt < $dt_end ) {
             if(exists $days{$dt->dow}) {
                 my $time = $dt->ymd . q{T} . $self->time . q{:00Z};
-                push @data, {title => $title, start => $time, url => $url};
+                my $result_hash = {title => $title, start => $time, url => $url};
+                if( $self->appliance->colour ) {
+                    $result_hash->{backgroundColor} = $self->appliance->colour;
+                    $result_hash->{textColor} = $self->appliance->text_colour;
+                }
+                push @data, $result_hash;
             }
             $dt = $dt->add( days => 1 );
         }

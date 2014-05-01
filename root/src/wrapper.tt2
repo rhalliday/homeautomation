@@ -28,6 +28,9 @@
                 });
             </script>
         [% END %]
+        [% IF template.colour_enabled %]
+            <script type="text/javascript" src="[% c.uri_for('/static/js/jscolor.js') %]"></script>
+        [% END %]
     </head>
 
     <body>

@@ -24,8 +24,8 @@ sub test_startup {
 
     # create a couple of appliances
     $self->{appliances} = [
-        $self->{schema}->resultset(q{Appliance})->next_appliance->update({ device => 'Lights',  room_id => 1 }),
-        $self->{schema}->resultset(q{Appliance})->next_appliance->update({ device => 'Curtain', room_id => 2 }),
+        $self->{schema}->resultset(q{Appliance})->next_appliance->update({ device => 'Lights',  room_id => 1, colour => '#FFFFFF' }),
+        $self->{schema}->resultset(q{Appliance})->next_appliance->update({ device => 'Curtain', room_id => 2, colour => '#000000' }),
     ];
 
     # set up a load of useful? DateTime objects
@@ -78,7 +78,7 @@ sub test_one_time_task {
 
     my $url = q{http://example.com/task/view};
     eq_or_diff $task->full_calendar($url, $start, $end),
-      [ { start => q{2014-03-28T16:00:00Z}, title => q{16:00: Lights on}, url => $url, } ], q{full_calendar check};
+      [ { start => q{2014-03-28T16:00:00Z}, title => q{16:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} } ], q{full_calendar check};
 
     return 1;
 }
@@ -107,9 +107,9 @@ sub test_recurring_task {
     my $url = q{http://example.com/task/view};
     eq_or_diff $task->full_calendar($url, $start, $end),
       [
-        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
       ],
       q{full_calendar check};
 
@@ -137,13 +137,13 @@ sub test_recurring_task_in_the_future {
     my $url   = q{http://example.com/task/view};
     eq_or_diff $task->full_calendar($url, $start, $end),
       [
-        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
+        { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Lights on}, url => $url, backgroundColor => q{#FFFFFF}, textColor => q{#000} },
       ],
       q{full_calendar check};
 
@@ -155,7 +155,7 @@ sub test_recurring_task_no_expiry {
 
     my $task = $self->{resultset}->create(
         {
-            appliance  => $self->{appliances}[0],
+            appliance  => $self->{appliances}[1],
             action     => 'on',
             time       => '12:00',
             recurrence => {
@@ -174,13 +174,13 @@ sub test_recurring_task_no_expiry {
     my $url = q{http://example.com/task/view};
     eq_or_diff $task->full_calendar($url, $start, $end),
       [
-        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
-        { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Lights on}, url => $url, },
+        { start => q{2014-03-21T12:00:00Z}, title => q{12:00: Curtain on}, url => $url, backgroundColor => q{#000000}, textColor => q{#FFF} },
+        { start => q{2014-03-24T12:00:00Z}, title => q{12:00: Curtain on}, url => $url, backgroundColor => q{#000000}, textColor => q{#FFF} },
+        { start => q{2014-03-26T12:00:00Z}, title => q{12:00: Curtain on}, url => $url, backgroundColor => q{#000000}, textColor => q{#FFF} },
+        { start => q{2014-03-28T12:00:00Z}, title => q{12:00: Curtain on}, url => $url, backgroundColor => q{#000000}, textColor => q{#FFF} },
+        { start => q{2014-03-31T12:00:00Z}, title => q{12:00: Curtain on}, url => $url, backgroundColor => q{#000000}, textColor => q{#FFF} },
+        { start => q{2014-04-02T12:00:00Z}, title => q{12:00: Curtain on}, url => $url, backgroundColor => q{#000000}, textColor => q{#FFF} },
+        { start => q{2014-04-04T12:00:00Z}, title => q{12:00: Curtain on}, url => $url, backgroundColor => q{#000000}, textColor => q{#FFF} },
       ],
       q{full_calendar check};
 

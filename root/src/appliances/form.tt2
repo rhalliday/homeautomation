@@ -1,4 +1,7 @@
-[% META title = 'Create/Update Appliance' %]
+[% META 
+    title = 'Create/Update Appliance'
+    colour_enabled = 1
+-%]
 <h3>Device for address: <strong>[% c.stash.object.address %]</strong></h3>
 [%# Render the HTML::FormHandler Form %]
 [% form.render %]
