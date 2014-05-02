@@ -133,6 +133,14 @@ sub test_appliance_with_timings {
     is ${ $self->{message} }, q{pl F1 off} . "\n",
       q{the last message sent should be an off one despite the status being on};
 
+    # reset the message
+    ${ $self->{message} } = q{};
+
+    # send the on message
+    $appliance->control(q{on});
+    ok($appliance->status, q{timed device should still be on if it was on before});
+    is ${ $self->{message} }, q{}, q{no message should've been sent to the device as it is already on};
+
     return 1;
 }
 

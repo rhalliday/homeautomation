@@ -275,7 +275,16 @@ sub control {
 
     # if the device should only be on for a specified time
     if ($self->timings) {
-        $self->hardware->timer($self->timings);
+
+        # with a timings device we only want to send the message if
+        # the status is opposite of the action. This is because no
+        # matter what the action is we turn it on and off.
+        if (
+            ($action eq q{off} && $self->status) 
+            || ($action eq q{on} && !$self->status)
+        ) {
+            $self->hardware->timer($self->timings);
+        }
     } else {
 
         # send the action to the hardware
