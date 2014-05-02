@@ -11,7 +11,7 @@
         [% IF template.calendar_enabled %]
             <link rel="stylesheet" href="[% c.uri_for('/static/css/jquery-ui-1.10.4.custom.min.css') %]" />
             <link rel="stylesheet" href="[% c.uri_for('/static/css/fullcalendar.css') %]" />
-            <script type="text/javascript" src="[% c.uri_for('/static/js/jquery-1.10.2.js') %]"></script>
+            <script type="text/javascript" src="[% c.uri_for('/static/js/jquery-1.10.2.min.js') %]"></script>
             <script type="text/javascript" src="[% c.uri_for('/static/js/jquery-ui-1.10.4.custom.min.js') %]"></script>
             <script type="text/javascript" src="[% c.uri_for('/static/js/fullcalendar.min.js') %]"></script>
             <script type="text/javascript">
@@ -29,7 +29,7 @@
             </script>
         [% END %]
         [% IF template.colour_enabled %]
-            <script type="text/javascript" src="[% c.uri_for('/static/js/jscolor.js') %]"></script>
+            <script type="text/javascript" src="[% c.uri_for('/static/js/jscolor.min.js') %]"></script>
         [% END %]
     </head>
 
