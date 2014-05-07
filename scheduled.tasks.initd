@@ -1,0 +1,37 @@
+#!/usr/bin/env perl
+use warnings;
+use strict;
+use Daemon::Control;
+
+# 1) create initd file
+# ./scheduled.tasks.initd get_init_file >  /etc/init.d/scheduled-tasks
+#
+# 3) install to runlevels
+# update-rc.d scheduled-tasks defaults
+
+
+my $app_home = '/var/www/HomeAutomation';
+my $perl     = 'perl';
+my $program  = $app_home . '/script/scheduled_tasks_server.pl';
+my $name     = 'scheduled tasks';
+my $pid_file = $app_home . '/scheduled_tasks.pid';
+
+Daemon::Control->new({
+    name        => $name,
+    lsb_start   => '$local_fs',
+    lsb_stop    => '$local_fs',
+    lsb_sdesc   => 'Runs scheduled tasks',
+    lsb_desc    => 'Checks the database for devices that are scheduled to perform a task and performs it',
+    path        => $app_home . '/scheduled.tasks.initd',
+
+    user        => 'www-data',
+    group       => 'www-data',
+    directory   => $app_home,
+    program     => "$perl $program",
+
+    pid_file    => $pid_file,
+    stderr_file => $app_home . '/scheduled_tasks.out',
+    stdout_file => $app_home . '/scheduled_tasks.err',
+
+    fork        => 2,
+})->run;
