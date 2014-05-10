@@ -4,3 +4,10 @@
 .error {
     color: #f00;
 }
+.device-icon {
+    display: inline-block;
+    min-width: 0.5em;
+    min-height: 0.5em;
+    border-radius: 1em;
+    margin-bottom: 0.2em;
+}
