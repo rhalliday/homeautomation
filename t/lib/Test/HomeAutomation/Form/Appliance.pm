@@ -43,7 +43,8 @@ sub test_successful_change {
 
     my $params = _good_params();
 
-    ok $self->{form}->process(params => $params), q{form processes with correct data};
+    ok $self->{form}->process(params => $params), q{form processes with correct data}
+        or diag $self->{form}->errors;
 
     return 1;
 }
@@ -78,6 +79,36 @@ sub test_bad_colour {
     return 1;
 }
 
+sub test_bad_on_button_text {
+    my ($self) = @_;
+
+    my $params = _good_params();
+    $params->{on_button_text} = q{this is a really long button text};
+
+    ok !$self->{form}->process(params => $params), q{form doesn't process when on button text is too long};
+    ok $self->{form}->field(q{on_button_text})->has_errors, q{on_button_text has errors - text too long};
+    eq_or_diff $self->{form}->field(q{on_button_text})->errors,
+      [ q{Field should not exceed 10 characters. You entered 33} ],
+      q{correct error message for text too long};
+
+    return 1;
+}
+
+sub test_bad_off_button_text {
+    my ($self) = @_;
+
+    my $params = _good_params();
+    $params->{off_button_text} = q{this is a really long button text};
+
+    ok !$self->{form}->process(params => $params), q{form doesn't process when off button text is too long};
+    ok $self->{form}->field(q{off_button_text})->has_errors, q{off_button_text has errors - text too long};
+    eq_or_diff $self->{form}->field(q{off_button_text})->errors,
+      [ q{Field should not exceed 10 characters. You entered 33} ],
+      q{correct error message for text too long};
+
+    return 1;
+}
+
 sub _good_params {
     return {
         device   => q{Lights},
@@ -86,6 +117,8 @@ sub _good_params {
         timings  => 10,
         colour   => q{#000000},
         protocol => q{pl},
+        on_button_text => q{On},
+        off_button_text => q{Off},
     };
 }
 

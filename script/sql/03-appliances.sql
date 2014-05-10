@@ -1,15 +1,17 @@
 PRAGMA foreign_keys = ON;
 DROP TABLE IF EXISTS appliances;
 CREATE TABLE appliances (
-    address  VARCHAR(3) PRIMARY KEY,
-    device   VARCHAR(50),
-    room_id  INTEGER REFERENCES rooms(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    protocol CHAR(2),
-    status   BOOLEAN,
-    setting  SMALLINT,
-    dimable  BOOLEAN,
-    timings  SMALLINT,
-    colour   CHAR(7)
+    address         VARCHAR(3) PRIMARY KEY,
+    device          VARCHAR(50),
+    room_id         INTEGER REFERENCES rooms(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    protocol        CHAR(2),
+    status          BOOLEAN,
+    setting         SMALLINT,
+    dimable         BOOLEAN,
+    timings         SMALLINT,
+    colour          CHAR(7),
+    on_button_text  VARCHAR(10) DEFAULT 'On',
+    off_button_text VARCHAR(10) DEFAULT 'Off'
 );
 
 -- insert the 16 records we can have for an address

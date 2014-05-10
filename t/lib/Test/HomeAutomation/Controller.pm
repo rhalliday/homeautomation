@@ -56,10 +56,20 @@ sub test_startup {
 
     # create some appliances
     my $first_appliance = $schema->resultset(q{Appliance})->next_appliance();
-    $first_appliance->update({ device => 'T.V.', room_id => 7, protocol => q{pl}, status => 1 });
+    $first_appliance->update(
+        {
+            device          => 'T.V.',
+            room_id         => 7,
+            protocol        => q{pl},
+            status          => 1,
+            colour          => '#FFFFFF',
+            on_button_text  => 'StartUp',
+            off_button_text => 'ShutDown'
+        }
+    );
 
     my $second_appliance = $schema->resultset(q{Appliance})->next_appliance();
-    $second_appliance->update({ device => 'Lights', room_id => 1, protocol => q{pl}, status => 1 });
+    $second_appliance->update({ device => 'Lights', room_id => 1, protocol => q{pl}, status => 1, colour => '#000000' });
 
     $self->{appliances} = [ $first_appliance, $second_appliance ];
 

@@ -59,6 +59,24 @@ has_field 'colour' => (
     element_attr  => { placeholder => '#000000' },
 );
 
+has_field 'on_button_text' => (
+    type          => 'Text',
+    label         => 'On Button Text',
+    maxlength     => 10,
+    wrapper_class => ['form-group'],
+    element_class => ['form-control'],
+    element_attr  => { placeholder => 'On' },
+);
+
+has_field 'off_button_text' => (
+    type          => 'Text',
+    label         => 'Off Button Text',
+    maxlength     => 10,
+    wrapper_class => ['form-group'],
+    element_class => ['form-control'],
+    element_attr  => { placeholder => 'Off' },
+);
+
 has_field 'submit' => (
     type          => 'Submit',
     value         => 'Submit',
@@ -103,6 +121,18 @@ One of power line or radio frequency
 Number of seconds a timed device should be on for before turning off.
 
 Useful for things like curtains.
+
+=item On Button Text
+
+Text to display for the on button, defaults to 'On'.
+
+You could set it to something like 'Open'.
+
+=item Off Button Text
+
+Text to display for the off button, defaults to 'Off'.
+
+You could set it to something like 'Close'.
 
 =back
 

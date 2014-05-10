@@ -73,10 +73,7 @@
     [% FOREACH appliance IN appliances -%]
         [% NEXT UNLESS appliance.device %]
         <tr>
-            <td>
-                <span class="device-icon" style="background:[%-appliance.colour-%]"></span>
-                [% appliance.device %]
-            </td>
+            <td><span class="device-icon" style="background:[%- appliance.colour -%]"></span>[%- appliance.device -%]</td>
             <td>
                 <a
                     href="[% c.uri_for(c.controller.action_for('switch'), [appliance.address]) %]"
@@ -84,11 +81,11 @@
                     [% IF appliance.status %]
                         class="btn btn-sm btn-success"
                     >
-                        On
+                       [%-appliance.on_button_text-%]
                     [% ELSE %]
                         class="btn btn-sm btn-danger"
                     >
-                        Off
+                        [%-appliance.off_button_text-%]
                     [% END %]
                 </a>
             </td>

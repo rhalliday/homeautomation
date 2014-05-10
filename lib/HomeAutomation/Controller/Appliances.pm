@@ -100,7 +100,7 @@ sub create : Chained('base') : PathPart('create') : Args(0) {
     $c->detach('/default') unless $appliance;
 
     # set some defaults
-    $appliance->update({ status => 1, protocol => 'pl' });
+    $appliance->update({ status => 1, protocol => 'pl', on_button_text => 'On', off_button_text => 'Off' });
     $c->stash->{object} = $appliance;
 
     return $self->form($c, $appliance);

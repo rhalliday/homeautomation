@@ -92,6 +92,18 @@ __PACKAGE__->table("appliances");
   is_nullable: 1
   size: 7
 
+=head2 on_button_text
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 10
+
+=head2 off_button_text
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 10
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -113,6 +125,10 @@ __PACKAGE__->add_columns(
   { data_type => "smallint", is_nullable => 1 },
   "colour",
   { data_type => "char", is_nullable => 1, size => 7 },
+  "on_button_text",
+  { data_type => "varchar", is_nullable => 1, size => 10 },
+  "off_button_text",
+  { data_type => "varchar", is_nullable => 1, size => 10 },
 );
 
 =head1 PRIMARY KEY
@@ -165,8 +181,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-04-30 21:42:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rGpJ1YXTvx6xKJvU4VhJSg
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-05-10 21:37:28
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iD/HX9xIJ8BazbDw59V+RQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
