@@ -167,7 +167,10 @@ Process the FormHandler appliance form
 sub form {
     my ($self, $c, $schedule) = @_;
 
-    my $form = HomeAutomation::Form::Schedule->new;
+    # get the button labels
+    my $labels = { on => $schedule->appliance->on_button_text, off => $schedule->appliance->off_button_text };
+
+    my $form = HomeAutomation::Form::Schedule->new(action_labels => $labels);
 
     # Set the template
     $c->stash(template => 'schedule/form.tt2', form => $form);

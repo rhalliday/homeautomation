@@ -230,7 +230,8 @@ sub full_calendar {
     my @data;
 
     # set up a title
-    my $title = $self->time . q{: } . $self->appliance->device . q{ } . $self->action;
+    my $action = $self->action . q{_button_text};
+    my $title = $self->time . q{: } . $self->appliance->device . q{ } . $self->appliance->$action;
 
     # if it's a task that is for a specific date
     if($self->day) {

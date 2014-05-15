@@ -17,13 +17,28 @@ our $VERSION = '0.01';
 has '+item_class'     => (default => 'Task');
 has '+widget_wrapper' => (default => 'Bootstrap');
 
+has 'action_labels'   => (
+    is       => 'ro',
+    isa      => 'HashRef',
+    required => 1,
+    default  => sub { return { on => q{On}, off => q{Off} }},
+);
+
 has_field 'action' => (
     type          => 'Select',
     widget        => 'RadioGroup',
-    options       => [ { value => 'on', label => 'on', }, { value => 'off', label => 'off', }, ],
     required      => 1,
     wrapper_class => ['form-group'],
 );
+
+sub options_action {
+    my ($self) = @_;
+
+    my $on_label = $self->action_labels->{on};
+    my $off_label = $self->action_labels->{off};
+
+    return [ { value => 'on', label => $on_label, }, { value => 'off', label => $off_label } ];
+}
 
 has_field 'time' => (
     type          => 'Text',
