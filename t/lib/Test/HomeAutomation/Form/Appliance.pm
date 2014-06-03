@@ -46,6 +46,11 @@ sub test_successful_change {
     ok $self->{form}->process(params => $params), q{form processes with correct data}
         or diag $self->{form}->errors;
 
+    my %field_hash =  map { $_->name => 1 } $self->{form}->fields;
+    for my $param (keys %{$params}) {
+        ok exists $field_hash{$param}, q{form has the -} . $param . q{- field};
+    }
+
     return 1;
 }
 
@@ -119,6 +124,7 @@ sub _good_params {
         protocol => q{pl},
         on_button_text => q{On},
         off_button_text => q{Off},
+        dimable => 0,
     };
 }
 

@@ -53,7 +53,7 @@ sub active_tasks {
             -or  => [
                 day  => $dt->ymd,
                 -and => [
-                    'recurrence.expires' => { '>=' => $dt->ymd },
+                    'recurrence.expires' => [ { '>=' => $dt->ymd }, { '=' => undef } ],
                     'tasks_days.day_id'  => $dt->dow,
                 ],
             ],

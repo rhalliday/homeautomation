@@ -21,6 +21,7 @@ sub test_startup {
     $self->next::method();
 
     $self->{resultset} = $self->{schema}->resultset(q{Task});
+    $self->{recurrence_rs} = $self->{schema}->resultset(q{Recurrence});
 
     # create a couple of appliances
     $self->{appliances} = [
@@ -61,6 +62,7 @@ sub test_teardown {
     my ($self) = @_;
 
     $self->{resultset}->delete_all;
+    $self->{recurrence_rs}->delete_all;
 
     $self->next::method();
 
@@ -419,7 +421,7 @@ sub test_active_tasks_recurring_no_expires {
     $self->{resultset}->populate(
         [
             {
-                appliance  => $self->{appliances}[0],
+                appliance  => $self->{appliances}[1],
                 action     => q{on},
                 time       => $time,
                 recurrence => {
@@ -443,7 +445,7 @@ sub test_active_tasks_recurring_no_expires {
     my @tasks = $self->{resultset}->active_tasks();
     is scalar @tasks, 1, q{we have just one pending task};
     is $tasks[0]->action, q{on}, q{get back the right action};
-    is $tasks[0]->appliance->device, $self->{appliances}[0]->device, q{get back the right device};
+    is $tasks[0]->appliance->device, $self->{appliances}[1]->device, q{get back the right device};
 
     return 1;
 }

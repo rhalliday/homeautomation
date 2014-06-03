@@ -16,6 +16,13 @@ my $socket = IO::Socket::INET->new(
 
 while (1) {
     my $client = $socket->accept();
+#    my $data;
+#    while($client->recv($data,1024)) {
+#        print q{recieved: },$data,qq{\n};
+#    }
+    while(<$client>) {
+        print $_ . qq{\n};
+    }
 }
 
 $socket->close();

@@ -77,6 +77,13 @@ has_field 'off_button_text' => (
     element_attr  => { placeholder => 'Off' },
 );
 
+has_field 'dimable' => (
+    type          => 'Checkbox',
+    label         => 'Dimable',
+    wrapper_class => ['form-group'],
+    element_class => ['checkbox'],
+);
+
 has_field 'submit' => (
     type          => 'Submit',
     value         => 'Submit',
