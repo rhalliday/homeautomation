@@ -148,9 +148,9 @@ __PACKAGE__->many_to_many("roles", "user_roles", "role");
 __PACKAGE__->add_columns(
     'password' => {
         passphrase       => 'rfc2307',
-        passphrase_class => 'BlowfishCrypt',
+        passphrase_class => 'SaltedDigest',
         passphrase_args  => {
-            cost        => 14,
+            algorithm   => 'SHA-1',
             salt_random => 20,
         },
         passphrase_check_method => 'check_password',
