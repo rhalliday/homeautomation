@@ -106,7 +106,7 @@ This provides a web site that allows the controlling and scheduling of devices i
 
 =head1 SEE ALSO
 
-L<HomeAutomation::Controller::Root|Root>, L<Catalyst|Catalyst>
+L<Root|HomeAutomation::Controller::Root>, L<Catalyst|Catalyst>
 
 =head1 AUTHOR
 

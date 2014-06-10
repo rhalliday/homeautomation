@@ -13,10 +13,14 @@ HomeAutomation::Schema::Result::Task
 use strict;
 use warnings;
 
+=head1 BASE CLASS: L<HomeAutomation::Schema::Base>
+
+=cut
+
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'DBIx::Class::Core';
+extends 'HomeAutomation::Schema::Base';
 
 =head1 COMPONENTS LOADED
 
@@ -24,15 +28,11 @@ extends 'DBIx::Class::Core';
 
 =item * L<DBIx::Class::InflateColumn::DateTime>
 
-=item * L<DBIx::Class::TimeStamp>
-
-=item * L<DBIx::Class::PassphraseColumn>
-
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime", "TimeStamp", "PassphraseColumn");
+__PACKAGE__->load_components("InflateColumn::DateTime");
 
 =head1 TABLE: C<tasks>
 
@@ -163,8 +163,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-22 17:26:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BJSoUlqRRJmoloBl24LscQ
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-06-10 23:32:51
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:uzmtNsU9TawCE1oV1DCwUA
 
 use DateTime;
 

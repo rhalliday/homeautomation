@@ -13,10 +13,14 @@ HomeAutomation::Schema::Result::Role
 use strict;
 use warnings;
 
+=head1 BASE CLASS: L<HomeAutomation::Schema::Base>
+
+=cut
+
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'DBIx::Class::Core';
+extends 'HomeAutomation::Schema::Base';
 
 =head1 COMPONENTS LOADED
 
@@ -24,15 +28,11 @@ extends 'DBIx::Class::Core';
 
 =item * L<DBIx::Class::InflateColumn::DateTime>
 
-=item * L<DBIx::Class::TimeStamp>
-
-=item * L<DBIx::Class::PassphraseColumn>
-
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime", "TimeStamp", "PassphraseColumn");
+__PACKAGE__->load_components("InflateColumn::DateTime");
 
 =head1 TABLE: C<role>
 
@@ -102,8 +102,8 @@ Composing rels: L</user_roles> -> user
 __PACKAGE__->many_to_many("users", "user_roles", "user");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-03-14 14:13:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ej1qWPIKMQOBu63QwT+YOQ
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-06-10 23:32:51
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZWQGW3JpsPjIxTAfWP5B1g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
