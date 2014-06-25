@@ -161,28 +161,28 @@ sub off {
 
 =head2 dim
 
-$lamp->dim();
+$lamp->dim($amount);
 
 Dims the appliance if the appliance has that feature.
 
 =cut
 
 sub dim {
-    my ($self) = @_;
-    return $self->_send_message(q{dim});
+    my ($self,$dim) = @_;
+    return $self->_send_message(qq{dim $dim});
 }
 
 =head2 brighten
 
-$lamp->brighten();
+$lamp->brighten($amount);
 
 Brightens the appliance if the appliance has that feature.
 
 =cut
 
 sub brighten {
-    my ($self) = @_;
-    return $self->_send_message(q{bright});
+    my ($self, $bright) = @_;
+    return $self->_send_message(qq{bright $bright});
 }
 
 =head2 timer

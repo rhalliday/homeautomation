@@ -18,7 +18,6 @@ use Catalyst::Runtime 5.80;
 #                 directory
 
 use Catalyst qw/
-  -Debug
   ConfigLoader
   Static::Simple
 
@@ -84,6 +83,13 @@ __PACKAGE__->config(
             user_model    => 'DB::User',
             password_type => 'self_check',
         },
+    },
+);
+
+# Configure Session Cookie
+__PACKAGE__->config(
+    'Plugin::Session::State::Cookie' => {
+        cookie_expires => 0,
     },
 );
 

@@ -181,6 +181,23 @@ sub switch : Chained('object') : PathPart('switch') : Args(0) {
     return 1;
 }
 
+=head2 dim
+
+Change the dim setting of a dimmable device.
+
+=cut
+
+sub dim : Chained('object') : PathPart('dim') : Args(1) {
+    my ($self, $c, $dim) = @_;
+
+    $c->stash->{object}->dim($dim);
+
+    # Redirect to the list
+    $c->response->redirect($c->uri_for($self->action_for('list')));
+
+    return 1;
+}
+
 =head1 AUTHOR
 
 Rob Halliday,,,

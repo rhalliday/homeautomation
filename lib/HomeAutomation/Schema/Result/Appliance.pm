@@ -334,6 +334,39 @@ sub switch {
     return $self->control(q{on});
 }
 
+=item dim
+
+Takes a dim setting, and dims/brightens the device.
+
+=cut
+
+sub dim {
+    my ($self, $dim) = @_;
+
+    # just return if we can't dim
+    return unless $self->dimable();
+
+    # get the difference between the setting and the specified dim
+    my $diff = $dim - $self->setting;
+
+    # don't do anything if they're the same
+    return unless $diff;
+
+    if($diff < 0) {
+        # dim the device
+        $self->hardware->dim(abs($diff));
+    } else {
+        # brighten the device
+        $self->hardware->brighten($diff);
+    }
+
+    # update our setting
+    $self->setting($dim);
+    $self->update;
+
+    return 1;
+}
+
 =back
 
 =cut

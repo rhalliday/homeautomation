@@ -84,6 +84,23 @@ has_field 'dimable' => (
     element_class => ['checkbox'],
 );
 
+has_field 'setting' => (
+    type          => 'PosInteger',
+    element_class => ['form-control'],
+    element_attr  => { placeholder => '1..31' },
+    wrapper_class => ['form-group'],
+);
+
+sub validate_setting {
+    my ($self, $field) = @_;
+    # make sure it's between 1 and 32
+    if ($field->value < 1 || $field->value > 31) {
+        $field->add_error('Must be between 1 and 31');
+        return 0;
+    }
+    return 1;
+}
+
 has_field 'submit' => (
     type          => 'Submit',
     value         => 'Submit',
