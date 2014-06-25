@@ -89,7 +89,7 @@
                         [%-appliance.off_button_text-%]
                     [% END %]
                 </a>
-                [% IF appliance.dimable %]
+                [% IF appliance.dimable && appliance.status %]
                 <br/>
                 <div id="[%- appliance.address -%]-dimmer"></div>
                 [% END %]
@@ -129,7 +129,7 @@
 </table>
 
 [% FOREACH appliance IN appliances -%]
-[% NEXT UNLESS appliance.device && appliance.dimable %]
+[% NEXT UNLESS appliance.device && appliance.dimable && appliance.status %]
 <script language="JavaScript">
     $("#[%-appliance.address%]-dimmer").slider({
         step:      1,

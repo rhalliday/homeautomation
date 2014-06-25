@@ -59,9 +59,13 @@ sub object : Chained('base') : PathPart('address') : CaptureArgs(1) {
     my ($self, $c, $address) = @_;
 
     # Find the book object and store it in the stash
-    $c->stash(object => $c->stash->{resultset}->find({ address => $address }));
+    my $object = $c->stash->{resultset}->find({ address => $address });
+    $c->detach('/default') if !$object;
 
-    $c->detach('/default') if !$c->stash->{object};
+    $c->stash(
+        object        => $object,
+        selected_room => $object->room->name,
+    );
 
     return 1;
 }
@@ -135,7 +139,7 @@ sub form {
     return unless $form->validated;
 
     # Set a status message for the user & return to books list
-    $c->response->redirect($c->uri_for($self->action_for('list'), { mid => $c->set_status_msg('Appliance created') }));
+    $c->response->redirect($c->uri_for($self->action_for('list'), { room => $appliance->room->name, mid => $c->set_status_msg('Appliance created') }));
 
     return 1;
 }
@@ -159,7 +163,7 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
 
     # Redirect to the list action/method in this controller
     $c->response->redirect(
-        $c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted appliance $id") }));
+        $c->uri_for($self->action_for('list'), { room => $c->stash->{selected_room}, mid => $c->set_status_msg("Deleted appliance $id") }));
 
     return 1;
 }
@@ -176,7 +180,7 @@ sub switch : Chained('object') : PathPart('switch') : Args(0) {
     $c->stash->{object}->switch;
 
     # Redirect to the list action/method in this controller
-    $c->response->redirect($c->uri_for($self->action_for('list')));
+    $c->response->redirect($c->uri_for($self->action_for('list'), { room => $c->stash->{selected_room} }));
 
     return 1;
 }
@@ -193,7 +197,7 @@ sub dim : Chained('object') : PathPart('dim') : Args(1) {
     $c->stash->{object}->dim($dim);
 
     # Redirect to the list
-    $c->response->redirect($c->uri_for($self->action_for('list')));
+    $c->response->redirect($c->uri_for($self->action_for('list'), { room => $c->stash->{selected_room} }));
 
     return 1;
 }
