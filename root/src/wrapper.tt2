@@ -38,13 +38,18 @@
     <body>
         <div id="outer" class="container">
             <div class="row">
-                <div id="header" class="col-md-9">
+                <div id="header" class="col-sm-6 col-md-9">
                     <h1 class="text-center">[% template.title or site.title %]</h1>
                 </div>
             </div>
 
             <div id="bodyblock" class="row">
-                <div id="menu" class="col-md-2" style="background-color:#eee">
+                <div id="content" class="col-sm-6 col-md-9">
+                    <span class="message"><em>[% status_msg %]</em></span>
+                    <span class="error"><em>[% error_msg %]</em></span>
+                    [% content %]
+                </div>
+                <div id="menu" class="col-sm-1 col-md-2" style="background-color:#eee">
                     <ul class="nav nav-pills nav-stacked">
                         <li [% IF template.title == 'Appliance List' %]class="active"[% END %]>
                             <a href="[% c.uri_for('/appliances/list') %]">Appliances</a>
@@ -70,11 +75,6 @@
                     </ul>
                 </div>
 
-                <div id="content" class="col-md-9">
-                    <span class="message"><em>[% status_msg %]</em></span>
-                    <span class="error"><em>[% error_msg %]</em></span>
-                    [% content %]
-                </div>
             </div>
         </div>
     </body>
