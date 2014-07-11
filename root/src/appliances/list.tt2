@@ -40,10 +40,11 @@
 </style>
 
 <script language="JavaScript">
-    function FreezeScreen() {
+    function FreezeScreen(url) {
         scroll(0,0);
         var outerPane = document.getElementById('FreezePane');
         if (outerPane) outerPane.className = 'FreezePaneOn';
+        window.location.href = url;
         return true;
     }
 </script>
@@ -76,19 +77,14 @@
         <tr>
             <td><span class="device-icon" style="background:[%- appliance.colour -%]"></span>[%- appliance.device -%]</td>
             <td>
-                <a
-                    href="[% c.uri_for(c.controller.action_for('switch'), [appliance.address]) %]"
-                    onclick="FreezeScreen();"
+                <label>
+                <input type="checkbox" class="ios-switch green"
+                    onclick="FreezeScreen('[% c.uri_for(c.controller.action_for('switch'), [appliance.address]) %]')"
                     [% IF appliance.status %]
-                        class="btn btn-sm btn-success"
-                    >
-                       [%-appliance.on_button_text-%]
-                    [% ELSE %]
-                        class="btn btn-sm btn-danger"
-                    >
-                        [%-appliance.off_button_text-%]
+                        checked
                     [% END %]
-                </a>
+                    /><div><div></div></div>
+                </label>
                 [% IF appliance.dimable && appliance.status %]
                 <br/>
                 <div id="[%- appliance.address -%]-dimmer"></div>
