@@ -1,0 +1,67 @@
+[%
+    mypages = [
+        { link => 'index', menu => 'HOME' },
+        { link => 'about', menu => 'ABOUT' },
+        { link => 'testimonials', menu => 'TESTIMONIALS' },
+        { link => 'contact', menu => 'CONTACT' },
+    ];
+
+    global.phone = '07429429462';
+    global.email = 'jen@jenniferhalliday.co.uk';
+    global.facebook = '#';
+    global.linkedin = '#';
+    global.twitter  = '#';
+%]
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>[% title %]</title>
+        <meta name="description" content="[% description %]">
+        <link rel="stylesheet" href="/static/css/jh.css" />
+    </head>
+
+    <body>
+        <div class="spacer"></div>
+        <div class="container">
+            <div id="logo" class="col-sm-9">
+                <img src="/static/images/JenH.png" alt="Jennifer Halliday">
+            </div>
+            <div id="contact_info" class="col-sm-3">
+                <span class="col-sm-3">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </span>
+                <span class="col-sm-9">
+                    <a href="mailto:[%- global.email -%]">[%- global.email -%]</a>
+                </span>
+                <span class="col-sm-3">
+                    <i class="fa fa-mobile fa-lg"></i>
+                </span>
+                <span class="col-sm-9">
+                    [% global.phone %]
+                </span>
+                <span class="col-sm-3">
+                </span>
+                <span class="col-sm-9">
+                    <ul class="social-icons">
+                        <li><a href="[%- global.facebook -%]"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="[%- global.twitter -%]"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="[%- global.linkedin -%]"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </span>
+            </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="container">
+            <nav id="nav" class="navbar navbar-inverse" role="navigation">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav">
+                    [% FOREACH p IN mypages %]
+                        <li [% IF p.link == page %]class="active"[% END %]><a href="[%- p.link -%].html"><strong>[%- p.menu -%]</strong></a></li>
+                    [% END %]
+                    </ul>
+                </div><!-- /.container-fluid -->
+            </nav>
+

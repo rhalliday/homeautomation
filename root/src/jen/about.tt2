@@ -1,0 +1,25 @@
+[% INCLUDE header.tt2
+    page = 'about'
+    title = 'Jennifer Halliday - About'
+    description = 'A little about me and the qualifications that I have';
+%]
+<div id="about" class="col-sm-12">
+    <p>
+        Based in Gloucester (South West), I am a Marketing and Events professional with just
+        under 10 years experience. Since graduating from the University of Reading in 2014 with
+        a BA in English and Philosophy I have gained professional qualifications from the
+        Chartered Institute of Marketing as well as the Chartered Institute of Public Relations.
+    </p>
+    <p>
+        I have a broad range of experience which includes working in the theatre industry and
+        financial services. My expertise predominately lies in B2B marketing in the logistics,
+        supply chain and engineering sectors. The last five years of my career have been spent
+        honing my skills in the exhibition and publishing industry.
+    </p>
+    <p>
+        Due to the way I work I can provide you and your business with marketing and PR expertise
+        at a fraction of the cost of larger agencies as well as offer a more personal service which
+        means I can really get a handle on what you want to achieve and understand your business needs.
+    </p>
+</div>
+[% INCLUDE footer.tt2 %]

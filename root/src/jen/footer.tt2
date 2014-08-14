@@ -1,0 +1,14 @@
+        </div>
+        <div class="spacer"></div> 
+        <div class="container">
+            <div class="connect">
+                Connect with me...
+                <a href="[%- global.facebook -%]"><i class="fa fa-facebook-square fa-2x facebook-colour"></i></a>
+                <a href="[%- global.twitter -%]"><i class="fa fa-twitter-square fa-2x twitter-colour"></i></a>
+                <a href="[%- global.linkedin -%]"><i class="fa fa-linkedin-square fa-2x linkedin-colour"></i></a>
+            </div>
+        </div>
+    </body>
+
+</html>
+

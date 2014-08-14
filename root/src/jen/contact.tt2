@@ -1,0 +1,25 @@
+[% INCLUDE header.tt2
+    page = 'contact'
+    title = 'Jennifer Halliday - Contact'
+    description = 'Contact details for Jennifer Halliday';
+%]
+<div id="contact" class="col-sm-12">
+    <div class="col-sm-12">
+        <span class="col-sm-1">
+            <i class="fa fa-envelope fa-2x"></i>
+        </span>
+        <span class="col-sm-11">
+            <a href="mailto:[% global.email %]">[% global.email %]</a>
+        </span>
+    </div>
+    <div class="col-sm-12">
+        <span class="col-sm-1">
+            <i class="fa fa-mobile fa-2x"></i>
+        </span>
+        <span class="col-sm-11">
+            [% global.phone %]
+        </span>
+    </div>
+</div>
+
+[% INCLUDE footer.tt2 %]
