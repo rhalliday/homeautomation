@@ -54,11 +54,6 @@ div.notice {
     color: #00aced
 }
 
-h3,
-h4 > strong {
-    color: #428bca;
-}
-
 ul.social-icons {
     overflow: auto;
     padding: 0;

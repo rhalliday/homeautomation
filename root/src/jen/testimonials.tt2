@@ -5,65 +5,13 @@
 %]
 
 <div id="testimonial" class="col-sm-12">
-    <div class="col-sm-12">
-        <h3>
+    <div class="row">
+        <h3 class="text-primary">
             Here's what people who have worked with me have to say.....
         </h3>
     </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-left fa-4x"></i>
-    </div>
-    <div class="col-sm-10">
-        <p>
-            Jennifer is a superb marketer who is able to manage complex media schedules and build
-            exceptional relationships with media partners. She is creative, analytical and can
-            communicate effectively with the audience.
-        </p>
-    </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-right fa-4x"></i>
-    </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-left fa-4x"></i>
-    </div>
-    <div class="col-sm-10">
-        <p>
-            Jennifer worked for me for almost 2 years. She is highly organised, pro-active and a great
-            marketer. She not only has good ideas but thinks them through and delivers them to the highest
-            standards. She's very personable and a great team member.
-        </p>
-    </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-right fa-4x"></i>
-    </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-left fa-4x"></i>
-    </div>
-    <div class="col-sm-10">
-        <p>
-            I worked with Jennifer on a number of visitor marketing campaigns for b2b exhibitions. She was
-            always hard working, conscientious and committed. She was a pleasure to work with.
-        </p>
-    </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-right fa-4x"></i>
-    </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-left fa-4x"></i>
-    </div>
-    <div class="col-sm-10">
-        <p>
-            Jennifer was a reliable and efficient marketing executive at Centaur. She could multi-task
-            effectively and had a good understanding of the markets we were operating in. In her role she
-            managed more than one campaign at a time and multiple elements within those campaigns too.
-            Campaigns consisted of the complete marketing mix from online to print and occasionally some
-            telemarketing. The role demanded good people skills as well as strong B2B marketing ability.
-        </p>
-    </div>
-    <div class="col-sm-1">
-        <i class="fa fa-quote-right fa-4x"></i>
-    </div>
-    <div class="col-sm-12">
+    [% INCLUDE quotes %]
+    <div class="row">
         <p>
             To read more connect with me on LinkedIn
         </p>
@@ -71,3 +19,37 @@
 </div>
 
 [% INCLUDE footer.tt2 %]
+
+[% BLOCK quotes;
+
+testimonials = [
+    { 
+        text => 'Jennifer is a superb marketer who is able to manage complex media schedules and build exceptional relationships with media partners. She is creative, analytical and can communicate effectively with the audience.',
+        align => 'left',
+    },
+    {
+        text => 'Jennifer worked for me for almost 2 years. She is highly organised, pro-active and a great marketer. She not only has good ideas but thinks them through and delivers them to the highest standards. She\'s very personable and a great team member.',
+        align => 'right',
+    },
+    {
+        text => 'I worked with Jennifer on a number of visitor marketing campaigns for b2b exhibitions. She was always hard working, conscientious and committed. She was a pleasure to work with.',
+        align => 'left',
+    },
+    {
+        text => 'Jennifer was a reliable and efficient marketing executive at Centaur. She could multi-task effectively and had a good understanding of the markets we were operating in. In her role she managed more than one campaign at a time and multiple elements within those campaigns too. Campaigns consisted of the complete marketing mix from online to print and occasionally some telemarketing. The role demanded good people skills as well as strong B2B marketing ability.',
+        align => 'right',
+    },
+];
+
+%]
+    [% FOREACH quote IN testimonials %]
+    <div class="spacer"></div>
+    <div class="row">
+        <div class="col-sm-5 pull-[%- quote.align -%]">
+            <p><i class="fa fa-quote-left fa-4x"></i>
+            [% quote.text %]
+            <i class="fa fa-quote-right fa-4x pull-right"></i></p>
+        </div>
+    </div>
+    [% END %]
+[% END %]

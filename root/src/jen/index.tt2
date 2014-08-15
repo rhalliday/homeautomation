@@ -5,37 +5,37 @@
 %]
 <div id="home" class="col-sm-12">
     <div class="col-sm-12">
-        <h3>
-            As a Marketing and Events professional with just under 10 years experience, 
+        <h3 class="text-primary">
+            As a Marketing and Events professional with almost 10 years experience, 
             I can offer your business cost-effective marketing, 
-            PR and event support which yields great results....
+            PR and event support which gets results.
         </h3>
     </div>
     <div class="col-sm-4">
-        <h4><strong>Marketing</strong> Skills</h4>
+        <h4><strong class="text-primary">Marketing</strong> Skills</h4>
         <p>
             I work alongside trusted associate partners to provide your business with printed, 
-            online and email marketing with powerful messages to grab the attention, and 
-            encourage the action, of your end users. Social Media marketing is also a crucial
+            online and email marketing containing powerful messages to grab the attention 
+            of your end users. Social Media marketing is also a crucial
             part of any strategy and I can manage all of your accounts to ensure the 
             “conversation” between you and your target audience keeps on flowing.
         </p>
     </div>
     <div class="col-sm-4">
-        <h4><strong>PR</strong> Expertise</h4>
+        <h4><strong class="text-primary">PR</strong> Expertise</h4>
         <p>
             Public Relations and “earned” media coverage is vital in reaching your target
-            audience and positioning your organisation and products as cutting-edge in your
+            audience and positioning your organisation and products as cutting-edge in their
             field. My experience and technical skills can help your latest news gets published
             where it needs to be.
         </p>
     </div>
     <div class="col-sm-4">
-        <h4><strong>Event</strong> Support</h4>
+        <h4><strong class="text-primary">Event</strong> Support</h4>
         <p>
-            Trade events are an essential way for any business to meet potential customers face
-            to face and get the opportunity to really sell their products and services. I can
-            help reduce your workload by completing all of the necessary paperwork as well as
+            Trade events are an essential way for a business to meet potential customers face
+            to face and get the opportunity to really sell your products and services. I can
+            help reduce your workload by completing all of the necessary paperwork, as well as
             ensure you are making the most of all the marketing opportunities available to really
             drive visitors to your stand.
         </p>

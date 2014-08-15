@@ -4,6 +4,7 @@
     description = 'A little about me and the qualifications that I have';
 %]
 <div id="about" class="col-sm-12">
+    <img src="/static/images/jen.jpg" class="img-responsive" alt="Jennifer Halliday" align="right">
     <p>
         Based in Gloucester (South West), I am a Marketing and Events professional with just
         under 10 years experience. Since graduating from the University of Reading in 2014 with

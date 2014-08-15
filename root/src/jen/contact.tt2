@@ -4,7 +4,14 @@
     description = 'Contact details for Jennifer Halliday';
 %]
 <div id="contact" class="col-sm-12">
-    <div class="col-sm-12">
+    <div class="row">
+        Get in touch.
+    </div>
+    <div class="row">
+        To find out more about how we could work together drop me an email or 
+        give me a call.
+    </div>
+    <div class="row">
         <span class="col-sm-1">
             <i class="fa fa-envelope fa-2x"></i>
         </span>
@@ -12,7 +19,7 @@
             <a href="mailto:[% global.email %]">[% global.email %]</a>
         </span>
     </div>
-    <div class="col-sm-12">
+    <div class="row">
         <span class="col-sm-1">
             <i class="fa fa-mobile fa-2x"></i>
         </span>

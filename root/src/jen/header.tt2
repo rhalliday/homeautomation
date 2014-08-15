@@ -8,9 +8,9 @@
 
     global.phone = '07429429462';
     global.email = 'jen@jenniferhalliday.co.uk';
-    global.facebook = '#';
-    global.linkedin = '#';
-    global.twitter  = '#';
+    global.facebook = 'https://www.facebook.com/jen.halliday1';
+    global.twitter  = 'https://twitter.com/JenHalliday';
+    global.linkedin = 'http://uk.linkedin.com/pub/jennifer-halliday/12/604/225';
 %]
 <!DOCTYPE html>
 <html>
@@ -21,13 +21,14 @@
         <title>[% title %]</title>
         <meta name="description" content="[% description %]">
         <link rel="stylesheet" href="/static/css/jh.css" />
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     </head>
 
     <body>
         <div class="spacer"></div>
         <div class="container">
             <div id="logo" class="col-sm-9">
-                <img src="/static/images/JenH.png" alt="Jennifer Halliday">
+                <img src="/static/images/JenH.png" class="img-responsive" alt="Jennifer Halliday">
             </div>
             <div id="contact_info" class="col-sm-3">
                 <span class="col-sm-3">
