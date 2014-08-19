@@ -5,14 +5,17 @@
 %]
 <div id="contact" class="col-sm-12">
     <div class="row">
-        Get in touch.
+        <h3 class="text-primary">
+            Get in touch.
+        </h3>
     </div>
+    <div class="row breaker-line"></div>
     <div class="row">
         To find out more about how we could work together drop me an email or 
         give me a call.
     </div>
     <div class="row">
-        <span class="col-sm-1">
+        <span class="col-sm-1 icon-span">
             <i class="fa fa-envelope fa-2x"></i>
         </span>
         <span class="col-sm-11">
@@ -20,7 +23,7 @@
         </span>
     </div>
     <div class="row">
-        <span class="col-sm-1">
+        <span class="col-sm-1 icon-span">
             <i class="fa fa-mobile fa-2x"></i>
         </span>
         <span class="col-sm-11">

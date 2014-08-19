@@ -10,10 +10,11 @@
             Here's what people who have worked with me have to say.....
         </h3>
     </div>
+    <div class="row breaker-line"></div>
     [% INCLUDE quotes %]
     <div class="row">
         <p>
-            To read more connect with me on LinkedIn
+            To read more connect with me on <a href="[% global.linkedin %]">LinkedIn</a>
         </p>
     </div>
 </div>
@@ -24,20 +25,12 @@
 
 testimonials = [
     { 
-        text => 'Jennifer is a superb marketer who is able to manage complex media schedules and build exceptional relationships with media partners. She is creative, analytical and can communicate effectively with the audience.',
-        align => 'left',
+        left_text => 'Jennifer is a superb marketer who is able to manage complex media schedules and build exceptional relationships with media partners. She is creative, analytical and can communicate effectively with the audience.',
+        right_text => 'I worked with Jennifer on a number of visitor marketing campaigns for b2b exhibitions. She was always hard working, conscientious and committed. She was a pleasure to work with.',
     },
     {
-        text => 'Jennifer worked for me for almost 2 years. She is highly organised, pro-active and a great marketer. She not only has good ideas but thinks them through and delivers them to the highest standards. She\'s very personable and a great team member.',
-        align => 'right',
-    },
-    {
-        text => 'I worked with Jennifer on a number of visitor marketing campaigns for b2b exhibitions. She was always hard working, conscientious and committed. She was a pleasure to work with.',
-        align => 'left',
-    },
-    {
-        text => 'Jennifer was a reliable and efficient marketing executive at Centaur. She could multi-task effectively and had a good understanding of the markets we were operating in. In her role she managed more than one campaign at a time and multiple elements within those campaigns too. Campaigns consisted of the complete marketing mix from online to print and occasionally some telemarketing. The role demanded good people skills as well as strong B2B marketing ability.',
-        align => 'right',
+        left_text => 'Jennifer worked for me for almost 2 years. She is highly organised, pro-active and a great marketer. She not only has good ideas but thinks them through and delivers them to the highest standards. She\'s very personable and a great team member.',
+        right_text => 'Jennifer was a reliable and efficient marketing executive at Centaur. She could multi-task effectively and had a good understanding of the markets we were operating in. In her role she managed more than one campaign at a time and multiple elements within those campaigns too. Campaigns consisted of the complete marketing mix from online to print and occasionally some telemarketing. The role demanded good people skills as well as strong B2B marketing ability.',
     },
 ];
 
@@ -45,11 +38,17 @@ testimonials = [
     [% FOREACH quote IN testimonials %]
     <div class="spacer"></div>
     <div class="row">
-        <div class="col-sm-5 pull-[%- quote.align -%]">
+        <span class="col-sm-5">
             <p><i class="fa fa-quote-left fa-4x"></i>
-            [% quote.text %]
+            [% quote.left_text %]
             <i class="fa fa-quote-right fa-4x pull-right"></i></p>
-        </div>
+        </span>
+        <span class="col-sm-1"></span>
+        <span class="col-sm-5">
+            <p><i class="fa fa-quote-left fa-4x"></i>
+            [% quote.right_text %]
+            <i class="fa fa-quote-right fa-4x pull-right"></i></p>
+        </span>
     </div>
     [% END %]
 [% END %]

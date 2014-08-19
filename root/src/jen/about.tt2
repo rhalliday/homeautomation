@@ -4,23 +4,30 @@
     description = 'A little about me and the qualifications that I have';
 %]
 <div id="about" class="col-sm-12">
-    <img src="/static/images/jen.jpg" class="img-responsive" alt="Jennifer Halliday" align="right">
-    <p>
-        Based in Gloucester (South West), I am a Marketing and Events professional with just
-        under 10 years experience. Since graduating from the University of Reading in 2014 with
-        a BA in English and Philosophy I have gained professional qualifications from the
-        Chartered Institute of Marketing as well as the Chartered Institute of Public Relations.
-    </p>
-    <p>
-        I have a broad range of experience which includes working in the theatre industry and
-        financial services. My expertise predominately lies in B2B marketing in the logistics,
-        supply chain and engineering sectors. The last five years of my career have been spent
-        honing my skills in the exhibition and publishing industry.
-    </p>
-    <p>
-        Due to the way I work I can provide you and your business with marketing and PR expertise
-        at a fraction of the cost of larger agencies as well as offer a more personal service which
-        means I can really get a handle on what you want to achieve and understand your business needs.
-    </p>
+    <div class="row">
+        <h3 class="text-primary">
+            A bit more information about me.
+        </h3>
+    </div>
+    <div class="row breaker-line"></div>
+    <div class="row">
+        <img src="/static/images/jen.jpg" class="img-responsive img-space" alt="Jennifer Halliday" align="right">
+        <p>
+            Based in Gloucester (South West), I am a Marketing and Events professional with just
+            under 10 years experience. Since graduating from the University of Reading in 2014 with
+            a BA in English and Philosophy I have gained professional qualifications from the
+            Chartered Institute of Marketing and the Chartered Institute of Public Relations.
+        </p>
+        <p>
+            I have a broad range of experience which includes working in the theatre industry and
+            financial services. However, my expertise predominately lies in B2B marketing in the logistics,
+            supply chain and engineering sectors. The last five years of my career have been spent in the exhibition and publishing industry.
+        </p>
+        <p>
+            Due to the way I work I can provide your business with Marketing and PR expertise
+            at a fraction of the cost of larger agencies, as well as offer a more personal service, which
+            means I really get a handle on what you want to achieve and meet your business' individual needs.
+        </p>
+    </div>
 </div>
 [% INCLUDE footer.tt2 %]
