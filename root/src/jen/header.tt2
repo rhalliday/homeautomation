@@ -61,7 +61,7 @@
         <div class="spacer"></div>
         <div class="container">
             <nav id="nav" class="navbar navbar-inverse" role="navigation">
-                <div class="container-fluid">
+                <div class="container-fluid navbar-inverse">
                     <ul class="nav navbar-nav">
                     [% FOREACH p IN mypages %]
                         <li [% IF p.link == page %]class="active"[% END %]><a href="[%- p.link -%].html"><strong>[%- p.menu -%]</strong></a></li>

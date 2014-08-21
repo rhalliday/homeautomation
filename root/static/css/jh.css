@@ -4,7 +4,7 @@
         float: none;
     }
 
-    .navbar .container-fluid {
+    .navbar-inverse .container-fluid {
         text-align: center;
     }
 }
@@ -33,6 +33,7 @@ html, body {
 
 .footer-content {
     height: 100%;
+    max-height: 100px;
     background-color: #333;
     color: #FFF;
     border-radius: 5px;
