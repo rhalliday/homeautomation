@@ -13,7 +13,7 @@
     margin-right: 0.2em;
 }
 
-input[type="checkbox"] { 
+input[type="checkbox"].ios-switch { 
     position: absolute;
     opacity: 0;
 }
