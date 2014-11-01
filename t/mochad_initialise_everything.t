@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 1;
+use Test::Differences;
 use IO::Socket::INET;
 
 use Mochad;
@@ -16,7 +17,7 @@ subtest q{initialise everthing} => sub {
             address    => q{A2},
             via        => q{rf},
             can_dim    => 1,
-            connection => IO::Socket::INET->new(LocalAddr => q{localhost}, LocalPort => 9000, Proto => q{tcp}),
+            connection => { LocalAddr => q{localhost}, LocalPort => 9000, Proto => q{tcp} },
         }
       ),
       q{can initialise with just an address};
@@ -27,7 +28,13 @@ subtest q{initialise everthing} => sub {
     # test the defaults
     is $mochad->via, q{rf}, q{can set via};
     ok $mochad->can_dim, q{can set can_dim};
-    isa_ok $mochad->connection, q{IO::Socket::INET}, q{can set the connection to an IO::Socket::INET};
+    eq_or_diff $mochad->connection,
+      {
+        LocalAddr => q{localhost},
+        LocalPort => 9000,
+        Proto    => q{tcp},
+      },
+      q{set IO::Socket settings};
 };
 
 1;
