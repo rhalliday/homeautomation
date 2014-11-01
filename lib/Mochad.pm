@@ -92,7 +92,6 @@ has q{connection} => (
 );
 
 sub _connection_builder {    ## no critic qw(Subroutines::ProhibitUnusedPrivateSubroutines)
-                             # only make a new connection if we don't already have one
     return {
         PeerAddr => q{localhost},
         PeerPort => 1099,
@@ -141,7 +140,7 @@ Dims the appliance if the appliance has that feature.
 =cut
 
 sub dim {
-    my ($self,$dim) = @_;
+    my ($self, $dim) = @_;
     return $self->_send_message(qq{dim $dim});
 }
 
@@ -170,15 +169,15 @@ sub timer {
     my ($self, $time) = @_;
 
     $self->on();
-    sleep($time);
+    my $sleep = sleep($time);
     return $self->off();
 }
 
 sub _send_message {
     my ($self, $type) = @_;
 
-    my $sock = IO::Socket::INET->new(%{$self->connection})
-        or croak 'Connection failed! ',$@;
+    my $sock = IO::Socket::INET->new(%{ $self->connection })
+      or croak 'Connection failed! ', $@;
 
     # send the message
     $sock->print(join(q{ }, $self->via, $self->address, $type) . qq{\n});
@@ -191,10 +190,10 @@ sub _send_message {
     my $seen_unit = 0;
     my $seen_func = 0;
 
-    while(my $data = $sock->getline) {
+    while (my $data = $sock->getline) {
         if ($data =~ /HouseUnit: (\w+)/) {
             $seen_unit = 1 if uc($1) eq uc($self->address);
-        } elsif($data =~ /Func: (\w+)/) {
+        } elsif ($data =~ /Func: (\w+)/) {
             $seen_func = 1 if uc($1) eq uc($type);
         }
         last if ($seen_unit and $seen_func);

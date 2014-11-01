@@ -71,7 +71,8 @@ sub test_startup {
     );
 
     my $second_appliance = $schema->resultset(q{Appliance})->next_appliance();
-    $second_appliance->update({ device => 'Lights', room_id => 1, protocol => q{pl}, status => 1, colour => '#000000' });
+    $second_appliance->update(
+        { device => 'Lights', room_id => 1, protocol => q{pl}, status => 1, colour => '#000000' });
 
     $self->{appliances} = [ $first_appliance, $second_appliance ];
 

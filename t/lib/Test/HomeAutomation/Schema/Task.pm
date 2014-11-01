@@ -20,19 +20,26 @@ sub test_startup {
 
     $self->next::method();
 
-    $self->{resultset} = $self->{schema}->resultset(q{Task});
+    $self->{resultset}     = $self->{schema}->resultset(q{Task});
     $self->{recurrence_rs} = $self->{schema}->resultset(q{Recurrence});
 
     # create a couple of appliances
     $self->{appliances} = [
-        $self->{schema}->resultset(q{Appliance})
-          ->next_appliance->update({ device => 'Lights', room_id => 1, colour => '#FFFFFF', on_button_text => q{On}, off_button_text => q{Off} }),
         $self->{schema}->resultset(q{Appliance})->next_appliance->update(
             {
-                device         => 'Curtain',
-                room_id        => 2,
-                colour         => '#000000',
-                on_button_text => q{Open},
+                device          => 'Lights',
+                room_id         => 1,
+                colour          => '#FFFFFF',
+                on_button_text  => q{On},
+                off_button_text => q{Off}
+            }
+        ),
+        $self->{schema}->resultset(q{Appliance})->next_appliance->update(
+            {
+                device          => 'Curtain',
+                room_id         => 2,
+                colour          => '#000000',
+                on_button_text  => q{Open},
                 off_button_text => q{Closed}
             }
         ),

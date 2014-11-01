@@ -139,7 +139,12 @@ sub form {
     return unless $form->validated;
 
     # Set a status message for the user & return to books list
-    $c->response->redirect($c->uri_for($self->action_for('list'), { room => $appliance->room->name, mid => $c->set_status_msg('Appliance created') }));
+    $c->response->redirect(
+        $c->uri_for(
+            $self->action_for('list'),
+            { room => $appliance->room->name, mid => $c->set_status_msg('Appliance created') }
+        )
+    );
 
     return 1;
 }
@@ -163,7 +168,11 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
 
     # Redirect to the list action/method in this controller
     $c->response->redirect(
-        $c->uri_for($self->action_for('list'), { room => $c->stash->{selected_room}, mid => $c->set_status_msg("Deleted appliance $id") }));
+        $c->uri_for(
+            $self->action_for('list'),
+            { room => $c->stash->{selected_room}, mid => $c->set_status_msg("Deleted appliance $id") }
+        )
+    );
 
     return 1;
 }

@@ -25,7 +25,8 @@ sub test_basic_user {
     $ua->content_contains(q{/usermanagement/change_password">Change Password</a>},
         q{'test03' should be able to change their password});
     $ua->content_contains(q{/logout">Logout</a>}, q{'test03' should be able to logout});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},       q{'test03' can see the T.V appliance});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},
+        q{'test03' can see the T.V appliance});
     $ua->content_like(qr{class="btn btn-sm btn-success"\s*>\s*StartUp\s*</a>}, q{can see the switch for the T.V.});
     $ua->content_lacks(q{<td>F1</td>}, q{shouldn't be able to see the address});
     $ua->content_unlike(qr{class="btn btn-sm btn-danger"\s*>\s*Delete\s*</a>},
@@ -46,7 +47,8 @@ sub test_basic_user {
 
     # room with another device
     $ua->get_ok(q{/appliances/list?room=Imogen}, q{can go to another room});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>}, q{Imogen's room has a lights device});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>},
+        q{Imogen's room has a lights device});
 
     # room with no device
     $ua->get_ok(q{/appliances/list?room=Master}, q{can get to the master room});
@@ -68,7 +70,8 @@ sub test_privileged_user {
     $ua->content_contains(q{/usermanagement/change_password">Change Password</a>},
         q{'test02' should be able to change their password});
     $ua->content_contains(q{/logout">Logout</a>}, q{'test02' should be able to logout});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},       q{'test02' can see the T.V appliance});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},
+        q{'test02' can see the T.V appliance});
     $ua->content_like(qr{class="btn btn-sm btn-success"\s*>\s*StartUp\s*</a>}, q{can see the switch for the T.V.});
     $ua->content_lacks(q{<td>F1</td>}, q{shouldn't be able to see the address});
     $ua->content_unlike(qr{class="btn btn-sm btn-danger"\s*>\s*Delete\s*</a>},
@@ -89,7 +92,8 @@ sub test_privileged_user {
 
     # room with another device
     $ua->get_ok(q{/appliances/list?room=Imogen}, q{can go to another room});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>}, q{Imogen's room has a lights device});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>},
+        q{Imogen's room has a lights device});
 
     # room with no device
     $ua->get_ok(q{/appliances/list?room=Master}, q{can get to the master room});
@@ -115,7 +119,8 @@ sub test_admin_user {
     $ua->content_contains(q{/usermanagement/change_password">Change Password</a>},
         q{'test01' should be able to change their password});
     $ua->content_contains(q{/logout">Logout</a>}, q{'test01' should be able to logout});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},       q{'test01' can see the T.V appliance});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},
+        q{'test01' can see the T.V appliance});
     $ua->content_like(qr{class="btn btn-sm btn-success"\s*>\s*StartUp\s*</a>}, q{can see the switch for the T.V.});
     $ua->content_contains(q{<td>F1</td>}, q{should be able to see the address});
     $ua->content_like(qr{class="btn btn-sm btn-danger"\s*>\s*Delete\s*</a>}, q{should be able to delete appliances});
@@ -135,7 +140,8 @@ sub test_admin_user {
 
     # room with another device
     $ua->get_ok(q{/appliances/list?room=Imogen}, q{can go to another room});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>}, q{Imogen's room has a lights device});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>},
+        q{Imogen's room has a lights device});
 
     # room with no device
     $ua->get_ok(q{/appliances/list?room=Master}, q{can get to the master room});
@@ -161,8 +167,9 @@ sub test_admin_user {
         q{can submit the form create}
     );
     $ua->title_is(q{Appliance List}, q{get redirected to the appliance list});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#000001"></span>Lights</td>}, q{new device is listed});
-    $ua->content_contains(q{<td>F3</td>},     q{new device is listed at address F3});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#000001"></span>Lights</td>},
+        q{new device is listed});
+    $ua->content_contains(q{<td>F3</td>}, q{new device is listed at address F3});
 
     $ua->get_ok(q{/appliances/address/F3/edit}, q{can get to the edit page for the new appliance});
     $ua->submit_form_ok(
@@ -177,7 +184,8 @@ sub test_admin_user {
         q{can submit the edit form}
     );
     $ua->title_is(q{Appliance List}, q{get redirected to the appliance list after edit});
-    $ua->content_contains(q{<td><span class="device-icon" style="background:#000001"></span>Lighters</td>}, q{device name has changed});
+    $ua->content_contains(q{<td><span class="device-icon" style="background:#000001"></span>Lighters</td>},
+        q{device name has changed});
 
     $ua->get_ok(q{/appliances/address/F3/delete}, q{can delete our new device});
     $ua->content_lacks(q{<td>F3</td>}, q{our new device no longer exists});
