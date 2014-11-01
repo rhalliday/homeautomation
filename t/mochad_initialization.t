@@ -5,6 +5,7 @@ use warnings;
 
 use Test::More tests => 3;
 use Test::Exception;
+use Test::Differences;
 use IO::Socket::INET;
 
 use Mochad;
@@ -31,7 +32,13 @@ subtest q{basic initialisation} => sub {
     # test the defaults
     is $mochad->via, q{pl}, q{via defaults to pl};
     ok !$mochad->can_dim, q{can_dim defaults to false};
-    isa_ok $mochad->connection, q{IO::Socket}, q{defaults to an IO::Socket (or subclass)};
+    eq_or_diff $mochad->connection,
+      {
+        PeerAddr => q{localhost},
+        PeerPort => 1099,
+        Proto    => q{tcp},
+      },
+      q{default IO::Socket settings};
 };
 
 1;

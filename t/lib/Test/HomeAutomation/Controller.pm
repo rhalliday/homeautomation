@@ -19,39 +19,41 @@ sub test_startup {
     my $role_rs = $schema->resultset(q{Role});
 
     # create a few users
-    $schema->resultset(q{User})->populate(
-        [
-            {
-                username      => q{test01},
-                password      => q{mypass},
-                email_address => q{test01@example.com},
-                first_name    => q{test01},
-                last_name     => q{major},
-                active        => 1,
-                user_roles    => [ map { { role_id => $_->id } } $role_rs->all ],
-            },
-            {
-                username      => q{test02},
-                password      => q{mypass},
-                email_address => q{test02@example.com},
-                first_name    => q{test02},
-                last_name     => q{Hague},
-                active        => 1,
-                user_roles    => [
-                    map { { role_id => $_->id } }
-                      $role_rs->search({ role => [ q{schedule}, q{usermanagement}, q{user} ] })->all
-                ],
-            },
-            {
-                username      => q{test03},
-                password      => q{mypass},
-                email_address => q{test03@example.com},
-                first_name    => q{test03},
-                last_name     => q{Cameron},
-                active        => 1,
-                user_roles    => [ map { { role_id => $_->id } } $role_rs->search({ role => [q{user}] })->all ],
-            },
-        ]
+    $schema->resultset(q{User})->create(
+        {
+            username      => q{test01},
+            password      => q{mypass},
+            email_address => q{test01@example.com},
+            first_name    => q{test01},
+            last_name     => q{major},
+            active        => 1,
+            user_roles    => [ map { { role_id => $_->id } } $role_rs->all ],
+        },
+    );
+    $schema->resultset(q{User})->create(
+        {
+            username      => q{test02},
+            password      => q{mypass},
+            email_address => q{test02@example.com},
+            first_name    => q{test02},
+            last_name     => q{Hague},
+            active        => 1,
+            user_roles    => [
+                map { { role_id => $_->id } }
+                  $role_rs->search({ role => [ q{schedule}, q{usermanagement}, q{user} ] })->all
+            ],
+        },
+    );
+    $schema->resultset(q{User})->create(
+        {
+            username      => q{test03},
+            password      => q{mypass},
+            email_address => q{test03@example.com},
+            first_name    => q{test03},
+            last_name     => q{Cameron},
+            active        => 1,
+            user_roles    => [ map { { role_id => $_->id } } $role_rs->search({ role => [q{user}] })->all ],
+        },
     );
 
     # create some appliances

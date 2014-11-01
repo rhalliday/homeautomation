@@ -60,11 +60,14 @@ sub test_get_new_appliance {
         }
     );
     isa_ok($first_appliance->hardware, q{Mochad}, q{hardware is a Mochad object});
+    $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F1}, q{10/31 22:06:52 Tx PL House: F Func: On} ]);
     ok $first_appliance->hardware->on(), q{can turn the appliance on};
-    is ${ $self->{message} }, q{pl F1 on} . "\n", q{appliance on sends the correct message};
+    is $self->{fake_mochad}->message, q{pl F1 on} . "\n", q{appliance on sends the correct message};
+
+    $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F1}, q{10/31 22:06:52 Tx PL House: F Func: Off} ]);
     ok $first_appliance->control(q{off}), q{can call the control method};
     is $first_appliance->status, 0, q{first appliance status is now off};
-    is ${ $self->{message} }, q{pl F1 off} . "\n", q{control off sends the correct message};
+    is $self->{fake_mochad}->message, q{pl F1 off} . "\n", q{control off sends the correct message};
 
     my $second_appliance = $self->{resultset}->next_appliance;
     is($second_appliance->address, q{F2}, q{next_appliance returns F2 when F1 is filled});
@@ -78,13 +81,15 @@ sub test_get_new_appliance {
         }
     );
 
+    $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F2}, q{10/31 22:06:52 Tx PL House: F Func: Off} ]);
     $second_appliance->switch;
     ok(!$second_appliance->status, q{just turned the lights out});
-    is ${ $self->{message} }, q{pl F2 off} . "\n", q{switch off sends the correct message};
+    is $self->{fake_mochad}->message, q{pl F2 off} . "\n", q{switch off sends the correct message};
 
+    $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F2}, q{10/31 22:06:52 Tx PL House: F Func: On} ]);
     $second_appliance->switch;
     ok($second_appliance->status, q{now they're on again});
-    is ${ $self->{message} }, q{pl F2 on} . "\n", q{switch on sends the correct message};
+    is $self->{fake_mochad}->message, q{pl F2 on} . "\n", q{switch on sends the correct message};
 
     my $all_appliances = $self->{resultset}->all_appliances;
 
@@ -128,18 +133,32 @@ sub test_appliance_with_timings {
             timings  => 1,
         }
     );
+    $self->set_up_mochad(
+        [
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: On},
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: Off}
+        ]
+    );
     $appliance->switch;
     ok($appliance->status, q{switch turns the curtain on});
-    is ${ $self->{message} }, q{pl F1 off} . "\n",
+    is $self->{fake_mochad}->message, q{pl F1 on} . "\n" . q{pl F1 off} . "\n",
       q{the last message sent should be an off one despite the status being on};
 
-    # reset the message
-    ${ $self->{message} } = q{};
 
+    $self->set_up_mochad(
+        [
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: On},
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: Off}
+        ]
+    );
     # send the on message
     $appliance->control(q{on});
     ok($appliance->status, q{timed device should still be on if it was on before});
-    is ${ $self->{message} }, q{}, q{no message should've been sent to the device as it is already on};
+    is $self->{fake_mochad}->message, undef, q{no message should've been sent to the device as it is already on};
 
     return 1;
 }

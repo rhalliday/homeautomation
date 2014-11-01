@@ -16,13 +16,13 @@ END {
 }
 
 # load our test classes
-use Test::Class::Moose::Load 't/lib';
+use Test::Class::Moose::Load 't/lib/Test';
+use Test::Class::Moose::Runner;
 
-# run the tests
-# can specify different classes on the command line
-# i.e. prove -l tests.t :: Test::HomeAutomation::X
-Test::HomeAutomation->new(
+
+Test::Class::Moose::Runner->new(
     test_classes => \@ARGV,    # ignored if empty
 )->runtests;
+
 
 1;
