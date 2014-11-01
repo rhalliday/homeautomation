@@ -7,6 +7,10 @@ use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
 use namespace::autoclean;
 
+use Readonly;
+
+Readonly::Scalar my $MAX_SETTING => 31;
+
 our $VERSION = '0.01';
 
 has '+item_class'     => (default => 'Appliances');
@@ -56,7 +60,7 @@ has_field 'colour' => (
     apply         => [ { check => qr/^#[A-F\d]{6}$/, message => q{Colour must be like '#000000'} } ],
     wrapper_class => ['form-group'],
     element_class => ['form-control color {hash:true}'],
-    element_attr  => { placeholder => '#000000' },
+    element_attr => { placeholder => '#000000' },
 );
 
 has_field 'on_button_text' => (
@@ -93,8 +97,9 @@ has_field 'setting' => (
 
 sub validate_setting {
     my ($self, $field) = @_;
+
     # make sure it's between 1 and 32
-    if ($field->value < 1 || $field->value > 31) {
+    if ($field->value < 1 || $field->value > $MAX_SETTING) {
         $field->add_error('Must be between 1 and 31');
         return 0;
     }

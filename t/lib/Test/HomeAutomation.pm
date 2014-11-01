@@ -4,22 +4,15 @@ use strict;
 use warnings;
 
 use Test::Class::Moose;
+use FindBin::libs;
+use FakeMochad;
 use HomeAutomation::Schema;
-use Test::MockObject::Extends;
-use IO::Socket;
+
+my $fake_mochad = FakeMochad->new();
+
 use Mochad;
 
 our $VERSION = '1.00';
-
-my $message = q{};
-
-# set up an IO::Socket object to intercept the messages
-my $io_socket = IO::Socket->new();
-$io_socket = Test::MockObject::Extends->new($io_socket);
-$io_socket->mock(q{print}, sub { my ($this, $msg) = @_; $message = $msg; });
-
-# Mochad has a singleton connection so all our Mochad instances will use this connection
-my $mochad = Mochad->new(address => q{H4}, connection => $io_socket);
 
 sub test_startup {
 
@@ -33,7 +26,8 @@ sub test_startup {
     };
     $self->{schema} = HomeAutomation::Schema->connect($connect_info);
 
-    $self->{message} = \$message;
+    $self->{fake_mochad} = $fake_mochad;
+
     return 1;
 }
 
@@ -46,6 +40,15 @@ sub test_shutdown {
 
     return 1;
 }
+
+sub set_up_mochad {
+    my ($self, $return) = @_;
+
+    $self->{fake_mochad}->clear_message;
+    $self->{fake_mochad}->return($return);
+    return 1;
+}
+
 1;
 
 __END__

@@ -81,50 +81,22 @@ has q{can_dim} => (
 
 =item connection
 
-Connection to send the command over.
-
-Defaults to an IO::Socket::INET on localhost port 1099.
+HashRef of connection information.
 
 =cut
 
-# we only want one connection
-my $singleton_connection;
-
 has q{connection} => (
     is      => q{ro},
-    isa     => q{IO::Socket},
+    isa     => q{HashRef},
     builder => q{_connection_builder},
 );
 
 sub _connection_builder {    ## no critic qw(Subroutines::ProhibitUnusedPrivateSubroutines)
-                             # only make a new connection if we don't already have one
-     unless ($singleton_connection) {
-         $singleton_connection = IO::Socket::INET->new(
-            PeerAddr => q{localhost},
-            PeerPort => 1099,
-            Proto     => q{tcp}
-        ) or croak 'Connection failed! ',$@;
-    }
-
-    return $singleton_connection;
-}
-
-sub BUILD {
-    my ($self, $args) = @_;
-
-    # if we were passed connection as the constructor, then make sure we are using the singleton
-    if ($args->{connection}) {
-
-        # if $singleton_connection is set then we need to set connection to the singleton
-        if ($singleton_connection) {
-            $self->{connection} = $singleton_connection;
-
-            # else we need to set the singleton to this connection
-        } else {
-            $singleton_connection = $self->connection;
-        }
-    }
-    return 1;
+    return {
+        PeerAddr => q{localhost},
+        PeerPort => 1099,
+        Proto    => q{tcp},
+    };
 }
 
 =back
@@ -168,7 +140,7 @@ Dims the appliance if the appliance has that feature.
 =cut
 
 sub dim {
-    my ($self,$dim) = @_;
+    my ($self, $dim) = @_;
     return $self->_send_message(qq{dim $dim});
 }
 
@@ -197,15 +169,37 @@ sub timer {
     my ($self, $time) = @_;
 
     $self->on();
-    sleep($time);
+    my $sleep = sleep($time);
     return $self->off();
 }
 
 sub _send_message {
     my ($self, $type) = @_;
 
-    $self->connection->print(join(q{ }, $self->via, $self->address, $type) . qq{\n});
-    return 1;
+    my $sock = IO::Socket::INET->new(%{ $self->connection })
+      or croak 'Connection failed! ', $@;
+
+    # send the message
+    $sock->print(join(q{ }, $self->via, $self->address, $type) . qq{\n});
+
+    if ($type =~ /(\w+) /) {
+        $type = $1;
+    }
+
+    # wait for the response
+    my $seen_unit = 0;
+    my $seen_func = 0;
+
+    while (my $data = $sock->getline) {
+        if ($data =~ /HouseUnit: (\w+)/) {
+            $seen_unit = 1 if uc($1) eq uc($self->address);
+        } elsif ($data =~ /Func: (\w+)/) {
+            $seen_func = 1 if uc($1) eq uc($type);
+        }
+        last if ($seen_unit and $seen_func);
+    }
+    $sock->close();
+    return ($seen_unit and $seen_func);
 }
 
 __PACKAGE__->meta->make_immutable;

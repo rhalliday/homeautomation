@@ -20,19 +20,26 @@ sub test_startup {
 
     $self->next::method();
 
-    $self->{resultset} = $self->{schema}->resultset(q{Task});
+    $self->{resultset}     = $self->{schema}->resultset(q{Task});
     $self->{recurrence_rs} = $self->{schema}->resultset(q{Recurrence});
 
     # create a couple of appliances
     $self->{appliances} = [
-        $self->{schema}->resultset(q{Appliance})
-          ->next_appliance->update({ device => 'Lights', room_id => 1, colour => '#FFFFFF' }),
         $self->{schema}->resultset(q{Appliance})->next_appliance->update(
             {
-                device         => 'Curtain',
-                room_id        => 2,
-                colour         => '#000000',
-                on_button_text => q{Open},
+                device          => 'Lights',
+                room_id         => 1,
+                colour          => '#FFFFFF',
+                on_button_text  => q{On},
+                off_button_text => q{Off}
+            }
+        ),
+        $self->{schema}->resultset(q{Appliance})->next_appliance->update(
+            {
+                device          => 'Curtain',
+                room_id         => 2,
+                colour          => '#000000',
+                on_button_text  => q{Open},
                 off_button_text => q{Closed}
             }
         ),
@@ -377,29 +384,29 @@ sub test_active_tasks_recurring {
     my $dow      = $dt->dow;
     my $tomorrow = ($dow % $DAYS_IN_WEEK) + 1;
 
-    $self->{resultset}->populate(
-        [
-            {
-                appliance  => $self->{appliances}[0],
-                action     => q{on},
-                time       => $time,
-                recurrence => {
-                    id         => 1,
-                    expires    => $dt->add(days => 1),
-                    tasks_days => [ { day_id => $dow }, ],
-                },
+    $self->{resultset}->create(
+        {
+            appliance  => $self->{appliances}[0],
+            action     => q{on},
+            time       => $time,
+            recurrence => {
+                id         => 1,
+                expires    => $dt->add(days => 1),
+                tasks_days => [ { day_id => $dow }, ],
             },
-            {
-                appliance  => $self->{appliances}[0],
-                action     => q{off},
-                time       => $time,
-                recurrence => {
-                    id         => 2,
-                    expires    => $dt->add(days => 1),
-                    tasks_days => [ { day_id => $tomorrow }, ],
-                },
+        },
+    );
+    $self->{resultset}->create(
+        {
+            appliance  => $self->{appliances}[0],
+            action     => q{off},
+            time       => $time,
+            recurrence => {
+                id         => 2,
+                expires    => $dt->add(days => 1),
+                tasks_days => [ { day_id => $tomorrow }, ],
             },
-        ]
+        },
     );
 
     my @tasks = $self->{resultset}->active_tasks();
@@ -418,28 +425,29 @@ sub test_active_tasks_recurring_no_expires {
     my $dow      = $dt->dow;
     my $tomorrow = ($dow % $DAYS_IN_WEEK) + 1;
 
-    $self->{resultset}->populate(
-        [
-            {
-                appliance  => $self->{appliances}[1],
-                action     => q{on},
-                time       => $time,
-                recurrence => {
-                    id         => 1,
-                    tasks_days => [ { day_id => $dow }, ],
-                },
+    $self->{resultset}->create(
+        {
+            appliance  => $self->{appliances}[1],
+            action     => q{on},
+            time       => $time,
+            recurrence => {
+                id         => 1,
+                tasks_days => [ { day_id => $dow }, ],
             },
-            {
-                appliance  => $self->{appliances}[0],
-                action     => q{off},
-                time       => $time,
-                recurrence => {
-                    id         => 2,
-                    expires    => $dt->add(days => 1),
-                    tasks_days => [ { day_id => $tomorrow }, ],
-                },
+        },
+    );
+
+    $self->{resultset}->create(
+        {
+            appliance  => $self->{appliances}[0],
+            action     => q{off},
+            time       => $time,
+            recurrence => {
+                id         => 2,
+                expires    => $dt->add(days => 1),
+                tasks_days => [ { day_id => $tomorrow }, ],
             },
-        ]
+        },
     );
 
     my @tasks = $self->{resultset}->active_tasks();
