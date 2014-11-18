@@ -5,7 +5,6 @@
             <div class="container footer-content">
                 <div class="connect">
                     Connect with me...
-                    <a href="[%- global.facebook -%]"><i class="fa fa-facebook fa-2x icon-background facebook-colour"></i></a>
                     <a href="[%- global.twitter -%]"><i class="fa fa-twitter fa-2x icon-background twitter-colour"></i></a>
                     <a href="[%- global.linkedin -%]"><i class="fa fa-linkedin fa-2x icon-background linkedin-colour"></i></a>
                 </div>
