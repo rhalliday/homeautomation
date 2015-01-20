@@ -35,8 +35,8 @@ The root page (/)
 sub index : Path : Args(0) {
     my ($self, $c) = @_;
 
-    # Hello World
-    $c->response->body($c->welcome_message);
+    # redirect to the appliances list page
+    $c->response->redirect($c->uri_for('/appliances/list'));
 
     return 1;
 }
@@ -73,6 +73,7 @@ sub auto : Private {
 
         # Redirect the user to the login page
         $c->response->redirect($c->uri_for('/login'));
+        $c->flash->{redirect_after_login} = '' . $c->req->uri;
 
         # Return 0 to cancel 'post-auto' processing and prevent use of application
         return 0;

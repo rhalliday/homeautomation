@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # fake a mochad server so that we can still test on our dev machine
 use strict;
