@@ -46,6 +46,7 @@ sub index : Path : Args(0) {
         {
             # If successful, then let them use the application
             $c->response->redirect($c->uri_for($c->controller('Appliances')->action_for('list')));
+            $c->response->redirect($c->flash->{redirect_after_login});
             return;
         } else {
 
