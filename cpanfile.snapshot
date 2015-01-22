@@ -29,6 +29,20 @@ DISTRIBUTIONS
       POSIX::strftime::Compiler 0.30
       Time::Local 0
       perl 5.008001
+  App-Daemon-0.22
+    pathname: M/MS/MSCHILLI/App-Daemon-0.22.tar.gz
+    provides:
+      App::Daemon 0.22
+    requirements:
+      ExtUtils::MakeMaker 0
+      File::Basename 0
+      File::Pid 0
+      File::Temp 0
+      Getopt::Std 0
+      Log::Log4perl 1.0
+      Pod::Usage 0
+      Sysadm::Install 0.37
+      Test::More 0
   AppConfig-1.67
     pathname: N/NE/NEILB/AppConfig-1.67.tar.gz
     provides:
@@ -354,16 +368,19 @@ DISTRIBUTIONS
     requirements:
       Carp::Clan 0
       Catalyst::Component::InstancePerContext 0
+      Catalyst::Devel 1.0
       Catalyst::Runtime 5.80005
       CatalystX::Component::Traits 0.14
       DBD::SQLite 0
       DBIx::Class 0.08114
+      DBIx::Class::Schema::Loader 0.04005
       ExtUtils::MakeMaker 6.59
       Hash::Merge 0
       List::MoreUtils 0
       Module::Runtime 0.012
       Moose 1.12
       MooseX::MarkAsMethods 0.13
+      MooseX::NonMoose 0.16
       MooseX::Types 0
       MooseX::Types::LoadableClass 0.009
       Storable 0
@@ -1369,6 +1386,18 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.42
       Time::HiRes 0
       Time::Warp 0
+      perl 5.008001
+  Daemon-Control-0.001006
+    pathname: S/SY/SYMKAT/Daemon-Control-0.001006.tar.gz
+    provides:
+      Daemon::Control 0.001006
+    requirements:
+      Cwd 0
+      ExtUtils::MakeMaker 6.59
+      File::Path 2.08
+      File::Spec 0
+      POSIX 0
+      Test::More 0.88
       perl 5.008001
   Data-Clone-0.004
     pathname: G/GF/GFUJI/Data-Clone-0.004.tar.gz
@@ -2774,6 +2803,22 @@ DISTRIBUTIONS
       File::Spec 0.8
       Pod::Man 0
       perl 5.006
+  FCGI-0.77
+    pathname: E/ET/ETHER/FCGI-0.77.tar.gz
+    provides:
+      FCGI 0.77
+      FCGI::Stream 0.77
+    requirements:
+      ExtUtils::MakeMaker 0
+      XSLoader 0
+      perl 5.006
+  FCGI-ProcManager-0.25
+    pathname: A/AR/ARODLAND/FCGI-ProcManager-0.25.tar.gz
+    provides:
+      FCGI::ProcManager 0.25
+      FCGI::ProcManager::Constrained undef
+    requirements:
+      ExtUtils::MakeMaker 0
   File-ChangeNotify-0.24
     pathname: D/DR/DROLSKY/File-ChangeNotify-0.24.tar.gz
     provides:
@@ -2832,6 +2877,13 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       HTTP::Date 6
       perl 5.006002
+  File-Pid-1.01
+    pathname: C/CW/CWEST/File-Pid-1.01.tar.gz
+    provides:
+      File::Pid 1.01
+    requirements:
+      Class::Accessor::Fast 0.19
+      ExtUtils::MakeMaker 0
   File-Remove-1.52
     pathname: A/AD/ADAMK/File-Remove-1.52.tar.gz
     provides:
@@ -2862,6 +2914,17 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.11
       File::Spec 0
       IO::Dir 0
+  File-Which-1.09
+    pathname: A/AD/ADAMK/File-Which-1.09.tar.gz
+    provides:
+      File::Which 1.09
+    requirements:
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      File::Spec 0.60
+      Getopt::Std 0
+      Test::More 0.80
+      Test::Script 1.05
   Filesys-Notify-Simple-0.12
     pathname: M/MI/MIYAGAWA/Filesys-Notify-Simple-0.12.tar.gz
     provides:
@@ -3306,6 +3369,14 @@ DISTRIBUTIONS
       IO::WrapTie::Slave 2.110
     requirements:
       ExtUtils::MakeMaker 0
+  IPC-Run3-0.048
+    pathname: R/RJ/RJBS/IPC-Run3-0.048.tar.gz
+    provides:
+      IPC::Run3 0.048
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0.31
+      Time::HiRes 0
   Import-Into-1.002004
     pathname: E/ET/ETHER/Import-Into-1.002004.tar.gz
     provides:
@@ -3514,6 +3585,61 @@ DISTRIBUTIONS
       Exporter::Tiny 0.038
       ExtUtils::MakeMaker 0
       XSLoader 0
+  Log-Log4perl-1.46
+    pathname: M/MS/MSCHILLI/Log-Log4perl-1.46.tar.gz
+    provides:
+      L4pResurrectable 0.01
+      Log::Log4perl 1.46
+      Log::Log4perl::Appender undef
+      Log::Log4perl::Appender::DBI undef
+      Log::Log4perl::Appender::File undef
+      Log::Log4perl::Appender::RRDs undef
+      Log::Log4perl::Appender::Screen undef
+      Log::Log4perl::Appender::ScreenColoredLevels undef
+      Log::Log4perl::Appender::Socket undef
+      Log::Log4perl::Appender::String undef
+      Log::Log4perl::Appender::TestArrayBuffer undef
+      Log::Log4perl::Appender::TestBuffer undef
+      Log::Log4perl::Appender::TestFileCreeper undef
+      Log::Log4perl::Config undef
+      Log::Log4perl::Config::BaseConfigurator undef
+      Log::Log4perl::Config::DOMConfigurator 0.03
+      Log::Log4perl::Config::PropertyConfigurator undef
+      Log::Log4perl::Config::Watch undef
+      Log::Log4perl::DateFormat undef
+      Log::Log4perl::Filter undef
+      Log::Log4perl::Filter::Boolean undef
+      Log::Log4perl::Filter::LevelMatch undef
+      Log::Log4perl::Filter::LevelRange undef
+      Log::Log4perl::Filter::MDC undef
+      Log::Log4perl::Filter::StringMatch undef
+      Log::Log4perl::InternalDebug undef
+      Log::Log4perl::JavaMap undef
+      Log::Log4perl::JavaMap::ConsoleAppender undef
+      Log::Log4perl::JavaMap::FileAppender undef
+      Log::Log4perl::JavaMap::JDBCAppender undef
+      Log::Log4perl::JavaMap::NTEventLogAppender undef
+      Log::Log4perl::JavaMap::RollingFileAppender undef
+      Log::Log4perl::JavaMap::SyslogAppender undef
+      Log::Log4perl::JavaMap::TestBuffer undef
+      Log::Log4perl::Layout undef
+      Log::Log4perl::Layout::NoopLayout undef
+      Log::Log4perl::Layout::PatternLayout undef
+      Log::Log4perl::Layout::PatternLayout::Multiline undef
+      Log::Log4perl::Layout::SimpleLayout undef
+      Log::Log4perl::Level undef
+      Log::Log4perl::Logger undef
+      Log::Log4perl::MDC undef
+      Log::Log4perl::NDC undef
+      Log::Log4perl::Resurrector undef
+      Log::Log4perl::Util undef
+      Log::Log4perl::Util::Semaphore undef
+      Log::Log4perl::Util::TimeTracker undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      File::Path 2.0606
+      File::Spec 0.82
+      Test::More 0.45
   MIME-Types-2.09
     pathname: M/MA/MARKOV/MIME-Types-2.09.tar.gz
     provides:
@@ -4848,6 +4974,15 @@ DISTRIBUTIONS
       Test::More 0.89
       Test::TCP 0
       URI 0
+  Probe-Perl-0.03
+    pathname: K/KW/KWILLIAMS/Probe-Perl-0.03.tar.gz
+    provides:
+      Probe::Perl 0.03
+    requirements:
+      Config 0
+      ExtUtils::MakeMaker 6.30
+      File::Spec 0
+      strict 0
   Readonly-2.00
     pathname: S/SA/SANKO/Readonly-2.00.tar.gz
     provides:
@@ -5194,6 +5329,21 @@ DISTRIBUTIONS
       constant 0
       strict 0
       warnings 0
+  Sysadm-Install-0.44
+    pathname: M/MS/MSCHILLI/Sysadm-Install-0.44.tar.gz
+    provides:
+      Sysadm::Install 0.44
+    requirements:
+      Cwd 0
+      ExtUtils::MakeMaker 0
+      File::Basename 0
+      File::Copy 0
+      File::Path 0
+      File::Temp 0.16
+      File::Which 1.09
+      LWP::Simple 0
+      Log::Log4perl 1.28
+      Term::ReadKey 0
   TAP-Stream-0.44
     pathname: O/OV/OVID/TAP-Stream-0.44.tar.gz
     provides:
@@ -5285,6 +5435,12 @@ DISTRIBUTIONS
       File::Temp 0.12
       Scalar::Util 0
       Test::LeakTrace 0
+  TermReadKey-2.32
+    pathname: J/JS/JSTOWE/TermReadKey-2.32.tar.gz
+    provides:
+      Term::ReadKey 2.32
+    requirements:
+      ExtUtils::MakeMaker 0
   Test-Class-Moose-0.58
     pathname: O/OV/OVID/Test-Class-Moose-0.58.tar.gz
     provides:
@@ -5499,6 +5655,19 @@ DISTRIBUTIONS
       Test::Builder::Module 0
       Test::More 0.61
       perl 5.008_001
+  Test-Script-1.07
+    pathname: A/AD/ADAMK/Test-Script-1.07.tar.gz
+    provides:
+      Test::Script 1.07
+    requirements:
+      ExtUtils::MakeMaker 6.42
+      File::Spec 0.80
+      IPC::Run3 0.034
+      Probe::Perl 0.01
+      Test::Builder 0.32
+      Test::Builder::Tester 1.02
+      Test::More 0.62
+      blib 0
   Test-SharedFork-0.29
     pathname: E/EX/EXODIST/Test-SharedFork-0.29.tar.gz
     provides:
