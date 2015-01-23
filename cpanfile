@@ -19,7 +19,7 @@ requires 'DBIx::Class', '0.082810';
 requires 'DBIx::Class::PassphraseColumn', '0.02';
 requires 'DBIx::Class::Schema::Loader', '0.07042';
 requires 'DBIx::Class::TimeStamp', '0.14';
-requires 'App::Daemon', '0.22';
+requires 'Daemon::Control', '0.001006';
 requires 'FCGI', '0.77';
 requires 'FCGI::ProcManager', '0.25';
 requires 'FindBin::libs', '2.10';

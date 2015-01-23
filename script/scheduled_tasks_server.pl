@@ -2,13 +2,10 @@
 
 use strict;
 use warnings;
-use App::Daemon qw(daemonize);
 
 use FindBin::libs;
 use HomeAutomation::Schema;
 use IO::Socket::INET;
-
-daemonize();
 
 sub run_tasks {
     my ($schema) = @_;
