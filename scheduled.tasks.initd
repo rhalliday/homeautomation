@@ -11,7 +11,7 @@ use Daemon::Control;
 
 
 my $app_home = '/var/www/HomeAutomation';
-my $perl     = '/var/www/.plenv/shims/carton exec';
+my $perl     = '/var/www/.plenv/shims/carton exec perl';
 my $program  = $app_home . '/script/scheduled_tasks_server.pl';
 my $name     = 'scheduled tasks';
 my $pid_file = $app_home . '/scheduled_tasks.pid';

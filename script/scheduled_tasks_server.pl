@@ -34,7 +34,6 @@ while(1) {
     # get the command
     my $data;
     $client_socket->recv($data,1024);
-    print q{recieved: },$data;
     if($data =~ /run task/i) {
         $client_socket->send(q{running tasks} . qq{\n});
         run_tasks($schema);
