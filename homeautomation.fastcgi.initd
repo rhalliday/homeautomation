@@ -11,25 +11,26 @@ use Daemon::Control;
 
 
 my $app_home = '/var/www/HomeAutomation';
-my $perl     = 'perl';
+my $perl     = '/var/www/.plenv/shims/carton exec';
 my $program  = $app_home . '/script/homeautomation_fastcgi.pl';
 my $name     = 'homeautomation';
-my $workers  = 1;
+my $workers  = 4;
 my $pid_file = $app_home . '/homeautomation.pid';
 my $socket   = $app_home . '/homeautomation.socket';
 
 Daemon::Control->new({
-    name        => $name,
-    lsb_start   => '$nginx',
-    lsb_stop    => '$nginx',
-    lsb_sdesc   => $name,
-    lsb_desc    => $name,
-    path        => $app_home . '/homeautomation.fastcgi.initd',
+    name         => $name,
+    lsb_start    => '$nginx',
+    lsb_stop     => '$nginx',
+    lsb_sdesc    => $name,
+    lsb_desc     => $name,
+    path         => $app_home . '/homeautomation.fastcgi.initd',
 
-    user        => 'www-data',
-    group       => 'www-data',
-    directory   => $app_home,
-    program     => "$perl $program --nproc $workers --listen $socket",
+    user         => 'www-data',
+    group        => 'www-data',
+    directory    => $app_home,
+    program      => "$perl $program",
+    program_args => [ '--nproc', $workers, '--listen', $socket ],
 
     pid_file    => $pid_file,
     stderr_file => $app_home . '/homeautomation.out',
