@@ -1,7 +1,7 @@
 # This Makefile is for the HomeAutomation extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 6.66 (Revision: 66600) from the contents of
+# 7.04 (Revision: 70400) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -13,19 +13,19 @@
 
 #     ABSTRACT => q[Catalyst based application for controlling devices in the home]
 #     AUTHOR => [q[Rob Halliday]]
-#     BUILD_REQUIRES => { Test::More=>q[0.88], ExtUtils::MakeMaker=>q[6.59] }
+#     BUILD_REQUIRES => { ExtUtils::MakeMaker=>q[6.59], Test::Class::Moose=>q[0], Test::MockObject::Extends=>q[0], Test::More=>q[0.88], Test::WWW::Mechanize::Catalyst=>q[0] }
 #     CONFIGURE_REQUIRES => {  }
 #     DISTNAME => q[HomeAutomation]
-#     EXE_FILES => [q[script/create_admin_user.pl], q[script/homeautomation_cgi.pl], q[script/homeautomation_create.pl], q[script/homeautomation_fastcgi.pl], q[script/homeautomation_server.pl], q[script/homeautomation_test.pl], q[script/run_scheduled_tasks.pl]]
+#     EXE_FILES => [q[script/create_admin_user.pl], q[script/fake_mochad.pl], q[script/homeautomation_cgi.pl], q[script/homeautomation_create.pl], q[script/homeautomation_fastcgi.pl], q[script/homeautomation_server.pl], q[script/homeautomation_test.pl], q[script/run_scheduled_tasks.pl], q[script/schedule_tasks.pl], q[script/scheduled_tasks_server.pl]]
 #     LICENSE => q[perl]
 #     MIN_PERL_VERSION => q[5.014]
 #     NAME => q[HomeAutomation]
 #     NO_META => q[1]
-#     PREREQ_PM => { Catalyst::Plugin::Session::Store::File=>q[0], namespace::autoclean=>q[0], ExtUtils::MakeMaker=>q[6.59], Catalyst::Plugin::Static::Simple=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], HTML::FormHandler::Model::DBIC=>q[0], Catalyst::Plugin::Session=>q[0], Config::General=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Catalyst::Plugin::StackTrace=>q[0], Moose=>q[0], Catalyst::Action::RenderView=>q[0], Catalyst::View::JSON=>q[0], Catalyst::Plugin::Authorization::Roles=>q[0], Perl6::Junction=>q[0], Test::More=>q[0.88], Catalyst::Plugin::Authentication=>q[0], HTML::FormHandler::Widget::Theme::Bootstrap3=>q[0], Catalyst::Runtime=>q[5.90018] }
+#     PREREQ_PM => { Catalyst::Action::RenderView=>q[0], Catalyst::Authentication::Realm::SimpleDB=>q[0], Catalyst::Model::DBIC::Schema=>q[0], Catalyst::Plugin::Authentication=>q[0], Catalyst::Plugin::Authorization::Roles=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], Catalyst::Plugin::Session=>q[0], Catalyst::Plugin::Session::State::Cookie=>q[0], Catalyst::Plugin::Session::Store::File=>q[0], Catalyst::Plugin::StackTrace=>q[0], Catalyst::Plugin::Static::Simple=>q[0], Catalyst::Plugin::StatusMessage=>q[0], Catalyst::Runtime=>q[5.90018], Catalyst::View::JSON=>q[0], Catalyst::View::TT=>q[0], Config::General=>q[0], DBIx::Class=>q[0], DBIx::Class::PassphraseColumn=>q[0], DBIx::Class::TimeStamp=>q[0], ExtUtils::MakeMaker=>q[6.59], HTML::FormHandler::Model::DBIC=>q[0], HTML::FormHandler::Widget::Theme::Bootstrap3=>q[0], Moose=>q[0], Perl6::Junction=>q[0], Test::Class::Moose=>q[0], Test::MockObject::Extends=>q[0], Test::More=>q[0.88], Test::WWW::Mechanize::Catalyst=>q[0], namespace::autoclean=>q[0] }
 #     TEST_REQUIRES => {  }
-#     VERSION => q[0.01]
+#     VERSION => q[0.07]
 #     VERSION_FROM => q[lib/HomeAutomation.pm]
-#     dist => {  }
+#     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
 #     realclean => { FILES=>q[MYMETA.yml] }
 #     test => { TESTS=>q[t/02pod.t t/03podcoverage.t t/mochad_initialise_everything.t t/mochad_initialization.t t/mochad_on_off_dim_bright.t t/model_DB.t t/tests.t t/view_HTML.t t/view_JSON.t] }
 
@@ -34,7 +34,7 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /usr/lib/perl/5.18/Config.pm).
+# These definitions are from config.sh (via /home/rob/.plenv/versions/5.20.0/lib/perl5/5.20.0/x86_64-linux/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
 CC = cc
@@ -45,19 +45,19 @@ DLSRC = dl_dlopen.xs
 EXE_EXT = 
 FULL_AR = /usr/bin/ar
 LD = cc
-LDDLFLAGS = -shared -L/usr/local/lib -fstack-protector
+LDDLFLAGS = -shared -O2 -L/usr/local/lib -fstack-protector
 LDFLAGS =  -fstack-protector -L/usr/local/lib
-LIBC = 
+LIBC = libc-2.19.so
 LIB_EXT = .a
 OBJ_EXT = .o
 OSNAME = linux
-OSVERS = 3.2.0-58-generic
+OSVERS = 3.16.0-29-generic
 RANLIB = :
-SITELIBEXP = /usr/local/share/perl/5.18.2
-SITEARCHEXP = /usr/local/lib/perl/5.18.2
+SITELIBEXP = /home/rob/.plenv/versions/5.20.0/lib/perl5/site_perl/5.20.0
+SITEARCHEXP = /home/rob/.plenv/versions/5.20.0/lib/perl5/site_perl/5.20.0/x86_64-linux
 SO = so
-VENDORARCHEXP = /usr/lib/perl5
-VENDORLIBEXP = /usr/share/perl5
+VENDORARCHEXP = 
+VENDORLIBEXP = 
 
 
 # --- MakeMaker constants section:
@@ -66,11 +66,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = HomeAutomation
 NAME_SYM = HomeAutomation
-VERSION = 0.01
+VERSION = 0.07
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_01
+VERSION_SYM = 0_07
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.01
+XS_VERSION = 0.07
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -79,60 +79,62 @@ INST_BIN = blib/bin
 INST_LIB = blib/lib
 INST_MAN1DIR = blib/man1
 INST_MAN3DIR = blib/man3
-MAN1EXT = 1p
-MAN3EXT = 3pm
+MAN1EXT = 1
+MAN3EXT = 3
 INSTALLDIRS = site
 DESTDIR = 
-PREFIX = /usr
-PERLPREFIX = $(PREFIX)
-SITEPREFIX = $(PREFIX)/local
-VENDORPREFIX = $(PREFIX)
-INSTALLPRIVLIB = $(PERLPREFIX)/share/perl/5.18
+PREFIX = $(SITEPREFIX)
+PERLPREFIX = /home/rob/.plenv/versions/5.20.0
+SITEPREFIX = /home/rob/.plenv/versions/5.20.0
+VENDORPREFIX = 
+INSTALLPRIVLIB = /home/rob/.plenv/versions/5.20.0/lib/perl5/5.20.0
 DESTINSTALLPRIVLIB = $(DESTDIR)$(INSTALLPRIVLIB)
-INSTALLSITELIB = $(SITEPREFIX)/share/perl/5.18.2
+INSTALLSITELIB = /home/rob/.plenv/versions/5.20.0/lib/perl5/site_perl/5.20.0
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
-INSTALLVENDORLIB = $(VENDORPREFIX)/share/perl5
+INSTALLVENDORLIB = 
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = $(PERLPREFIX)/lib/perl/5.18
+INSTALLARCHLIB = /home/rob/.plenv/versions/5.20.0/lib/perl5/5.20.0/x86_64-linux
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = $(SITEPREFIX)/lib/perl/5.18.2
+INSTALLSITEARCH = /home/rob/.plenv/versions/5.20.0/lib/perl5/site_perl/5.20.0/x86_64-linux
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = $(VENDORPREFIX)/lib/perl5
+INSTALLVENDORARCH = 
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
-INSTALLBIN = $(PERLPREFIX)/bin
+INSTALLBIN = /home/rob/.plenv/versions/5.20.0/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
-INSTALLSITEBIN = $(SITEPREFIX)/bin
+INSTALLSITEBIN = /home/rob/.plenv/versions/5.20.0/bin
 DESTINSTALLSITEBIN = $(DESTDIR)$(INSTALLSITEBIN)
-INSTALLVENDORBIN = $(VENDORPREFIX)/bin
+INSTALLVENDORBIN = 
 DESTINSTALLVENDORBIN = $(DESTDIR)$(INSTALLVENDORBIN)
-INSTALLSCRIPT = $(PERLPREFIX)/bin
+INSTALLSCRIPT = /home/rob/.plenv/versions/5.20.0/bin
 DESTINSTALLSCRIPT = $(DESTDIR)$(INSTALLSCRIPT)
-INSTALLSITESCRIPT = $(SITEPREFIX)/bin
+INSTALLSITESCRIPT = /home/rob/.plenv/versions/5.20.0/bin
 DESTINSTALLSITESCRIPT = $(DESTDIR)$(INSTALLSITESCRIPT)
-INSTALLVENDORSCRIPT = $(VENDORPREFIX)/bin
+INSTALLVENDORSCRIPT = 
 DESTINSTALLVENDORSCRIPT = $(DESTDIR)$(INSTALLVENDORSCRIPT)
-INSTALLMAN1DIR = $(PERLPREFIX)/share/man/man1
+INSTALLMAN1DIR = /home/rob/.plenv/versions/5.20.0/man/man1
 DESTINSTALLMAN1DIR = $(DESTDIR)$(INSTALLMAN1DIR)
-INSTALLSITEMAN1DIR = $(SITEPREFIX)/man/man1
+INSTALLSITEMAN1DIR = /home/rob/.plenv/versions/5.20.0/man/man1
 DESTINSTALLSITEMAN1DIR = $(DESTDIR)$(INSTALLSITEMAN1DIR)
-INSTALLVENDORMAN1DIR = $(VENDORPREFIX)/share/man/man1
+INSTALLVENDORMAN1DIR = 
 DESTINSTALLVENDORMAN1DIR = $(DESTDIR)$(INSTALLVENDORMAN1DIR)
-INSTALLMAN3DIR = $(PERLPREFIX)/share/man/man3
+INSTALLMAN3DIR = /home/rob/.plenv/versions/5.20.0/man/man3
 DESTINSTALLMAN3DIR = $(DESTDIR)$(INSTALLMAN3DIR)
-INSTALLSITEMAN3DIR = $(SITEPREFIX)/man/man3
+INSTALLSITEMAN3DIR = /home/rob/.plenv/versions/5.20.0/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
-INSTALLVENDORMAN3DIR = $(VENDORPREFIX)/share/man/man3
+INSTALLVENDORMAN3DIR = 
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
 PERL_LIB =
-PERL_ARCHLIB = /usr/lib/perl/5.18
+PERL_ARCHLIB = /home/rob/.plenv/versions/5.20.0/lib/perl5/5.20.0/x86_64-linux
+PERL_ARCHLIBDEP = /home/rob/.plenv/versions/5.20.0/lib/perl5/5.20.0/x86_64-linux
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /usr/lib/perl/5.18/CORE
-PERL = /usr/bin/perl "-Iinc"
-FULLPERL = /usr/bin/perl "-Iinc"
+PERL_INC = /home/rob/.plenv/versions/5.20.0/lib/perl5/5.20.0/x86_64-linux/CORE
+PERL_INCDEP = /home/rob/.plenv/versions/5.20.0/lib/perl5/5.20.0/x86_64-linux/CORE
+PERL = "/home/rob/.plenv/versions/5.20.0/bin/perl5.20.0" "-Iinc"
+FULLPERL = "/home/rob/.plenv/versions/5.20.0/bin/perl5.20.0" "-Iinc"
 ABSPERL = $(PERL)
 PERLRUN = $(PERL)
 FULLPERLRUN = $(FULLPERL)
@@ -145,9 +147,9 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /usr/share/perl/5.18/ExtUtils/MakeMaker.pm
-MM_VERSION  = 6.66
-MM_REVISION = 66600
+MAKEMAKER   = /home/rob/catalyst/HomeAutomation/local/lib/perl5/ExtUtils/MakeMaker.pm
+MM_VERSION  = 7.04
+MM_REVISION = 70400
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -187,6 +189,7 @@ MAN3PODS = lib/HomeAutomation.pm \
 	lib/HomeAutomation/Form/User.pm \
 	lib/HomeAutomation/Model/DB.pm \
 	lib/HomeAutomation/Schema.pm \
+	lib/HomeAutomation/Schema/Base.pm \
 	lib/HomeAutomation/Schema/Result/Appliance.pm \
 	lib/HomeAutomation/Schema/Result/Day.pm \
 	lib/HomeAutomation/Schema/Result/Recurrence.pm \
@@ -203,7 +206,7 @@ MAN3PODS = lib/HomeAutomation.pm \
 	lib/Mochad.pm
 
 # Where is the Config information that we are using/depend on
-CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
+CONFIGDEP = $(PERL_ARCHLIBDEP)$(DFSEP)Config.pm $(PERL_INCDEP)$(DFSEP)config.h
 
 # Where to build things
 INST_LIBDIR      = $(INST_LIB)
@@ -219,6 +222,7 @@ INST_BOOT        =
 # Extra linker info
 EXPORT_LIST        = 
 PERL_ARCHIVE       = 
+PERL_ARCHIVEDEP    = 
 PERL_ARCHIVE_AFTER = 
 
 
@@ -235,6 +239,7 @@ TO_INST_PM = lib/HomeAutomation.pm \
 	lib/HomeAutomation/Form/User.pm \
 	lib/HomeAutomation/Model/DB.pm \
 	lib/HomeAutomation/Schema.pm \
+	lib/HomeAutomation/Schema/Base.pm \
 	lib/HomeAutomation/Schema/Result/Appliance.pm \
 	lib/HomeAutomation/Schema/Result/Day.pm \
 	lib/HomeAutomation/Schema/Result/Recurrence.pm \
@@ -250,64 +255,66 @@ TO_INST_PM = lib/HomeAutomation.pm \
 	lib/HomeAutomation/View/JSON.pm \
 	lib/Mochad.pm
 
-PM_TO_BLIB = lib/HomeAutomation/Schema/Result/UserRole.pm \
-	blib/lib/HomeAutomation/Schema/Result/UserRole.pm \
-	lib/HomeAutomation/Schema/Result/Task.pm \
-	blib/lib/HomeAutomation/Schema/Result/Task.pm \
-	lib/HomeAutomation/View/JSON.pm \
-	blib/lib/HomeAutomation/View/JSON.pm \
-	lib/HomeAutomation/Controller/Root.pm \
-	blib/lib/HomeAutomation/Controller/Root.pm \
+PM_TO_BLIB = lib/HomeAutomation.pm \
+	blib/lib/HomeAutomation.pm \
 	lib/HomeAutomation/Controller/Appliances.pm \
 	blib/lib/HomeAutomation/Controller/Appliances.pm \
-	lib/HomeAutomation/Schema/ResultSet/Task.pm \
-	blib/lib/HomeAutomation/Schema/ResultSet/Task.pm \
-	lib/HomeAutomation/Schema/Result/Day.pm \
-	blib/lib/HomeAutomation/Schema/Result/Day.pm \
-	lib/HomeAutomation/Controller/UserManagement.pm \
-	blib/lib/HomeAutomation/Controller/UserManagement.pm \
-	lib/HomeAutomation/Form/ChangePassword.pm \
-	blib/lib/HomeAutomation/Form/ChangePassword.pm \
-	lib/HomeAutomation/Model/DB.pm \
-	blib/lib/HomeAutomation/Model/DB.pm \
-	lib/HomeAutomation/Schema/Result/Role.pm \
-	blib/lib/HomeAutomation/Schema/Result/Role.pm \
-	lib/HomeAutomation/Schema/Result/Appliance.pm \
-	blib/lib/HomeAutomation/Schema/Result/Appliance.pm \
-	lib/HomeAutomation/Form/User.pm \
-	blib/lib/HomeAutomation/Form/User.pm \
-	lib/Mochad.pm \
-	blib/lib/Mochad.pm \
-	lib/HomeAutomation/Controller/Schedules.pm \
-	blib/lib/HomeAutomation/Controller/Schedules.pm \
-	lib/HomeAutomation/Controller/Logout.pm \
-	blib/lib/HomeAutomation/Controller/Logout.pm \
-	lib/HomeAutomation/Schema/Result/Recurrence.pm \
-	blib/lib/HomeAutomation/Schema/Result/Recurrence.pm \
-	lib/HomeAutomation/Schema.pm \
-	blib/lib/HomeAutomation/Schema.pm \
-	lib/HomeAutomation/View/HTML.pm \
-	blib/lib/HomeAutomation/View/HTML.pm \
-	lib/HomeAutomation/Schema/Result/TasksDay.pm \
-	blib/lib/HomeAutomation/Schema/Result/TasksDay.pm \
-	lib/HomeAutomation/Schema/Result/Room.pm \
-	blib/lib/HomeAutomation/Schema/Result/Room.pm \
 	lib/HomeAutomation/Controller/Login.pm \
 	blib/lib/HomeAutomation/Controller/Login.pm \
-	lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
-	blib/lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
+	lib/HomeAutomation/Controller/Logout.pm \
+	blib/lib/HomeAutomation/Controller/Logout.pm \
+	lib/HomeAutomation/Controller/Root.pm \
+	blib/lib/HomeAutomation/Controller/Root.pm \
+	lib/HomeAutomation/Controller/Schedules.pm \
+	blib/lib/HomeAutomation/Controller/Schedules.pm \
+	lib/HomeAutomation/Controller/UserManagement.pm \
+	blib/lib/HomeAutomation/Controller/UserManagement.pm \
 	lib/HomeAutomation/Form/Appliance.pm \
 	blib/lib/HomeAutomation/Form/Appliance.pm \
+	lib/HomeAutomation/Form/ChangePassword.pm \
+	blib/lib/HomeAutomation/Form/ChangePassword.pm \
 	lib/HomeAutomation/Form/Schedule.pm \
 	blib/lib/HomeAutomation/Form/Schedule.pm \
+	lib/HomeAutomation/Form/User.pm \
+	blib/lib/HomeAutomation/Form/User.pm \
+	lib/HomeAutomation/Model/DB.pm \
+	blib/lib/HomeAutomation/Model/DB.pm \
+	lib/HomeAutomation/Schema.pm \
+	blib/lib/HomeAutomation/Schema.pm \
+	lib/HomeAutomation/Schema/Base.pm \
+	blib/lib/HomeAutomation/Schema/Base.pm \
+	lib/HomeAutomation/Schema/Result/Appliance.pm \
+	blib/lib/HomeAutomation/Schema/Result/Appliance.pm \
+	lib/HomeAutomation/Schema/Result/Day.pm \
+	blib/lib/HomeAutomation/Schema/Result/Day.pm \
+	lib/HomeAutomation/Schema/Result/Recurrence.pm \
+	blib/lib/HomeAutomation/Schema/Result/Recurrence.pm \
+	lib/HomeAutomation/Schema/Result/Role.pm \
+	blib/lib/HomeAutomation/Schema/Result/Role.pm \
+	lib/HomeAutomation/Schema/Result/Room.pm \
+	blib/lib/HomeAutomation/Schema/Result/Room.pm \
+	lib/HomeAutomation/Schema/Result/Task.pm \
+	blib/lib/HomeAutomation/Schema/Result/Task.pm \
+	lib/HomeAutomation/Schema/Result/TasksDay.pm \
+	blib/lib/HomeAutomation/Schema/Result/TasksDay.pm \
 	lib/HomeAutomation/Schema/Result/User.pm \
 	blib/lib/HomeAutomation/Schema/Result/User.pm \
-	lib/HomeAutomation.pm \
-	blib/lib/HomeAutomation.pm
+	lib/HomeAutomation/Schema/Result/UserRole.pm \
+	blib/lib/HomeAutomation/Schema/Result/UserRole.pm \
+	lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
+	blib/lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
+	lib/HomeAutomation/Schema/ResultSet/Task.pm \
+	blib/lib/HomeAutomation/Schema/ResultSet/Task.pm \
+	lib/HomeAutomation/View/HTML.pm \
+	blib/lib/HomeAutomation/View/HTML.pm \
+	lib/HomeAutomation/View/JSON.pm \
+	blib/lib/HomeAutomation/View/JSON.pm \
+	lib/Mochad.pm \
+	blib/lib/Mochad.pm
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 6.66
+MM_Unix_VERSION = 7.04
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
@@ -349,6 +356,7 @@ MACROSTART =
 MACROEND = 
 USEMAKEFILE = -f
 FIXIN = $(ABSPERLRUN) -MExtUtils::MY -e 'MY->fixin(shift)' --
+CP_NONEMPTY = $(ABSPERLRUN) -MExtUtils::Command::MM -e 'cp_nonempty' --
 
 
 # --- MakeMaker makemakerdflt section:
@@ -364,7 +372,7 @@ ZIPFLAGS = -r
 COMPRESS = gzip --best
 SUFFIX = .gz
 SHAR = shar
-PREOP = $(NOECHO) $(NOOP)
+PREOP = $(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"
 POSTOP = $(NOECHO) $(NOOP)
 TO_UNIX = $(NOECHO) $(NOOP)
 CI = ci -u
@@ -372,7 +380,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = HomeAutomation
-DISTVNAME = HomeAutomation-0.01
+DISTVNAME = HomeAutomation-0.07
 
 
 # --- MakeMaker macro section:
@@ -397,7 +405,6 @@ DISTVNAME = HomeAutomation-0.01
 
 PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	LINKTYPE="$(LINKTYPE)"\
-	LD="$(LD)"\
 	PREFIX="$(PREFIX)"
 
 
@@ -494,15 +501,15 @@ linkext :: $(LINKTYPE)
 # --- MakeMaker dlsyms section:
 
 
-# --- MakeMaker dynamic section:
-
-dynamic :: $(FIRST_MAKEFILE) $(INST_DYNAMIC) $(INST_BOOT)
-	$(NOECHO) $(NOOP)
-
-
 # --- MakeMaker dynamic_bs section:
 
 BOOTSTRAP =
+
+
+# --- MakeMaker dynamic section:
+
+dynamic :: $(FIRST_MAKEFILE) $(BOOTSTRAP) $(INST_DYNAMIC)
+	$(NOECHO) $(NOOP)
 
 
 # --- MakeMaker dynamic_lib section:
@@ -526,72 +533,75 @@ POD2MAN = $(POD2MAN_EXE)
 
 
 manifypods : pure_all  \
-	script/homeautomation_create.pl \
-	script/homeautomation_test.pl \
-	script/homeautomation_server.pl \
-	script/homeautomation_cgi.pl \
-	script/homeautomation_fastcgi.pl \
-	lib/HomeAutomation/Schema/Result/UserRole.pm \
-	lib/HomeAutomation/Schema/Result/Task.pm \
-	lib/HomeAutomation/View/JSON.pm \
-	lib/HomeAutomation/Controller/Root.pm \
+	lib/HomeAutomation.pm \
 	lib/HomeAutomation/Controller/Appliances.pm \
-	lib/HomeAutomation/Schema/ResultSet/Task.pm \
-	lib/HomeAutomation/Schema/Result/Day.pm \
-	lib/HomeAutomation/Controller/UserManagement.pm \
-	lib/HomeAutomation/Form/ChangePassword.pm \
-	lib/HomeAutomation/Model/DB.pm \
-	lib/HomeAutomation/Schema/Result/Role.pm \
-	lib/HomeAutomation/Schema/Result/Appliance.pm \
-	lib/HomeAutomation/Form/User.pm \
-	lib/Mochad.pm \
-	lib/HomeAutomation/Controller/Schedules.pm \
-	lib/HomeAutomation/Controller/Logout.pm \
-	lib/HomeAutomation/Schema/Result/Recurrence.pm \
-	lib/HomeAutomation/Schema.pm \
-	lib/HomeAutomation/View/HTML.pm \
-	lib/HomeAutomation/Schema/Result/TasksDay.pm \
-	lib/HomeAutomation/Schema/Result/Room.pm \
 	lib/HomeAutomation/Controller/Login.pm \
-	lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
+	lib/HomeAutomation/Controller/Logout.pm \
+	lib/HomeAutomation/Controller/Root.pm \
+	lib/HomeAutomation/Controller/Schedules.pm \
+	lib/HomeAutomation/Controller/UserManagement.pm \
 	lib/HomeAutomation/Form/Appliance.pm \
+	lib/HomeAutomation/Form/ChangePassword.pm \
 	lib/HomeAutomation/Form/Schedule.pm \
+	lib/HomeAutomation/Form/User.pm \
+	lib/HomeAutomation/Model/DB.pm \
+	lib/HomeAutomation/Schema.pm \
+	lib/HomeAutomation/Schema/Base.pm \
+	lib/HomeAutomation/Schema/Result/Appliance.pm \
+	lib/HomeAutomation/Schema/Result/Day.pm \
+	lib/HomeAutomation/Schema/Result/Recurrence.pm \
+	lib/HomeAutomation/Schema/Result/Role.pm \
+	lib/HomeAutomation/Schema/Result/Room.pm \
+	lib/HomeAutomation/Schema/Result/Task.pm \
+	lib/HomeAutomation/Schema/Result/TasksDay.pm \
 	lib/HomeAutomation/Schema/Result/User.pm \
-	lib/HomeAutomation.pm
-	$(NOECHO) $(POD2MAN) --section=$(MAN1EXT) --perm_rw=$(PERM_RW) \
-	  script/homeautomation_create.pl $(INST_MAN1DIR)/homeautomation_create.pl.$(MAN1EXT) \
-	  script/homeautomation_test.pl $(INST_MAN1DIR)/homeautomation_test.pl.$(MAN1EXT) \
-	  script/homeautomation_server.pl $(INST_MAN1DIR)/homeautomation_server.pl.$(MAN1EXT) \
+	lib/HomeAutomation/Schema/Result/UserRole.pm \
+	lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
+	lib/HomeAutomation/Schema/ResultSet/Task.pm \
+	lib/HomeAutomation/View/HTML.pm \
+	lib/HomeAutomation/View/JSON.pm \
+	lib/Mochad.pm \
+	script/homeautomation_cgi.pl \
+	script/homeautomation_create.pl \
+	script/homeautomation_fastcgi.pl \
+	script/homeautomation_server.pl \
+	script/homeautomation_test.pl
+	$(NOECHO) $(POD2MAN) --section=1 --perm_rw=$(PERM_RW) -u \
 	  script/homeautomation_cgi.pl $(INST_MAN1DIR)/homeautomation_cgi.pl.$(MAN1EXT) \
-	  script/homeautomation_fastcgi.pl $(INST_MAN1DIR)/homeautomation_fastcgi.pl.$(MAN1EXT) 
-	$(NOECHO) $(POD2MAN) --section=$(MAN3EXT) --perm_rw=$(PERM_RW) \
-	  lib/HomeAutomation/Schema/Result/UserRole.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::UserRole.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/Result/Task.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Task.$(MAN3EXT) \
-	  lib/HomeAutomation/View/JSON.pm $(INST_MAN3DIR)/HomeAutomation::View::JSON.$(MAN3EXT) \
-	  lib/HomeAutomation/Controller/Root.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Root.$(MAN3EXT) \
+	  script/homeautomation_create.pl $(INST_MAN1DIR)/homeautomation_create.pl.$(MAN1EXT) \
+	  script/homeautomation_fastcgi.pl $(INST_MAN1DIR)/homeautomation_fastcgi.pl.$(MAN1EXT) \
+	  script/homeautomation_server.pl $(INST_MAN1DIR)/homeautomation_server.pl.$(MAN1EXT) \
+	  script/homeautomation_test.pl $(INST_MAN1DIR)/homeautomation_test.pl.$(MAN1EXT) 
+	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) -u \
+	  lib/HomeAutomation.pm $(INST_MAN3DIR)/HomeAutomation.$(MAN3EXT) \
 	  lib/HomeAutomation/Controller/Appliances.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Appliances.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/ResultSet/Task.pm $(INST_MAN3DIR)/HomeAutomation::Schema::ResultSet::Task.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/Result/Day.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Day.$(MAN3EXT) \
-	  lib/HomeAutomation/Controller/UserManagement.pm $(INST_MAN3DIR)/HomeAutomation::Controller::UserManagement.$(MAN3EXT) \
-	  lib/HomeAutomation/Form/ChangePassword.pm $(INST_MAN3DIR)/HomeAutomation::Form::ChangePassword.$(MAN3EXT) \
-	  lib/HomeAutomation/Model/DB.pm $(INST_MAN3DIR)/HomeAutomation::Model::DB.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/Result/Role.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Role.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/Result/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Appliance.$(MAN3EXT) \
-	  lib/HomeAutomation/Form/User.pm $(INST_MAN3DIR)/HomeAutomation::Form::User.$(MAN3EXT) \
-	  lib/Mochad.pm $(INST_MAN3DIR)/Mochad.$(MAN3EXT) \
-	  lib/HomeAutomation/Controller/Schedules.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Schedules.$(MAN3EXT) \
-	  lib/HomeAutomation/Controller/Logout.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Logout.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/Result/Recurrence.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Recurrence.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema.pm $(INST_MAN3DIR)/HomeAutomation::Schema.$(MAN3EXT) \
-	  lib/HomeAutomation/View/HTML.pm $(INST_MAN3DIR)/HomeAutomation::View::HTML.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/Result/TasksDay.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::TasksDay.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/Result/Room.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Room.$(MAN3EXT) \
 	  lib/HomeAutomation/Controller/Login.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Login.$(MAN3EXT) \
-	  lib/HomeAutomation/Schema/ResultSet/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Schema::ResultSet::Appliance.$(MAN3EXT) \
+	  lib/HomeAutomation/Controller/Logout.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Logout.$(MAN3EXT) \
+	  lib/HomeAutomation/Controller/Root.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Root.$(MAN3EXT) \
+	  lib/HomeAutomation/Controller/Schedules.pm $(INST_MAN3DIR)/HomeAutomation::Controller::Schedules.$(MAN3EXT) \
+	  lib/HomeAutomation/Controller/UserManagement.pm $(INST_MAN3DIR)/HomeAutomation::Controller::UserManagement.$(MAN3EXT) \
 	  lib/HomeAutomation/Form/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Form::Appliance.$(MAN3EXT) \
+	  lib/HomeAutomation/Form/ChangePassword.pm $(INST_MAN3DIR)/HomeAutomation::Form::ChangePassword.$(MAN3EXT) \
 	  lib/HomeAutomation/Form/Schedule.pm $(INST_MAN3DIR)/HomeAutomation::Form::Schedule.$(MAN3EXT) \
+	  lib/HomeAutomation/Form/User.pm $(INST_MAN3DIR)/HomeAutomation::Form::User.$(MAN3EXT) \
+	  lib/HomeAutomation/Model/DB.pm $(INST_MAN3DIR)/HomeAutomation::Model::DB.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema.pm $(INST_MAN3DIR)/HomeAutomation::Schema.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Base.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Base.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Result/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Appliance.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Result/Day.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Day.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Result/Recurrence.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Recurrence.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Result/Role.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Role.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Result/Room.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Room.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Result/Task.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::Task.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/Result/TasksDay.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::TasksDay.$(MAN3EXT) \
 	  lib/HomeAutomation/Schema/Result/User.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::User.$(MAN3EXT) \
-	  lib/HomeAutomation.pm $(INST_MAN3DIR)/HomeAutomation.$(MAN3EXT) 
+	  lib/HomeAutomation/Schema/Result/UserRole.pm $(INST_MAN3DIR)/HomeAutomation::Schema::Result::UserRole.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/ResultSet/Appliance.pm $(INST_MAN3DIR)/HomeAutomation::Schema::ResultSet::Appliance.$(MAN3EXT) \
+	  lib/HomeAutomation/Schema/ResultSet/Task.pm $(INST_MAN3DIR)/HomeAutomation::Schema::ResultSet::Task.$(MAN3EXT) \
+	  lib/HomeAutomation/View/HTML.pm $(INST_MAN3DIR)/HomeAutomation::View::HTML.$(MAN3EXT) 
+	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) -u \
+	  lib/HomeAutomation/View/JSON.pm $(INST_MAN3DIR)/HomeAutomation::View::JSON.$(MAN3EXT) \
+	  lib/Mochad.pm $(INST_MAN3DIR)/Mochad.$(MAN3EXT) 
 
 
 
@@ -601,17 +611,54 @@ manifypods : pure_all  \
 
 # --- MakeMaker installbin section:
 
-EXE_FILES = script/create_admin_user.pl script/homeautomation_cgi.pl script/homeautomation_create.pl script/homeautomation_fastcgi.pl script/homeautomation_server.pl script/homeautomation_test.pl script/run_scheduled_tasks.pl
+EXE_FILES = script/create_admin_user.pl script/fake_mochad.pl script/homeautomation_cgi.pl script/homeautomation_create.pl script/homeautomation_fastcgi.pl script/homeautomation_server.pl script/homeautomation_test.pl script/run_scheduled_tasks.pl script/schedule_tasks.pl script/scheduled_tasks_server.pl
 
-pure_all :: $(INST_SCRIPT)/run_scheduled_tasks.pl $(INST_SCRIPT)/create_admin_user.pl $(INST_SCRIPT)/homeautomation_fastcgi.pl $(INST_SCRIPT)/homeautomation_create.pl $(INST_SCRIPT)/homeautomation_test.pl $(INST_SCRIPT)/homeautomation_server.pl $(INST_SCRIPT)/homeautomation_cgi.pl
+pure_all :: $(INST_SCRIPT)/fake_mochad.pl $(INST_SCRIPT)/homeautomation_server.pl $(INST_SCRIPT)/scheduled_tasks_server.pl $(INST_SCRIPT)/homeautomation_cgi.pl $(INST_SCRIPT)/create_admin_user.pl $(INST_SCRIPT)/homeautomation_test.pl $(INST_SCRIPT)/run_scheduled_tasks.pl $(INST_SCRIPT)/schedule_tasks.pl $(INST_SCRIPT)/homeautomation_fastcgi.pl $(INST_SCRIPT)/homeautomation_create.pl
 	$(NOECHO) $(NOOP)
 
 realclean ::
 	$(RM_F) \
-	  $(INST_SCRIPT)/run_scheduled_tasks.pl $(INST_SCRIPT)/create_admin_user.pl \
-	  $(INST_SCRIPT)/homeautomation_fastcgi.pl $(INST_SCRIPT)/homeautomation_create.pl \
-	  $(INST_SCRIPT)/homeautomation_test.pl $(INST_SCRIPT)/homeautomation_server.pl \
-	  $(INST_SCRIPT)/homeautomation_cgi.pl 
+	  $(INST_SCRIPT)/fake_mochad.pl $(INST_SCRIPT)/homeautomation_server.pl \
+	  $(INST_SCRIPT)/scheduled_tasks_server.pl $(INST_SCRIPT)/homeautomation_cgi.pl \
+	  $(INST_SCRIPT)/create_admin_user.pl $(INST_SCRIPT)/homeautomation_test.pl \
+	  $(INST_SCRIPT)/run_scheduled_tasks.pl $(INST_SCRIPT)/schedule_tasks.pl \
+	  $(INST_SCRIPT)/homeautomation_fastcgi.pl $(INST_SCRIPT)/homeautomation_create.pl 
+
+$(INST_SCRIPT)/fake_mochad.pl : script/fake_mochad.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/fake_mochad.pl
+	$(CP) script/fake_mochad.pl $(INST_SCRIPT)/fake_mochad.pl
+	$(FIXIN) $(INST_SCRIPT)/fake_mochad.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/fake_mochad.pl
+
+$(INST_SCRIPT)/homeautomation_server.pl : script/homeautomation_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_server.pl
+	$(CP) script/homeautomation_server.pl $(INST_SCRIPT)/homeautomation_server.pl
+	$(FIXIN) $(INST_SCRIPT)/homeautomation_server.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_server.pl
+
+$(INST_SCRIPT)/scheduled_tasks_server.pl : script/scheduled_tasks_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/scheduled_tasks_server.pl
+	$(CP) script/scheduled_tasks_server.pl $(INST_SCRIPT)/scheduled_tasks_server.pl
+	$(FIXIN) $(INST_SCRIPT)/scheduled_tasks_server.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/scheduled_tasks_server.pl
+
+$(INST_SCRIPT)/homeautomation_cgi.pl : script/homeautomation_cgi.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_cgi.pl
+	$(CP) script/homeautomation_cgi.pl $(INST_SCRIPT)/homeautomation_cgi.pl
+	$(FIXIN) $(INST_SCRIPT)/homeautomation_cgi.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_cgi.pl
+
+$(INST_SCRIPT)/create_admin_user.pl : script/create_admin_user.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/create_admin_user.pl
+	$(CP) script/create_admin_user.pl $(INST_SCRIPT)/create_admin_user.pl
+	$(FIXIN) $(INST_SCRIPT)/create_admin_user.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/create_admin_user.pl
+
+$(INST_SCRIPT)/homeautomation_test.pl : script/homeautomation_test.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_test.pl
+	$(CP) script/homeautomation_test.pl $(INST_SCRIPT)/homeautomation_test.pl
+	$(FIXIN) $(INST_SCRIPT)/homeautomation_test.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_test.pl
 
 $(INST_SCRIPT)/run_scheduled_tasks.pl : script/run_scheduled_tasks.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/run_scheduled_tasks.pl
@@ -619,11 +666,11 @@ $(INST_SCRIPT)/run_scheduled_tasks.pl : script/run_scheduled_tasks.pl $(FIRST_MA
 	$(FIXIN) $(INST_SCRIPT)/run_scheduled_tasks.pl
 	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/run_scheduled_tasks.pl
 
-$(INST_SCRIPT)/create_admin_user.pl : script/create_admin_user.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
-	$(NOECHO) $(RM_F) $(INST_SCRIPT)/create_admin_user.pl
-	$(CP) script/create_admin_user.pl $(INST_SCRIPT)/create_admin_user.pl
-	$(FIXIN) $(INST_SCRIPT)/create_admin_user.pl
-	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/create_admin_user.pl
+$(INST_SCRIPT)/schedule_tasks.pl : script/schedule_tasks.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/schedule_tasks.pl
+	$(CP) script/schedule_tasks.pl $(INST_SCRIPT)/schedule_tasks.pl
+	$(FIXIN) $(INST_SCRIPT)/schedule_tasks.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/schedule_tasks.pl
 
 $(INST_SCRIPT)/homeautomation_fastcgi.pl : script/homeautomation_fastcgi.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_fastcgi.pl
@@ -636,24 +683,6 @@ $(INST_SCRIPT)/homeautomation_create.pl : script/homeautomation_create.pl $(FIRS
 	$(CP) script/homeautomation_create.pl $(INST_SCRIPT)/homeautomation_create.pl
 	$(FIXIN) $(INST_SCRIPT)/homeautomation_create.pl
 	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_create.pl
-
-$(INST_SCRIPT)/homeautomation_test.pl : script/homeautomation_test.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
-	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_test.pl
-	$(CP) script/homeautomation_test.pl $(INST_SCRIPT)/homeautomation_test.pl
-	$(FIXIN) $(INST_SCRIPT)/homeautomation_test.pl
-	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_test.pl
-
-$(INST_SCRIPT)/homeautomation_server.pl : script/homeautomation_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
-	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_server.pl
-	$(CP) script/homeautomation_server.pl $(INST_SCRIPT)/homeautomation_server.pl
-	$(FIXIN) $(INST_SCRIPT)/homeautomation_server.pl
-	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_server.pl
-
-$(INST_SCRIPT)/homeautomation_cgi.pl : script/homeautomation_cgi.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
-	$(NOECHO) $(RM_F) $(INST_SCRIPT)/homeautomation_cgi.pl
-	$(CP) script/homeautomation_cgi.pl $(INST_SCRIPT)/homeautomation_cgi.pl
-	$(FIXIN) $(INST_SCRIPT)/homeautomation_cgi.pl
-	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/homeautomation_cgi.pl
 
 
 
@@ -673,24 +702,25 @@ clean_subdirs :
 
 clean :: clean_subdirs
 	- $(RM_F) \
-	  blibdirs.ts core.[0-9][0-9][0-9] \
-	  $(BOOTSTRAP) so_locations \
-	  $(BASEEXT).def $(BASEEXT).x \
-	  $(BASEEXT).exp core \
-	  lib$(BASEEXT).def core.[0-9] \
-	  MYMETA.yml perlmain.c \
-	  core.[0-9][0-9][0-9][0-9][0-9] perl$(EXE_EXT) \
-	  $(MAKE_APERL_FILE) pm_to_blib.ts \
-	  pm_to_blib core.[0-9][0-9][0-9][0-9] \
-	  perl.exe $(INST_ARCHAUTODIR)/extralibs.ld \
-	  *perl.core mon.out \
-	  $(INST_ARCHAUTODIR)/extralibs.all MYMETA.json \
-	  perl tmon.out \
-	  core.[0-9][0-9] *$(OBJ_EXT) \
-	  $(BASEEXT).bso core.*perl.*.? \
-	  *$(LIB_EXT) 
+	  $(BASEEXT).bso $(BASEEXT).def \
+	  $(BASEEXT).exp $(BASEEXT).x \
+	  $(BOOTSTRAP) $(INST_ARCHAUTODIR)/extralibs.all \
+	  $(INST_ARCHAUTODIR)/extralibs.ld $(MAKE_APERL_FILE) \
+	  *$(LIB_EXT) *$(OBJ_EXT) \
+	  *perl.core MYMETA.json \
+	  MYMETA.yml blibdirs.ts \
+	  core core.*perl.*.? \
+	  core.[0-9] core.[0-9][0-9] \
+	  core.[0-9][0-9][0-9] core.[0-9][0-9][0-9][0-9] \
+	  core.[0-9][0-9][0-9][0-9][0-9] lib$(BASEEXT).def \
+	  mon.out perl \
+	  perl$(EXE_EXT) perl.exe \
+	  perlmain.c pm_to_blib \
+	  pm_to_blib.ts so_locations \
+	  tmon.out 
 	- $(RM_RF) \
 	  blib 
+	  $(NOECHO) $(RM_F) $(MAKEFILE_OLD)
 	- $(MV) $(FIRST_MAKEFILE) $(MAKEFILE_OLD) $(DEV_NULL)
 
 
@@ -703,9 +733,9 @@ realclean_subdirs :
 # Delete temporary files (via clean) and also delete dist files
 realclean purge ::  clean realclean_subdirs
 	- $(RM_F) \
-	  $(MAKEFILE_OLD) $(FIRST_MAKEFILE) 
+	  $(FIRST_MAKEFILE) $(MAKEFILE_OLD) 
 	- $(RM_RF) \
-	  MYMETA.yml $(DISTVNAME) 
+	  $(DISTVNAME) MYMETA.yml 
 
 
 # --- MakeMaker metafile section:
@@ -732,7 +762,7 @@ manifest :
 	$(PERLRUN) "-MExtUtils::Manifest=mkmanifest" -e mkmanifest
 
 veryclean : realclean
-	$(RM_F) *~ */*~ *.orig */*.orig *.bak */*.bak *.old */*.old 
+	$(RM_F) *~ */*~ *.orig */*.orig *.bak */*.bak *.old */*.old
 
 
 
@@ -747,6 +777,7 @@ tardist : $(DISTVNAME).tar$(SUFFIX)
 
 uutardist : $(DISTVNAME).tar$(SUFFIX)
 	uuencode $(DISTVNAME).tar$(SUFFIX) $(DISTVNAME).tar$(SUFFIX) > $(DISTVNAME).tar$(SUFFIX)_uu
+	$(NOECHO) $(ECHO) 'Created $(DISTVNAME).tar$(SUFFIX)_uu'
 
 $(DISTVNAME).tar$(SUFFIX) : distdir
 	$(PREOP)
@@ -754,6 +785,7 @@ $(DISTVNAME).tar$(SUFFIX) : distdir
 	$(TAR) $(TARFLAGS) $(DISTVNAME).tar $(DISTVNAME)
 	$(RM_RF) $(DISTVNAME)
 	$(COMPRESS) $(DISTVNAME).tar
+	$(NOECHO) $(ECHO) 'Created $(DISTVNAME).tar$(SUFFIX)'
 	$(POSTOP)
 
 zipdist : $(DISTVNAME).zip
@@ -763,12 +795,14 @@ $(DISTVNAME).zip : distdir
 	$(PREOP)
 	$(ZIP) $(ZIPFLAGS) $(DISTVNAME).zip $(DISTVNAME)
 	$(RM_RF) $(DISTVNAME)
+	$(NOECHO) $(ECHO) 'Created $(DISTVNAME).zip'
 	$(POSTOP)
 
 shdist : distdir
 	$(PREOP)
 	$(SHAR) $(DISTVNAME) > $(DISTVNAME).shar
 	$(RM_RF) $(DISTVNAME)
+	$(NOECHO) $(ECHO) 'Created $(DISTVNAME).shar'
 	$(POSTOP)
 
 
@@ -813,7 +847,7 @@ distmeta : create_distdir metafile
 
 # --- MakeMaker distsignature section:
 distsignature : create_distdir
-	$(NOECHO) cd $(DISTVNAME) && $(ABSPERLRUN) -MExtUtils::Manifest=maniadd -e 'eval { maniadd({q{SIGNATURE} => q{Public-key signature (added by MakeMaker)}}) } ' \
+	$(NOECHO) cd $(DISTVNAME) && $(ABSPERLRUN) -MExtUtils::Manifest=maniadd -e 'eval { maniadd({q{SIGNATURE} => q{Public-key signature (added by MakeMaker)}}) }' \
 	  -e '    or print "Could not add SIGNATURE to MANIFEST: $$$${'\''@'\''}\n"' --
 	$(NOECHO) cd $(DISTVNAME) && $(TOUCH) SIGNATURE
 	cd $(DISTVNAME) && cpansign -s
@@ -847,65 +881,89 @@ doc__install : doc_site_install
 	$(NOECHO) $(ECHO) INSTALLDIRS not defined, defaulting to INSTALLDIRS=site
 
 pure_perl_install :: all
-	$(NOECHO) umask 022; $(MOD_INSTALL) \
-		$(INST_LIB) $(DESTINSTALLPRIVLIB) \
-		$(INST_ARCHLIB) $(DESTINSTALLARCHLIB) \
-		$(INST_BIN) $(DESTINSTALLBIN) \
-		$(INST_SCRIPT) $(DESTINSTALLSCRIPT) \
-		$(INST_MAN1DIR) $(DESTINSTALLMAN1DIR) \
-		$(INST_MAN3DIR) $(DESTINSTALLMAN3DIR)
+	$(NOECHO) $(MOD_INSTALL) \
+		read "$(PERL_ARCHLIB)/auto/$(FULLEXT)/.packlist" \
+		write "$(DESTINSTALLARCHLIB)/auto/$(FULLEXT)/.packlist" \
+		"$(INST_LIB)" "$(DESTINSTALLPRIVLIB)" \
+		"$(INST_ARCHLIB)" "$(DESTINSTALLARCHLIB)" \
+		"$(INST_BIN)" "$(DESTINSTALLBIN)" \
+		"$(INST_SCRIPT)" "$(DESTINSTALLSCRIPT)" \
+		"$(INST_MAN1DIR)" "$(DESTINSTALLMAN1DIR)" \
+		"$(INST_MAN3DIR)" "$(DESTINSTALLMAN3DIR)"
 	$(NOECHO) $(WARN_IF_OLD_PACKLIST) \
-		$(SITEARCHEXP)/auto/$(FULLEXT)
+		"$(SITEARCHEXP)/auto/$(FULLEXT)"
 
 
 pure_site_install :: all
-	$(NOECHO) umask 02; $(MOD_INSTALL) \
-		read $(SITEARCHEXP)/auto/$(FULLEXT)/.packlist \
-		write $(DESTINSTALLSITEARCH)/auto/$(FULLEXT)/.packlist \
-		$(INST_LIB) $(DESTINSTALLSITELIB) \
-		$(INST_ARCHLIB) $(DESTINSTALLSITEARCH) \
-		$(INST_BIN) $(DESTINSTALLSITEBIN) \
-		$(INST_SCRIPT) $(DESTINSTALLSITESCRIPT) \
-		$(INST_MAN1DIR) $(DESTINSTALLSITEMAN1DIR) \
-		$(INST_MAN3DIR) $(DESTINSTALLSITEMAN3DIR)
+	$(NOECHO) $(MOD_INSTALL) \
+		read "$(SITEARCHEXP)/auto/$(FULLEXT)/.packlist" \
+		write "$(DESTINSTALLSITEARCH)/auto/$(FULLEXT)/.packlist" \
+		"$(INST_LIB)" "$(DESTINSTALLSITELIB)" \
+		"$(INST_ARCHLIB)" "$(DESTINSTALLSITEARCH)" \
+		"$(INST_BIN)" "$(DESTINSTALLSITEBIN)" \
+		"$(INST_SCRIPT)" "$(DESTINSTALLSITESCRIPT)" \
+		"$(INST_MAN1DIR)" "$(DESTINSTALLSITEMAN1DIR)" \
+		"$(INST_MAN3DIR)" "$(DESTINSTALLSITEMAN3DIR)"
 	$(NOECHO) $(WARN_IF_OLD_PACKLIST) \
-		$(PERL_ARCHLIB)/auto/$(FULLEXT)
+		"$(PERL_ARCHLIB)/auto/$(FULLEXT)"
 
 pure_vendor_install :: all
-	$(NOECHO) umask 022; $(MOD_INSTALL) \
-		$(INST_LIB) $(DESTINSTALLVENDORLIB) \
-		$(INST_ARCHLIB) $(DESTINSTALLVENDORARCH) \
-		$(INST_BIN) $(DESTINSTALLVENDORBIN) \
-		$(INST_SCRIPT) $(DESTINSTALLVENDORSCRIPT) \
-		$(INST_MAN1DIR) $(DESTINSTALLVENDORMAN1DIR) \
-		$(INST_MAN3DIR) $(DESTINSTALLVENDORMAN3DIR)
+	$(NOECHO) $(MOD_INSTALL) \
+		read "$(VENDORARCHEXP)/auto/$(FULLEXT)/.packlist" \
+		write "$(DESTINSTALLVENDORARCH)/auto/$(FULLEXT)/.packlist" \
+		"$(INST_LIB)" "$(DESTINSTALLVENDORLIB)" \
+		"$(INST_ARCHLIB)" "$(DESTINSTALLVENDORARCH)" \
+		"$(INST_BIN)" "$(DESTINSTALLVENDORBIN)" \
+		"$(INST_SCRIPT)" "$(DESTINSTALLVENDORSCRIPT)" \
+		"$(INST_MAN1DIR)" "$(DESTINSTALLVENDORMAN1DIR)" \
+		"$(INST_MAN3DIR)" "$(DESTINSTALLVENDORMAN3DIR)"
+
 
 doc_perl_install :: all
-
-doc_site_install :: all
-	$(NOECHO) $(ECHO) Appending installation info to $(DESTINSTALLSITEARCH)/perllocal.pod
-	-$(NOECHO) umask 02; $(MKPATH) $(DESTINSTALLSITEARCH)
-	-$(NOECHO) umask 02; $(DOC_INSTALL) \
+	$(NOECHO) $(ECHO) Appending installation info to "$(DESTINSTALLARCHLIB)/perllocal.pod"
+	-$(NOECHO) $(MKPATH) "$(DESTINSTALLARCHLIB)"
+	-$(NOECHO) $(DOC_INSTALL) \
 		"Module" "$(NAME)" \
-		"installed into" "$(INSTALLSITELIB)" \
+		"installed into" $(INSTALLPRIVLIB) \
 		LINKTYPE "$(LINKTYPE)" \
 		VERSION "$(VERSION)" \
 		EXE_FILES "$(EXE_FILES)" \
-		>> $(DESTINSTALLSITEARCH)/perllocal.pod
+		>> "$(DESTINSTALLARCHLIB)/perllocal.pod"
+
+doc_site_install :: all
+	$(NOECHO) $(ECHO) Appending installation info to "$(DESTINSTALLARCHLIB)/perllocal.pod"
+	-$(NOECHO) $(MKPATH) "$(DESTINSTALLARCHLIB)"
+	-$(NOECHO) $(DOC_INSTALL) \
+		"Module" "$(NAME)" \
+		"installed into" $(INSTALLSITELIB) \
+		LINKTYPE "$(LINKTYPE)" \
+		VERSION "$(VERSION)" \
+		EXE_FILES "$(EXE_FILES)" \
+		>> "$(DESTINSTALLARCHLIB)/perllocal.pod"
 
 doc_vendor_install :: all
+	$(NOECHO) $(ECHO) Appending installation info to "$(DESTINSTALLARCHLIB)/perllocal.pod"
+	-$(NOECHO) $(MKPATH) "$(DESTINSTALLARCHLIB)"
+	-$(NOECHO) $(DOC_INSTALL) \
+		"Module" "$(NAME)" \
+		"installed into" $(INSTALLVENDORLIB) \
+		LINKTYPE "$(LINKTYPE)" \
+		VERSION "$(VERSION)" \
+		EXE_FILES "$(EXE_FILES)" \
+		>> "$(DESTINSTALLARCHLIB)/perllocal.pod"
 
 
 uninstall :: uninstall_from_$(INSTALLDIRS)dirs
 	$(NOECHO) $(NOOP)
 
 uninstall_from_perldirs ::
+	$(NOECHO) $(UNINSTALL) "$(PERL_ARCHLIB)/auto/$(FULLEXT)/.packlist"
 
 uninstall_from_sitedirs ::
-	$(NOECHO) $(UNINSTALL) $(SITEARCHEXP)/auto/$(FULLEXT)/.packlist
+	$(NOECHO) $(UNINSTALL) "$(SITEARCHEXP)/auto/$(FULLEXT)/.packlist"
 
 uninstall_from_vendordirs ::
-
+	$(NOECHO) $(UNINSTALL) "$(VENDORARCHEXP)/auto/$(FULLEXT)/.packlist"
 
 
 # --- MakeMaker force section:
@@ -937,7 +995,7 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 
 # --- MakeMaker makeaperl section ---
 MAP_TARGET    = perl
-FULLPERL      = /usr/bin/perl
+FULLPERL      = "/home/rob/.plenv/versions/5.20.0/bin/perl5.20.0"
 
 $(MAP_TARGET) :: static $(MAKE_APERL_FILE)
 	$(MAKE) $(USEMAKEFILE) $(MAKE_APERL_FILE) $@
@@ -945,7 +1003,7 @@ $(MAP_TARGET) :: static $(MAKE_APERL_FILE)
 $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 	$(NOECHO) $(ECHO) Writing \"$(MAKE_APERL_FILE)\" for this $(MAP_TARGET)
 	$(NOECHO) $(PERLRUNINST) \
-		Makefile.PL DIR= \
+		Makefile.PL DIR="" \
 		MAKEFILE=$(MAKE_APERL_FILE) LINKTYPE=static \
 		MAKEAPERL=1 NORECURS=1 CCCDLFLAGS=
 
@@ -967,7 +1025,7 @@ subdirs-test ::
 
 
 test_dynamic :: pure_all
-	PERL_DL_NONLAZY=1 $(FULLPERLRUN) "-MExtUtils::Command::MM" "-e" "test_harness($(TEST_VERBOSE), 'inc', '$(INST_LIB)', '$(INST_ARCHLIB)')" $(TEST_FILES)
+	PERL_DL_NONLAZY=1 $(FULLPERLRUN) "-MExtUtils::Command::MM" "-MTest::Harness" "-e" "undef *Test::Harness::Switches; test_harness($(TEST_VERBOSE), 'inc', '$(INST_LIB)', '$(INST_ARCHLIB)')" $(TEST_FILES)
 
 testdb_dynamic :: pure_all
 	PERL_DL_NONLAZY=1 $(FULLPERLRUN) $(TESTDB_SW) "-Iinc" "-I$(INST_LIB)" "-I$(INST_ARCHLIB)" $(TEST_FILE)
@@ -987,6 +1045,8 @@ ppd :
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <PERLCORE VERSION="5,014,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Action::RenderView" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Authentication::Realm::SimpleDB" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Model::DBIC::Schema" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Authentication" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Authorization::Roles" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::ConfigLoader" />' >> $(DISTNAME).ppd
@@ -995,15 +1055,20 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Session::Store::File" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::StackTrace" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Static::Simple" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE VERSION="5.90018" NAME="Catalyst::Runtime" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::StatusMessage" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Runtime" VERSION="5.90018" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::View::JSON" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::View::TT" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Config::General" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::PassphraseColumn" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::TimeStamp" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="HTML::FormHandler::Model::DBIC" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="HTML::FormHandler::Widget::Theme::Bootstrap3" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Perl6::Junction" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="namespace::autoclean" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-gnu-thread-multi-5.18" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-5.20" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '</SOFTPKG>' >> $(DISTNAME).ppd
@@ -1013,33 +1078,34 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/HomeAutomation/Schema/Result/UserRole.pm blib/lib/HomeAutomation/Schema/Result/UserRole.pm \
-	  lib/HomeAutomation/Schema/Result/Task.pm blib/lib/HomeAutomation/Schema/Result/Task.pm \
-	  lib/HomeAutomation/View/JSON.pm blib/lib/HomeAutomation/View/JSON.pm \
-	  lib/HomeAutomation/Controller/Root.pm blib/lib/HomeAutomation/Controller/Root.pm \
+	  lib/HomeAutomation.pm blib/lib/HomeAutomation.pm \
 	  lib/HomeAutomation/Controller/Appliances.pm blib/lib/HomeAutomation/Controller/Appliances.pm \
-	  lib/HomeAutomation/Schema/ResultSet/Task.pm blib/lib/HomeAutomation/Schema/ResultSet/Task.pm \
-	  lib/HomeAutomation/Schema/Result/Day.pm blib/lib/HomeAutomation/Schema/Result/Day.pm \
-	  lib/HomeAutomation/Controller/UserManagement.pm blib/lib/HomeAutomation/Controller/UserManagement.pm \
-	  lib/HomeAutomation/Form/ChangePassword.pm blib/lib/HomeAutomation/Form/ChangePassword.pm \
-	  lib/HomeAutomation/Model/DB.pm blib/lib/HomeAutomation/Model/DB.pm \
-	  lib/HomeAutomation/Schema/Result/Role.pm blib/lib/HomeAutomation/Schema/Result/Role.pm \
-	  lib/HomeAutomation/Schema/Result/Appliance.pm blib/lib/HomeAutomation/Schema/Result/Appliance.pm \
-	  lib/HomeAutomation/Form/User.pm blib/lib/HomeAutomation/Form/User.pm \
-	  lib/Mochad.pm blib/lib/Mochad.pm \
-	  lib/HomeAutomation/Controller/Schedules.pm blib/lib/HomeAutomation/Controller/Schedules.pm \
-	  lib/HomeAutomation/Controller/Logout.pm blib/lib/HomeAutomation/Controller/Logout.pm \
-	  lib/HomeAutomation/Schema/Result/Recurrence.pm blib/lib/HomeAutomation/Schema/Result/Recurrence.pm \
-	  lib/HomeAutomation/Schema.pm blib/lib/HomeAutomation/Schema.pm \
-	  lib/HomeAutomation/View/HTML.pm blib/lib/HomeAutomation/View/HTML.pm \
-	  lib/HomeAutomation/Schema/Result/TasksDay.pm blib/lib/HomeAutomation/Schema/Result/TasksDay.pm \
-	  lib/HomeAutomation/Schema/Result/Room.pm blib/lib/HomeAutomation/Schema/Result/Room.pm \
 	  lib/HomeAutomation/Controller/Login.pm blib/lib/HomeAutomation/Controller/Login.pm \
-	  lib/HomeAutomation/Schema/ResultSet/Appliance.pm blib/lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
+	  lib/HomeAutomation/Controller/Logout.pm blib/lib/HomeAutomation/Controller/Logout.pm \
+	  lib/HomeAutomation/Controller/Root.pm blib/lib/HomeAutomation/Controller/Root.pm \
+	  lib/HomeAutomation/Controller/Schedules.pm blib/lib/HomeAutomation/Controller/Schedules.pm \
+	  lib/HomeAutomation/Controller/UserManagement.pm blib/lib/HomeAutomation/Controller/UserManagement.pm \
 	  lib/HomeAutomation/Form/Appliance.pm blib/lib/HomeAutomation/Form/Appliance.pm \
+	  lib/HomeAutomation/Form/ChangePassword.pm blib/lib/HomeAutomation/Form/ChangePassword.pm \
 	  lib/HomeAutomation/Form/Schedule.pm blib/lib/HomeAutomation/Form/Schedule.pm \
+	  lib/HomeAutomation/Form/User.pm blib/lib/HomeAutomation/Form/User.pm \
+	  lib/HomeAutomation/Model/DB.pm blib/lib/HomeAutomation/Model/DB.pm \
+	  lib/HomeAutomation/Schema.pm blib/lib/HomeAutomation/Schema.pm \
+	  lib/HomeAutomation/Schema/Base.pm blib/lib/HomeAutomation/Schema/Base.pm \
+	  lib/HomeAutomation/Schema/Result/Appliance.pm blib/lib/HomeAutomation/Schema/Result/Appliance.pm \
+	  lib/HomeAutomation/Schema/Result/Day.pm blib/lib/HomeAutomation/Schema/Result/Day.pm \
+	  lib/HomeAutomation/Schema/Result/Recurrence.pm blib/lib/HomeAutomation/Schema/Result/Recurrence.pm \
+	  lib/HomeAutomation/Schema/Result/Role.pm blib/lib/HomeAutomation/Schema/Result/Role.pm \
+	  lib/HomeAutomation/Schema/Result/Room.pm blib/lib/HomeAutomation/Schema/Result/Room.pm \
+	  lib/HomeAutomation/Schema/Result/Task.pm blib/lib/HomeAutomation/Schema/Result/Task.pm \
+	  lib/HomeAutomation/Schema/Result/TasksDay.pm blib/lib/HomeAutomation/Schema/Result/TasksDay.pm \
 	  lib/HomeAutomation/Schema/Result/User.pm blib/lib/HomeAutomation/Schema/Result/User.pm \
-	  lib/HomeAutomation.pm blib/lib/HomeAutomation.pm 
+	  lib/HomeAutomation/Schema/Result/UserRole.pm blib/lib/HomeAutomation/Schema/Result/UserRole.pm \
+	  lib/HomeAutomation/Schema/ResultSet/Appliance.pm blib/lib/HomeAutomation/Schema/ResultSet/Appliance.pm \
+	  lib/HomeAutomation/Schema/ResultSet/Task.pm blib/lib/HomeAutomation/Schema/ResultSet/Task.pm \
+	  lib/HomeAutomation/View/HTML.pm blib/lib/HomeAutomation/View/HTML.pm \
+	  lib/HomeAutomation/View/JSON.pm blib/lib/HomeAutomation/View/JSON.pm \
+	  lib/Mochad.pm blib/lib/Mochad.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
@@ -1050,9 +1116,26 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 
 
 # End.
-# Postamble by Module::Install 1.06
-catalyst_par :: all
-	$(NOECHO) $(PERL) -Ilib -Minc::Module::Install -MModule::Install::Catalyst -e"Catalyst::Module::Install::_catalyst_par( '', 'HomeAutomation', { CLASSES => [], PAROPTS =>  {}, ENGINE => 'CGI', SCRIPT => '', USAGE => q## } )"
+# Postamble by Module::Install 1.14
+# --- Module::Install::Admin::Makefile section:
+
+realclean purge ::
+	$(RM_F) $(DISTVNAME).tar$(SUFFIX)
+	$(RM_F) MANIFEST.bak _build
+	$(PERL) "-Ilib" "-MModule::Install::Admin" -e "remove_meta()"
+	$(RM_RF) inc
+
+reset :: purge
+
+upload :: test dist
+	cpan-upload -verbose $(DISTVNAME).tar$(SUFFIX)
+
+grok ::
+	perldoc Module::Install
+
+distsign ::
+	cpansign -s
+
 # --- Module::Install::AutoInstall section:
 
 config :: installdeps
@@ -1062,20 +1145,20 @@ checkdeps ::
 	$(PERL) Makefile.PL --checkdeps
 
 installdeps ::
-	$(PERL) Makefile.PL --config= --installdeps=Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Authorization::Roles,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::View::JSON,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap3,0,Perl6::Junction,0
+	$(NOECHO) $(NOOP)
 
 installdeps_notest ::
-	$(PERL) Makefile.PL --config=notest,1 --installdeps=Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Authorization::Roles,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::View::JSON,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap3,0,Perl6::Junction,0
+	$(NOECHO) $(NOOP)
 
 upgradedeps ::
-	$(PERL) Makefile.PL --config= --upgradedeps=Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Authorization::Roles,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::View::JSON,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap3,0,Perl6::Junction,0,Test::More,0.88,Catalyst::Runtime,5.90018,Moose,0,namespace::autoclean,0,Config::General,0
+	$(PERL) Makefile.PL --config= --upgradedeps=Test::More,0.88,Test::Class::Moose,0,Test::MockObject::Extends,0,Test::WWW::Mechanize::Catalyst,0,Catalyst::Runtime,5.90018,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Authentication,0,Catalyst::Authentication::Realm::SimpleDB,0,Catalyst::Plugin::Authorization::Roles,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StatusMessage,0,Catalyst::View::JSON,0,Catalyst::View::TT,0,Catalyst::Model::DBIC::Schema,0,DBIx::Class,0,DBIx::Class::TimeStamp,0,DBIx::Class::PassphraseColumn,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap3,0,Perl6::Junction,0,Moose,0,namespace::autoclean,0,Config::General,0
 
 upgradedeps_notest ::
-	$(PERL) Makefile.PL --config=notest,1 --upgradedeps=Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Authentication,0,Catalyst::Plugin::Authorization::Roles,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::View::JSON,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap3,0,Perl6::Junction,0,Test::More,0.88,Catalyst::Runtime,5.90018,Moose,0,namespace::autoclean,0,Config::General,0
+	$(PERL) Makefile.PL --config=notest,1 --upgradedeps=Test::More,0.88,Test::Class::Moose,0,Test::MockObject::Extends,0,Test::WWW::Mechanize::Catalyst,0,Catalyst::Runtime,5.90018,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Catalyst::Plugin::StackTrace,0,Catalyst::Plugin::Authentication,0,Catalyst::Authentication::Realm::SimpleDB,0,Catalyst::Plugin::Authorization::Roles,0,Catalyst::Plugin::Session,0,Catalyst::Plugin::Session::Store::File,0,Catalyst::Plugin::Session::State::Cookie,0,Catalyst::Plugin::StatusMessage,0,Catalyst::View::JSON,0,Catalyst::View::TT,0,Catalyst::Model::DBIC::Schema,0,DBIx::Class,0,DBIx::Class::TimeStamp,0,DBIx::Class::PassphraseColumn,0,HTML::FormHandler::Model::DBIC,0,HTML::FormHandler::Widget::Theme::Bootstrap3,0,Perl6::Junction,0,Moose,0,namespace::autoclean,0,Config::General,0
 
 listdeps ::
-	@$(PERL) -le "print for @ARGV" Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Action::RenderView Catalyst::Plugin::StackTrace Catalyst::Plugin::Authentication Catalyst::Plugin::Authorization::Roles Catalyst::Plugin::Session Catalyst::Plugin::Session::Store::File Catalyst::Plugin::Session::State::Cookie Catalyst::View::JSON HTML::FormHandler::Model::DBIC HTML::FormHandler::Widget::Theme::Bootstrap3 Perl6::Junction
+	@$(PERL) -le "print for @ARGV" 
 
 listalldeps ::
-	@$(PERL) -le "print for @ARGV" Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Action::RenderView Catalyst::Plugin::StackTrace Catalyst::Plugin::Authentication Catalyst::Plugin::Authorization::Roles Catalyst::Plugin::Session Catalyst::Plugin::Session::Store::File Catalyst::Plugin::Session::State::Cookie Catalyst::View::JSON HTML::FormHandler::Model::DBIC HTML::FormHandler::Widget::Theme::Bootstrap3 Perl6::Junction Test::More Catalyst::Runtime Moose namespace::autoclean Config::General
+	@$(PERL) -le "print for @ARGV" Test::More Test::Class::Moose Test::MockObject::Extends Test::WWW::Mechanize::Catalyst Catalyst::Runtime Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Action::RenderView Catalyst::Plugin::StackTrace Catalyst::Plugin::Authentication Catalyst::Authentication::Realm::SimpleDB Catalyst::Plugin::Authorization::Roles Catalyst::Plugin::Session Catalyst::Plugin::Session::Store::File Catalyst::Plugin::Session::State::Cookie Catalyst::Plugin::StatusMessage Catalyst::View::JSON Catalyst::View::TT Catalyst::Model::DBIC::Schema DBIx::Class DBIx::Class::TimeStamp DBIx::Class::PassphraseColumn HTML::FormHandler::Model::DBIC HTML::FormHandler::Widget::Theme::Bootstrap3 Perl6::Junction Moose namespace::autoclean Config::General
 
