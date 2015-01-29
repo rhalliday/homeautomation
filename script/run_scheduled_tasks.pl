@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+our $VERSION = q{0.01};
+
 use HomeAutomation::Schema;
 
 my $schema = HomeAutomation::Schema->connect('dbi:SQLite:ha.db');

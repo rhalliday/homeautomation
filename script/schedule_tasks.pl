@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+our $VERSION = q{0.01};
+
 use IO::Socket::INET;
 
 my $socket = IO::Socket::INET->new(
@@ -11,5 +13,5 @@ my $socket = IO::Socket::INET->new(
 );
 
 $socket->send(q{run task} . qq{\n});
-sleep(1);
+my $slept = sleep 1;
 $socket->close();

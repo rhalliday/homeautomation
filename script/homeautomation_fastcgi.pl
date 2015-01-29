@@ -1,4 +1,8 @@
 #!/usr/bin/env perl
+use strict;
+use warnings;
+
+our $VERSION = q{0.01};
 
 use Catalyst::ScriptRunner;
 Catalyst::ScriptRunner->run('HomeAutomation', 'FastCGI');

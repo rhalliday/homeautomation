@@ -4,23 +4,24 @@
 use strict;
 use warnings;
 
+our $VERSION = q{0.01};
+
 use IO::Socket::INET;
+use Readonly;
+
+Readonly::Scalar my $QUEUE => 5;
 
 my $socket = IO::Socket::INET->new(
     LocalHost => q{127.0.0.1},
     LocalPort => q{1099},
     Proto     => q{tcp},
-    Listen    => 5,
+    Listen    => $QUEUE,
     Reuse     => 1
 );
 
 while (1) {
     my $client = $socket->accept();
-#    my $data;
-#    while($client->recv($data,1024)) {
-#        print q{recieved: },$data,qq{\n};
-#    }
-    while(<$client>) {
+    while (<$client>) {
         print $_ . qq{\n};
     }
 }

@@ -1,4 +1,8 @@
 #!/usr/bin/env perl
+use strict;
+use warnings;
+
+our $VERSION = q{0.01};
 
 use Catalyst::ScriptRunner;
 Catalyst::ScriptRunner->run('HomeAutomation', 'CGI');
@@ -11,7 +15,7 @@ homeautomation_cgi.pl - Catalyst CGI
 
 =head1 SYNOPSIS
 
-See L<Catalyst::Manual>
+See L<Manual|Catalyst::Manual>
 
 =head1 DESCRIPTION
 
