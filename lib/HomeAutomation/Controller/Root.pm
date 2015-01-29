@@ -4,9 +4,9 @@ use namespace::autoclean;
 
 use Readonly;
 
-BEGIN { extends 'Catalyst::Controller' }
+BEGIN { extends q{Catalyst::Controller} }
 
-our $VERSION = '0.01';
+our $VERSION = q{0.01};
 
 #
 # Sets the actions in this controller to be registered with no prefix
@@ -36,7 +36,7 @@ sub index : Path : Args(0) {
     my ($self, $c) = @_;
 
     # redirect to the appliances list page
-    $c->response->redirect($c->uri_for('/appliances/list'));
+    $c->response->redirect($c->uri_for(q{/appliances/list}));
 
     return 1;
 }
@@ -49,7 +49,7 @@ Standard 404 error page
 
 sub default : Path {
     my ($self, $c) = @_;
-    $c->response->body('Page not found');
+    $c->response->body(q{Page not found});
     $c->response->status($ERROR_CODES{not_found});
 
     return 1;
@@ -64,17 +64,17 @@ Check if there is a user and, if not, forward to login page
 sub auto : Private {
     my ($self, $c) = @_;
 
-    if ($c->controller eq $c->controller('Login')) {
+    if ($c->controller eq $c->controller(q{Login})) {
         return 1;
     }
 
     # If a user doesn't exist, force login
     if (!$c->user_exists) {
 
-        $c->flash->{redirect_after_login} = '' . $c->req->uri;
+        $c->flash->{redirect_after_login} = q{} . $c->req->uri;
 
         # Redirect the user to the login page
-        $c->response->redirect($c->uri_for('/login'));
+        $c->response->redirect($c->uri_for(q{/login}));
 
         # Return 0 to cancel 'post-auto' processing and prevent use of application
         return 0;
@@ -90,10 +90,10 @@ Permissions error screen
 
 =cut
 
-sub error_noperms : Chained('/') : PathPart('error_noperms') : Args(0) {
+sub error_noperms : Chained(q{/}) : PathPart(q{error_noperms}) : Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash(template => 'error_noperms.tt2');
+    $c->stash(template => q{error_noperms.tt2});
 
     return 1;
 }

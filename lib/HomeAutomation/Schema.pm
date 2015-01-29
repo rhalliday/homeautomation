@@ -1,18 +1,12 @@
-use utf8;
 package HomeAutomation::Schema;
-
-# Created by DBIx::Class::Schema::Loader
-# DO NOT MODIFY THE FIRST PART OF THIS FILE
+use utf8;
 
 use Moose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'DBIx::Class::Schema';
+extends q{DBIx::Class::Schema};
 
+our $VERSION = q{0.01};
 __PACKAGE__->load_namespaces;
-
-
-# Created by DBIx::Class::Schema::Loader v0.07033 @ 2014-02-24 21:22:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1CcXQI4sLhczqQl0uARu0Q
 
 =head1 NAME
 
@@ -24,6 +18,5 @@ Base class for the resultsets.
 
 =cut
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

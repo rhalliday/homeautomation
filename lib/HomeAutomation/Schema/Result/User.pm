@@ -1,8 +1,5 @@
-use utf8;
 package HomeAutomation::Schema::Result::User;
-
-# Created by DBIx::Class::Schema::Loader
-# DO NOT MODIFY THE FIRST PART OF THIS FILE
+use utf8;
 
 =head1 NAME
 
@@ -13,32 +10,34 @@ HomeAutomation::Schema::Result::User
 use strict;
 use warnings;
 
-=head1 BASE CLASS: L<HomeAutomation::Schema::Base>
+=head1 BASE CLASS: L<Schema::Base|HomeAutomation::Schema::Base>
 
 =cut
 
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'HomeAutomation::Schema::Base';
+extends q{HomeAutomation::Schema::Base};
+
+our $VERSION = q{0.01};
 
 =head1 COMPONENTS LOADED
 
 =over 4
 
-=item * L<DBIx::Class::InflateColumn::DateTime>
+=item * L<DateTime|DBIx::Class::InflateColumn::DateTime>
 
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components(q{InflateColumn::DateTime});
 
 =head1 TABLE: C<users>
 
 =cut
 
-__PACKAGE__->table("users");
+__PACKAGE__->table(q{users});
 
 =head1 ACCESSORS
 
@@ -81,20 +80,13 @@ __PACKAGE__->table("users");
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "username",
-  { data_type => "text", is_nullable => 1 },
-  "password",
-  { data_type => "text", is_nullable => 1 },
-  "email_address",
-  { data_type => "text", is_nullable => 1 },
-  "first_name",
-  { data_type => "text", is_nullable => 1 },
-  "last_name",
-  { data_type => "text", is_nullable => 1 },
-  "active",
-  { data_type => "integer", is_nullable => 1 },
+    q{id}, { data_type => q{integer}, is_auto_increment => 1, is_nullable => 0 },
+    q{username},      { data_type => q{text},    is_nullable => 1 },
+    q{password},      { data_type => q{text},    is_nullable => 1 },
+    q{email_address}, { data_type => q{text},    is_nullable => 1 },
+    q{first_name},    { data_type => q{text},    is_nullable => 1 },
+    q{last_name},     { data_type => q{text},    is_nullable => 1 },
+    q{active},        { data_type => q{integer}, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -107,7 +99,7 @@ __PACKAGE__->add_columns(
 
 =cut
 
-__PACKAGE__->set_primary_key("id");
+__PACKAGE__->set_primary_key(q{id});
 
 =head1 RELATIONS
 
@@ -115,15 +107,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<HomeAutomation::Schema::Result::UserRole>
+Related object: L<UserRole|HomeAutomation::Schema::Result::UserRole>
 
 =cut
 
 __PACKAGE__->has_many(
-  "user_roles",
-  "HomeAutomation::Schema::Result::UserRole",
-  { "foreign.user_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+    user_roles => q{HomeAutomation::Schema::Result::UserRole},
+    { q{foreign.user_id} => q{self.id} }, { cascade_copy => 0, cascade_delete => 0 },
 );
 
 =head2 roles
@@ -134,26 +124,19 @@ Composing rels: L</user_roles> -> role
 
 =cut
 
-__PACKAGE__->many_to_many("roles", "user_roles", "role");
-
-
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-06-10 23:32:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PUjMBjKnOEkIkZNmg0WZpw
-
-
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+__PACKAGE__->many_to_many(q{roles}, q{user_roles}, q{role});
 
 # Have the 'password' column use a SHA-1 hash and 20-byte salt
-# with RFC 2307 encoding; Generate the 'check_password" method
+# with RFC 2307 encoding; Generate the 'check_password' method
 __PACKAGE__->add_columns(
-    'password' => {
-        passphrase       => 'rfc2307',
-        passphrase_class => 'SaltedDigest',
+    q{password} => {
+        passphrase       => q{rfc2307},
+        passphrase_class => q{SaltedDigest},
         passphrase_args  => {
-            algorithm   => 'SHA-1',
+            algorithm   => q{SHA-1},
             salt_random => 20,
         },
-        passphrase_check_method => 'check_password',
+        passphrase_check_method => q{check_password},
     },
 );
 
@@ -168,6 +151,7 @@ Check if a user has the specified role
 =cut
 
 use Perl6::Junction qw/any/;
+
 sub has_role {
     my ($self, $role) = @_;
 
@@ -184,7 +168,7 @@ Set the user role(s) that are allowed to deactivate users
 sub deactivate_allowed_by {
     my ($self, $user) = @_;
 
-    return $user->has_role('usermanagement');
+    return $user->has_role(q{usermanagement});
 }
 
 =item delete_allowed_by
@@ -196,7 +180,7 @@ Set the user role(s) that are allowed to delete users
 sub delete_allowed_by {
     my ($self, $user) = @_;
 
-    return $user->has_role('admin');
+    return $user->has_role(q{admin});
 }
 
 =item deactivate
@@ -233,16 +217,16 @@ sub full_name {
 Return a comma-separated list of roles for the current user
  
 =cut
- 
+
 sub role_list {
     my ($self) = @_;
- 
+
     my @roles;
     foreach my $role ($self->roles) {
         push(@roles, $role->role);
     }
- 
-    return join(', ', @roles);
+
+    return join(q{, }, @roles);
 }
 
 =back

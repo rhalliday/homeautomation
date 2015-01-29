@@ -91,7 +91,7 @@ has q{connection} => (
     builder => q{_connection_builder},
 );
 
-sub _connection_builder {    ## no critic qw(Subroutines::ProhibitUnusedPrivateSubroutines)
+sub _connection_builder {
     return {
         PeerAddr => q{localhost},
         PeerPort => 1099,

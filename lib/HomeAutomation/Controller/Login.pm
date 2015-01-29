@@ -2,9 +2,9 @@ package HomeAutomation::Controller::Login;
 use Moose;
 use namespace::autoclean;
 
-BEGIN { extends 'Catalyst::Controller'; }
+BEGIN { extends q{Catalyst::Controller}; }
 
-our $VERSION = '0.01';
+our $VERSION = q{0.01};
 
 =head1 NAME
 
@@ -45,7 +45,7 @@ sub index : Path : Args(0) {
           )
         {
             # If successful, then let them use the application
-            my $dest = $c->flash->{redirect_after_login} || $c->uri_for('/');
+            my $dest = $c->flash->{redirect_after_login} || $c->uri_for(q{/});
             $c->response->redirect($dest);
             return;
         } else {
@@ -61,7 +61,7 @@ sub index : Path : Args(0) {
     }
 
     # If either of above don't work out, send to the login page
-    $c->stash(template => 'login.tt2');
+    $c->stash(template => q{login.tt2});
 
     return 1;
 }

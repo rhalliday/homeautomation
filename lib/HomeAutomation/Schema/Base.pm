@@ -1,9 +1,9 @@
-use utf8;
 package HomeAutomation::Schema::Base;
+use utf8;
 
 =head1 NAME
 
-HomeAutomation::Schema::Base;
+HomeAutomation::Schema::Base
 
 =head1 DESCRIPTION
 
@@ -17,23 +17,25 @@ use warnings;
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'DBIx::Class::Core';
+extends q{DBIx::Class::Core};
+
+our $VERSION = q{0.01};
 
 =head1 COMPONENTS LOADED
 
 =over 4
 
-=item * L<DBIx::Class::InflateColumn::DateTime>
+=item * L<DateTime|DBIx::Class::InflateColumn::DateTime>
 
-=item * L<DBIx::Class::TimeStamp>
+=item * L<TimeStamp|DBIx::Class::TimeStamp>
 
-=item * L<DBIx::Class::PassphraseColumn>
+=item * L<PassphraseColumn|DBIx::Class::PassphraseColumn>
 
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime", "TimeStamp", "PassphraseColumn");
+__PACKAGE__->load_components(q{InflateColumn::DateTime}, q{TimeStamp}, q{PassphraseColumn});
 
 __PACKAGE__->meta->make_immutable;
 1;
