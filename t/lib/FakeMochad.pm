@@ -24,7 +24,7 @@ has io_socket => (
     builder => q{_build_io_socket},
 );
 
-sub _build_io_socket {    ## no critic qw(Subroutines::ProhibitUnusedPrivateSubroutines)
+sub _build_io_socket {
     my ($self) = @_;
     my $io_socket = Test::MockObject->new();
     $io_socket->fake_module('IO::Socket::INET', new => sub { return $self->io_socket });

@@ -19,10 +19,8 @@ END {
 use Test::Class::Moose::Load 't/lib/Test';
 use Test::Class::Moose::Runner;
 
-
 Test::Class::Moose::Runner->new(
     test_classes => \@ARGV,    # ignored if empty
 )->runtests;
-
 
 1;
