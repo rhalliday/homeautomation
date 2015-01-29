@@ -2,11 +2,11 @@ package HomeAutomation::Schema::ResultSet::Task;
 
 use strict;
 use warnings;
-use base 'DBIx::Class::ResultSet';
+use base q{DBIx::Class::ResultSet};
 
 use DateTime;
 
-our $VERSION = '0.01';
+our $VERSION = q{0.01};
 
 =head2 Methods
 
@@ -28,10 +28,10 @@ sub scheduled_tasks {
         {
             -or => [
                 day => { -between => [ $dt_start, $dt_end ] },
-                'recurrence.expires' => [ { '>=' => $dt_start }, { '=' => undef } ],
+                q{recurrence.expires} => [ { q{>=} => $dt_start }, { q{=} => undef } ],
             ]
         },
-        { join => 'recurrence' }
+        { join => q{recurrence} }
     );
 }
 
@@ -45,7 +45,7 @@ sub active_tasks {
     my ($self) = @_;
 
     my $dt = DateTime->now(time_zone => q{Europe/London});
-    my $time = sprintf('%02d:%02d', $dt->hour, $dt->minute);
+    my $time = sprintf(q{%02d:%02d}, $dt->hour, $dt->minute);
 
     return $self->search(
         {
@@ -53,12 +53,12 @@ sub active_tasks {
             -or  => [
                 day  => $dt->ymd,
                 -and => [
-                    'recurrence.expires' => [ { '>=' => $dt->ymd }, { '=' => undef } ],
-                    'tasks_days.day_id'  => $dt->dow,
+                    q{recurrence.expires} => [ { q{>=} => $dt->ymd }, { q{=} => undef } ],
+                    q{tasks_days.day_id}  => $dt->dow,
                 ],
             ],
         },
-        { join => { recurrence => 'tasks_days' } }
+        { join => { recurrence => q{tasks_days} } }
     );
 }
 

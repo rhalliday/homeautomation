@@ -1,8 +1,5 @@
-use utf8;
 package HomeAutomation::Schema::Result::UserRole;
-
-# Created by DBIx::Class::Schema::Loader
-# DO NOT MODIFY THE FIRST PART OF THIS FILE
+use utf8;
 
 =head1 NAME
 
@@ -13,32 +10,34 @@ HomeAutomation::Schema::Result::UserRole
 use strict;
 use warnings;
 
-=head1 BASE CLASS: L<HomeAutomation::Schema::Base>
+=head1 BASE CLASS: L<HomeAutomation::Schema::Base|HomeAutomation::Schema::Base>
 
 =cut
 
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'HomeAutomation::Schema::Base';
+extends q{HomeAutomation::Schema::Base};
+
+our $VERSION = q{0.01};
 
 =head1 COMPONENTS LOADED
 
 =over 4
 
-=item * L<DBIx::Class::InflateColumn::DateTime>
+=item * L<DateTime|DBIx::Class::InflateColumn::DateTime>
 
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components(q{InflateColumn::DateTime});
 
 =head1 TABLE: C<user_role>
 
 =cut
 
-__PACKAGE__->table("user_role");
+__PACKAGE__->table(q{user_role});
 
 =head1 ACCESSORS
 
@@ -57,25 +56,23 @@ __PACKAGE__->table("user_role");
 =cut
 
 __PACKAGE__->add_columns(
-  "user_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "role_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+    q{user_id}, { data_type => q{integer}, is_foreign_key => 1, is_nullable => 0 },
+    q{role_id}, { data_type => q{integer}, is_foreign_key => 1, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</user_id>
+=item * L<user_id|/user_id>
 
-=item * L</role_id>
+=item * L<role_id|/role_id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("user_id", "role_id");
+__PACKAGE__->set_primary_key(q{user_id}, q{role_id});
 
 =head1 RELATIONS
 
@@ -83,37 +80,31 @@ __PACKAGE__->set_primary_key("user_id", "role_id");
 
 Type: belongs_to
 
-Related object: L<HomeAutomation::Schema::Result::Role>
+Related object: L<Role|HomeAutomation::Schema::Result::Role>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "role",
-  "HomeAutomation::Schema::Result::Role",
-  { id => "role_id" },
-  { is_deferrable => 0, on_delete => "CASCADE", on_update => "CASCADE" },
+    q{role},
+    q{HomeAutomation::Schema::Result::Role},
+    { id            => q{role_id} },
+    { is_deferrable => 0, on_delete => q{CASCADE}, on_update => q{CASCADE} },
 );
 
 =head2 user
 
 Type: belongs_to
 
-Related object: L<HomeAutomation::Schema::Result::User>
+Related object: L<User|HomeAutomation::Schema::Result::User>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "user",
-  "HomeAutomation::Schema::Result::User",
-  { id => "user_id" },
-  { is_deferrable => 0, on_delete => "CASCADE", on_update => "CASCADE" },
+    q{user},
+    q{HomeAutomation::Schema::Result::User},
+    { id            => q{user_id} },
+    { is_deferrable => 0, on_delete => q{CASCADE}, on_update => q{CASCADE} },
 );
 
-
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-06-10 23:32:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FV+PEU8zElLQFUjLO2lx/A
-
-
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 1;

@@ -1,8 +1,5 @@
-use utf8;
 package HomeAutomation::Schema::Result::Recurrence;
-
-# Created by DBIx::Class::Schema::Loader
-# DO NOT MODIFY THE FIRST PART OF THIS FILE
+use utf8;
 
 =head1 NAME
 
@@ -13,32 +10,34 @@ HomeAutomation::Schema::Result::Recurrence
 use strict;
 use warnings;
 
-=head1 BASE CLASS: L<HomeAutomation::Schema::Base>
+=head1 BASE CLASS: L<Schema::Base|HomeAutomation::Schema::Base>
 
 =cut
 
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'HomeAutomation::Schema::Base';
+extends q{HomeAutomation::Schema::Base};
+
+our $VERSION = q{0.01};
 
 =head1 COMPONENTS LOADED
 
 =over 4
 
-=item * L<DBIx::Class::InflateColumn::DateTime>
+=item * L<DateTime|DBIx::Class::InflateColumn::DateTime>
 
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components(q{InflateColumn::DateTime});
 
 =head1 TABLE: C<recurrence>
 
 =cut
 
-__PACKAGE__->table("recurrence");
+__PACKAGE__->table(q{recurrence});
 
 =head1 ACCESSORS
 
@@ -62,12 +61,9 @@ __PACKAGE__->table("recurrence");
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "task_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
-  "expires",
-  { data_type => "date", is_nullable => 1 },
+    q{id},      { data_type => q{integer}, is_auto_increment => 1, is_nullable => 0 },
+    q{task_id}, { data_type => q{integer}, is_foreign_key    => 1, is_nullable => 1 },
+    q{expires}, { data_type => q{date},    is_nullable       => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -80,7 +76,7 @@ __PACKAGE__->add_columns(
 
 =cut
 
-__PACKAGE__->set_primary_key("id");
+__PACKAGE__->set_primary_key(q{id});
 
 =head1 RELATIONS
 
@@ -88,67 +84,61 @@ __PACKAGE__->set_primary_key("id");
 
 Type: belongs_to
 
-Related object: L<HomeAutomation::Schema::Result::Task>
+Related object: L<Task|HomeAutomation::Schema::Result::Task>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "task",
-  "HomeAutomation::Schema::Result::Task",
-  { id => "task_id" },
-  {
-    is_deferrable => 0,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
+    q{task},
+    q{HomeAutomation::Schema::Result::Task},
+    { id => q{task_id} },
+    {
+        is_deferrable => 0,
+        join_type     => q{LEFT},
+        on_delete     => q{CASCADE},
+        on_update     => q{CASCADE},
+    },
 );
 
 =head2 tasks
 
 Type: has_many
 
-Related object: L<HomeAutomation::Schema::Result::Task>
+Related object: L<Task|HomeAutomation::Schema::Result::Task>
 
 =cut
 
 __PACKAGE__->has_many(
-  "tasks",
-  "HomeAutomation::Schema::Result::Task",
-  { "foreign.recurrence_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+    q{tasks},
+    q{HomeAutomation::Schema::Result::Task},
+    { q{foreign.recurrence_id} => q{self.id} },
+    { cascade_copy             => 0, cascade_delete => 0 },
 );
 
 =head2 tasks_days
 
 Type: has_many
 
-Related object: L<HomeAutomation::Schema::Result::TasksDay>
+Related object: L<TasksDay|HomeAutomation::Schema::Result::TasksDay>
 
 =cut
 
 __PACKAGE__->has_many(
-  "tasks_days",
-  "HomeAutomation::Schema::Result::TasksDay",
-  { "foreign.recurrence_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+    q{tasks_days},
+    q{HomeAutomation::Schema::Result::TasksDay},
+    { q{foreign.recurrence_id} => q{self.id} },
+    { cascade_copy             => 0, cascade_delete => 0 },
 );
 
 =head2 days
 
 Type: many_to_many
 
-Composing rels: L</tasks_days> -> day
+Composing rels: L<task_days|/tasks_days> -> day
 
 =cut
 
-__PACKAGE__->many_to_many("days", "tasks_days", "day");
+__PACKAGE__->many_to_many(q{days}, q{tasks_days}, q{day});
 
-
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-06-10 23:32:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oTiLTxUVXrTAGypMjvcheg
-
-
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 1;
