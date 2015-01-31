@@ -59,6 +59,8 @@ sub test_successful_change {
     };
 
     ok $self->{form}->process(params => $params), q{form processes with correct data};
+    $DB::single = 1;
+    my $rendered_form = $self->{form}->render;
 
     return 1;
 }

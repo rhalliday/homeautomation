@@ -3,9 +3,17 @@ package Test::HomeAutomation::Form;
 use strict;
 use warnings;
 
-use Test::Class::Moose extends => 'Test::HomeAutomation';
+use Test::Class::Moose extends => q{Test::HomeAutomation};
 
 our $VERSION = '1.00';
+
+sub test_startup {
+    my ($self) = @_;
+
+    $self->next::method();
+
+    return 1;
+}
 
 1;
 

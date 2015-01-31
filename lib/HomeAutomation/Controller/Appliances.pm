@@ -64,7 +64,7 @@ sub object : Chained('base') : PathPart('address') : CaptureArgs(1) {
 
     $c->stash(
         object        => $object,
-        selected_room => $object->room->name,
+        selected_room => $object->room ? $object->room->name : '',
     );
 
     return 1;
