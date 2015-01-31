@@ -89,34 +89,6 @@ sub test_bad_password {
     return 1;
 }
 
-sub test_good_login {
-    my ($self) = @_;
-
-    my $ua = $self->{ua};
-    $ua->get(q{/login});
-
-    # login properly
-    $ua->submit_form(
-        fields => {
-            username => q{test03},
-            password => q{mypass},
-        }
-    );
-
-    # navigate back to the login page and submit an empty form, we should still be redirected
-    $ua->get_ok(q{/login}, q{get the login page});
-    $ua->submit_form(
-        fields => {
-            username => q{},
-            password => q{},
-        }
-    );
-    $ua->content_lacks(q{Empty username or password.},
-        q{empty username and password gets no error, as we're already logged in});
-
-    return 1;
-}
-
 1;
 
 __END__
