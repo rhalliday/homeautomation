@@ -1,8 +1,5 @@
-use utf8;
 package HomeAutomation::Schema::Result::Appliance;
-
-# Created by DBIx::Class::Schema::Loader
-# DO NOT MODIFY THE FIRST PART OF THIS FILE
+use utf8;
 
 =head1 NAME
 
@@ -13,32 +10,43 @@ HomeAutomation::Schema::Result::Appliance
 use strict;
 use warnings;
 
-=head1 BASE CLASS: L<HomeAutomation::Schema::Base>
+=head1 BASE CLASS: L<Schema::Base|HomeAutomation::Schema::Base>
 
 =cut
 
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
-extends 'HomeAutomation::Schema::Base';
+extends q{HomeAutomation::Schema::Base};
+
+use Mochad;
+use Readonly;
+
+our $VERSION = q{0.01};
+
+Readonly::Scalar my $MAX_RGB_INT    => 255;
+Readonly::Scalar my $RED_ADJUST     => 0.213;
+Readonly::Scalar my $GREEN_ADJUST   => 0.715;
+Readonly::Scalar my $BLUE_ADJUST    => 0.072;
+Readonly::Scalar my $TEXT_THRESHOLD => 0.5;
 
 =head1 COMPONENTS LOADED
 
 =over 4
 
-=item * L<DBIx::Class::InflateColumn::DateTime>
+=item * L<DateTime|DBIx::Class::InflateColumn::DateTime>
 
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components(q{InflateColumn::DateTime});
 
 =head1 TABLE: C<appliances>
 
 =cut
 
-__PACKAGE__->table("appliances");
+__PACKAGE__->table(q{appliances});
 
 =head1 ACCESSORS
 
@@ -107,41 +115,30 @@ __PACKAGE__->table("appliances");
 =cut
 
 __PACKAGE__->add_columns(
-  "address",
-  { data_type => "varchar", is_nullable => 0, size => 3 },
-  "device",
-  { data_type => "varchar", is_nullable => 1, size => 50 },
-  "room_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
-  "protocol",
-  { data_type => "char", is_nullable => 1, size => 2 },
-  "status",
-  { data_type => "boolean", is_nullable => 1 },
-  "setting",
-  { data_type => "smallint", is_nullable => 1 },
-  "dimable",
-  { data_type => "boolean", is_nullable => 1 },
-  "timings",
-  { data_type => "smallint", is_nullable => 1 },
-  "colour",
-  { data_type => "char", is_nullable => 1, size => 7 },
-  "on_button_text",
-  { data_type => "varchar", is_nullable => 1, size => 10 },
-  "off_button_text",
-  { data_type => "varchar", is_nullable => 1, size => 10 },
+    q{address},  { data_type => q{varchar}, is_nullable    => 0, size        => 3 },
+    q{device},   { data_type => q{varchar}, is_nullable    => 1, size        => 50 },
+    q{room_id},  { data_type => q{integer}, is_foreign_key => 1, is_nullable => 1 },
+    q{protocol}, { data_type => q{char},    is_nullable    => 1, size        => 2 },
+    q{status},   { data_type => q{boolean}, is_nullable    => 1 },
+    q{setting},         { data_type => q{smallint}, is_nullable => 1 },
+    q{dimable},         { data_type => q{boolean},  is_nullable => 1 },
+    q{timings},         { data_type => q{smallint}, is_nullable => 1 },
+    q{colour},          { data_type => q{char},     is_nullable => 1, size => 7 },
+    q{on_button_text},  { data_type => q{varchar},  is_nullable => 1, size => 10 },
+    q{off_button_text}, { data_type => q{varchar},  is_nullable => 1, size => 10 },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</address>
+=item * L<address|/address>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("address");
+__PACKAGE__->set_primary_key(q{address});
 
 =head1 RELATIONS
 
@@ -149,45 +146,36 @@ __PACKAGE__->set_primary_key("address");
 
 Type: belongs_to
 
-Related object: L<HomeAutomation::Schema::Result::Room>
+Related object: L<Room|HomeAutomation::Schema::Result::Room>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "room",
-  "HomeAutomation::Schema::Result::Room",
-  { id => "room_id" },
-  {
-    is_deferrable => 0,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
+    q{room},
+    q{HomeAutomation::Schema::Result::Room},
+    { id => q{room_id} },
+    {
+        is_deferrable => 0,
+        join_type     => q{LEFT},
+        on_delete     => q{CASCADE},
+        on_update     => q{CASCADE},
+    },
 );
 
 =head2 tasks
 
 Type: has_many
 
-Related object: L<HomeAutomation::Schema::Result::Task>
+Related object: L<Task|HomeAutomation::Schema::Result::Task>
 
 =cut
 
 __PACKAGE__->has_many(
-  "tasks",
-  "HomeAutomation::Schema::Result::Task",
-  { "foreign.appliance" => "self.address" },
-  { cascade_copy => 0, cascade_delete => 0 },
+    q{tasks},
+    q{HomeAutomation::Schema::Result::Task},
+    { q{foreign.appliance} => q{self.address} },
+    { cascade_copy         => 0, cascade_delete => 0 },
 );
-
-
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-06-10 23:32:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8/0TruWOaZqfGwy5QxtOFg
-
-
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-use Mochad;
 
 =head1 Non-database columns
 
@@ -200,11 +188,11 @@ An object used to interface with the actual hardware
 =cut
 
 has q{hardware} => (
-    is       => 'ro',
-    isa      => 'Mochad',
+    is       => q{ro},
+    isa      => q{Mochad},
     required => 1,
     lazy     => 1,
-    builder  => '_build_hardware',
+    builder  => q{_build_hardware},
 );
 
 sub _build_hardware {
@@ -213,7 +201,7 @@ sub _build_hardware {
     return Mochad->new(
         {
             address => $self->address,
-            via => $self->protocol
+            via     => $self->protocol
         }
     );
 }
@@ -225,24 +213,27 @@ Returns a text colour suitable for the colour
 =cut
 
 has q{text_colour} => (
-    is      => 'ro',
-    isa     => 'Str',
+    is      => q{ro},
+    isa     => q{Str},
     lazy    => 1,
-    builder => '_build_text_colour',
+    builder => q{_build_text_colour},
 );
 
 sub _build_text_colour {
     my ($self) = @_;
 
-    # default to white
-    return '#FFF' unless $self->colour;
+    # default to black
+    return q{#000} unless $self->colour;
 
     my $rgb_hex = $self->colour;
     $rgb_hex =~ s/^#//;
-    # convert the colour to rgb
-    my @rgb = map $_ / 255, unpack 'C*', pack 'H*', $rgb_hex;
 
-    return 0.213 * $rgb[0] + 0.715 * $rgb[1] + 0.072 * $rgb[2] < 0.5 ? '#FFF' : '#000';
+    # convert the colour to rgb
+    my @rgb = map { $_ / $MAX_RGB_INT } unpack q{C*}, pack q{H*}, $rgb_hex;
+
+    return $RED_ADJUST * $rgb[0] + $GREEN_ADJUST * $rgb[1] + $BLUE_ADJUST * $rgb[2] < $TEXT_THRESHOLD
+      ? q{#FFF}
+      : q{#000};
 }
 
 =back
@@ -277,7 +268,7 @@ sub delete_allowed_by {
     my ($self, $user) = @_;
 
     # Only allow delete if user has 'admin' role
-    return $user->has_role('admin');
+    return $user->has_role(q{admin});
 }
 
 =item control
@@ -292,13 +283,7 @@ sub control {
     # if the device should only be on for a specified time
     if ($self->timings) {
 
-        # with a timings device we only want to send the message if
-        # the status is opposite of the action. This is because no
-        # matter what the action is we turn it on and off.
-        if (
-            ($action eq q{off} && $self->status) 
-            || ($action eq q{on} && !$self->status)
-        ) {
+        if ($self->_do_timing($action)) {
             $self->hardware->timer($self->timings);
         }
     } else {
@@ -316,6 +301,19 @@ sub control {
     $self->update();
 
     return 1;
+}
+
+sub _do_timing {
+    my ($self, $action) = @_;
+
+    # with a timings device we only want to send the message if
+    # the status is opposite of the action. This is because no
+    # matter what the action is we turn it on and off.
+    if ($action eq q{off}) {
+        return $self->status;
+    } else {
+        return !$self->status;
+    }
 }
 
 =item switch
@@ -352,10 +350,12 @@ sub dim {
     # don't do anything if they're the same
     return unless $diff;
 
-    if($diff < 0) {
+    if ($diff < 0) {
+
         # dim the device
         $self->hardware->dim(abs($diff));
     } else {
+
         # brighten the device
         $self->hardware->brighten($diff);
     }

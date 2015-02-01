@@ -6,6 +6,10 @@ use warnings;
 use Test::Class::Moose extends => 'Test::HomeAutomation::Form';
 use HomeAutomation::Form::Appliance;
 
+use Readonly;
+
+Readonly::Scalar my $MAX_SETTING => 32;
+
 our $VERSION = '1.00';
 
 sub test_startup {
@@ -114,6 +118,29 @@ sub test_bad_off_button_text {
     return 1;
 }
 
+sub test_bad_setting {
+    my ($self) = @_;
+
+    my $params = _good_params();
+    $params->{setting} = $MAX_SETTING;
+
+    ok !$self->{form}->process(params => $params), q{form doesn't process when setting is too high};
+    ok $self->{form}->field(q{setting})->has_errors, q{off_button_text has errors - setting too high};
+    eq_or_diff $self->{form}->field(q{setting})->errors,
+      [q{Must be between 1 and 31}],
+      q{correct error message for setting too high};
+
+    $params->{setting} = 0;
+
+    ok !$self->{form}->process(params => $params), q{form doesn't process when setting is too low};
+    ok $self->{form}->field(q{setting})->has_errors, q{off_button_text has errors - setting too low};
+    eq_or_diff $self->{form}->field(q{setting})->errors,
+      [q{Must be between 1 and 31}],
+      q{correct error message for setting too low};
+
+    return 1;
+}
+
 sub _good_params {
     return {
         device          => q{Lights},
@@ -125,6 +152,7 @@ sub _good_params {
         on_button_text  => q{On},
         off_button_text => q{Off},
         dimable         => 0,
+        setting         => 5,
     };
 }
 

@@ -15,14 +15,12 @@ END {
     unlink q{test.db};
 }
 
-# load our test classes
-use Test::Class::Moose::Load 't/lib/Test';
 use Test::Class::Moose::Runner;
-
+# load our test classes
+use Test::Class::Moose::Load 't/lib';
 
 Test::Class::Moose::Runner->new(
     test_classes => \@ARGV,    # ignored if empty
 )->runtests;
-
 
 1;

@@ -1,7 +1,12 @@
 #!/usr/bin/env perl
 
+use strict;
+use warnings;
+
+our $VERSION = q{0.01};
+
 BEGIN {
-    $ENV{CATALYST_SCRIPT_GEN} = 40;
+    $ENV{CATALYST_SCRIPT_GEN} = q{40};
 }
 
 use Catalyst::ScriptRunner;

@@ -3,9 +3,15 @@
 use strict;
 use warnings;
 
+our $VERSION = q{0.01};
+
 use FindBin::libs;
 use HomeAutomation::Schema;
 use IO::Socket::INET;
+use Readonly;
+
+Readonly::Scalar my $KB         => 1024;
+Readonly::Scalar my $QUEUE_SIZE => 5;
 
 sub run_tasks {
     my ($schema) = @_;
@@ -14,17 +20,19 @@ sub run_tasks {
     for my $task (@tasks) {
         $task->appliance->control($task->action);
     }
+    return 1;
 }
 
 my $schema = HomeAutomation::Schema->connect('dbi:SQLite:ha.db');
 my $socket = IO::Socket::INET->new(
     LocalHost => q{localhost},
     LocalPort => q{4015},
-    Listen    => 5,
+    Listen    => $QUEUE_SIZE,
     Reuse     => 1,
-) or die q{ERROR in Socket Creation : },$!,qq{\n};
+) or die q{ERROR in Socket Creation : }, $!, qq{\n};
 
-while(1) {
+while (1) {
+
     # wait for a client to connect
     my $client_socket = $socket->accept();
 
@@ -33,8 +41,8 @@ while(1) {
 
     # get the command
     my $data;
-    $client_socket->recv($data,1024);
-    if($data =~ /run task/i) {
+    $client_socket->recv($data, $KB);
+    if ($data =~ /run task/i) {
         $client_socket->send(q{running tasks} . qq{\n});
         run_tasks($schema);
     } else {
