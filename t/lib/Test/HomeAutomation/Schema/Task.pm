@@ -43,6 +43,15 @@ sub test_startup {
                 off_button_text => q{Closed}
             }
         ),
+        $self->{schema}->resultset(q{Appliance})->next_appliance->update(
+            {
+                device          => 'Lights',
+                room_id         => 1,
+                on_button_text  => q{On},
+                off_button_text => q{Off},
+                colour          => undef,
+            }
+        ),
     ];
 
     # set up a load of useful? DateTime objects
@@ -454,6 +463,83 @@ sub test_active_tasks_recurring_no_expires {
     is scalar @tasks, 1, q{we have just one pending task};
     is $tasks[0]->action, q{on}, q{get back the right action};
     is $tasks[0]->appliance->device, $self->{appliances}[1]->device, q{get back the right device};
+
+    return 1;
+}
+
+sub test_one_time_task_no_colour {
+    my ($self) = @_;
+
+    my $task = $self->{resultset}->create(
+        {
+            appliance => $self->{appliances}[2],
+            action    => 'on',
+            time      => '16:00',
+            day       => $self->{today}->ymd,
+        }
+    );
+
+    is $task->all_days,          q{}, q{all days should return an empty string for one off events};
+    is $task->recurrence_expiry, q{}, q{one off event shouldn't have a recurrence expiry};
+    my $start = $self->{last_week};
+    my $end   = $self->{next_week};
+    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1, q{scheduled task is returned};
+
+    my $url = q{http://example.com/task/view};
+    eq_or_diff $task->full_calendar($url, $start, $end),
+      [
+        {
+            start           => q{2014-03-28T16:00:00Z},
+            title           => q{16:00: Lights On},
+            url             => $url,
+        }
+      ],
+      q{full_calendar result has no colours};
+
+    return 1;
+}
+
+sub test_recurring_task_no_colour {
+    my ($self) = @_;
+
+    my $task = $self->{resultset}->create(
+        {
+            appliance  => $self->{appliances}[2],
+            action     => 'on',
+            time       => '12:00',
+            recurrence => {
+                expires    => $self->{today}->ymd,
+                tasks_days => [ { day_id => 1 }, { day_id => 3 }, { day_id => 5 }, ],
+            },
+        }
+    );
+
+    is $task->all_days, q{Monday, Wednesday, Friday}, q{all days returns a comma separated list of days};
+    is $task->recurrence_expiry->ymd, q{2014-03-28}, q{recurrence_expiry returns the correct date};
+    my $start = $self->{last_week};
+    my $end   = $self->{next_week};
+    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1, q{scheduled task returns a recurring task};
+
+    my $url = q{http://example.com/task/view};
+    eq_or_diff $task->full_calendar($url, $start, $end),
+      [
+        {
+            start           => q{2014-03-21T12:00:00Z},
+            title           => q{12:00: Lights On},
+            url             => $url,
+        },
+        {
+            start           => q{2014-03-24T12:00:00Z},
+            title           => q{12:00: Lights On},
+            url             => $url,
+        },
+        {
+            start           => q{2014-03-26T12:00:00Z},
+            title           => q{12:00: Lights On},
+            url             => $url,
+        },
+      ],
+      q{full_calendar result has no colours};
 
     return 1;
 }

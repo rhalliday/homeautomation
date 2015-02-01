@@ -222,8 +222,8 @@ has q{text_colour} => (
 sub _build_text_colour {
     my ($self) = @_;
 
-    # default to white
-    return q{#FFF} unless $self->colour;
+    # default to black
+    return q{#000} unless $self->colour;
 
     my $rgb_hex = $self->colour;
     $rgb_hex =~ s/^#//;
@@ -283,12 +283,7 @@ sub control {
     # if the device should only be on for a specified time
     if ($self->timings) {
 
-        # with a timings device we only want to send the message if
-        # the status is opposite of the action. This is because no
-        # matter what the action is we turn it on and off.
-        if (   ($action eq q{off} && $self->status)
-            || ($action eq q{on} && !$self->status))
-        {
+        if ($self->_do_timing($action)) {
             $self->hardware->timer($self->timings);
         }
     } else {
@@ -306,6 +301,19 @@ sub control {
     $self->update();
 
     return 1;
+}
+
+sub _do_timing {
+    my ($self, $action) = @_;
+
+    # with a timings device we only want to send the message if
+    # the status is opposite of the action. This is because no
+    # matter what the action is we turn it on and off.
+    if ($action eq q{off}) {
+        return $self->status;
+    } else {
+        return !$self->status;
+    }
 }
 
 =item switch

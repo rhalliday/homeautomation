@@ -19,7 +19,7 @@ sub test_empty_creds {
             password => q{},
         }
     );
-    $ua->content_contains(q{Empty username or password.}, q{empty username and password gets the right error});
+    $ua->title_is(q{Login}, q{empty username and password stays on the login page});
 
     return 1;
 }
@@ -35,7 +35,7 @@ sub test_empty_password {
             password => q{},
         }
     );
-    $ua->content_contains(q{Empty username or password.}, q{empty password gets the right error});
+    $ua->title_is(q{Login}, q{empty password stays on the login page});
 
     return 1;
 }
@@ -52,7 +52,7 @@ sub test_empty_username {
             password => q{mypass},
         }
     );
-    $ua->content_contains(q{Empty username or password.}, q{empty username gets the right error});
+    $ua->title_is(q{Login}, q{empty username stays on the login page});
 
     return 1;
 }
@@ -85,6 +85,23 @@ sub test_bad_password {
         }
     );
     $ua->content_contains(q{Bad username or password.}, q{can't login with a bad password});
+
+    return 1;
+}
+
+sub test_redirect {
+    my ($self) = @_;
+
+    my $ua = $self->{ua};
+    $ua->get(q{/appliances/list?room=Amber});
+    $ua->title_is(q{Login}, q{Check for login title});
+    $ua->submit_form(
+        fields => {
+            username => q{test03},
+            password => q{mypass},
+        }
+    );
+    $ua->content_like(qr{<li class="active">\s*<a href="http://localhost/appliances/list\?room=Amber">\s*Amber}, q{get redirected to Amber's room});
 
     return 1;
 }

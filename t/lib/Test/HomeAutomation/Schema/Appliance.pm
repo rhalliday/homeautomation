@@ -160,6 +160,80 @@ sub test_appliance_with_timings {
     ok($appliance->status, q{timed device should still be on if it was on before});
     is $self->{fake_mochad}->message, undef, q{no message should've been sent to the device as it is already on};
 
+    $self->set_up_mochad(
+        [
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: On},
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: Off}
+        ]
+    );
+    $appliance->control(q{off});
+    ok(!$appliance->status, q{can turn the curtain off});
+    is $self->{fake_mochad}->message, q{pl F1 on} . "\n" . q{pl F1 off} . "\n", q{correct message to close curtains};
+
+    $self->set_up_mochad(
+        [
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: On},
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: Off}
+        ]
+    );
+    $appliance->control(q{off});
+    ok !$appliance->status, q{timed device should still be off if it was off before};
+    is $self->{fake_mochad}->message, undef, q{no message should've been sent to the device as it is already off};
+
+    $self->set_up_mochad(
+        [
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: On},
+            q{10/31 22:06:52 Tx PL HouseUnit: F1},
+            q{10/31 22:06:52 Tx PL House: F Func: Off}
+        ]
+    );
+
+    # send the on message
+    $appliance->control(q{on});
+    ok($appliance->status, q{timed device should now be on if it was off before});
+    return 1;
+}
+
+sub test_dim {
+    my ($self) = @_;
+
+    my $appliance = $self->{resultset}->next_appliance;
+    $appliance->update(
+        {
+            device   => 'Light',
+            room_id  => 1,
+            protocol => 'pl',
+            status   => 0,
+            colour   => undef,
+        }
+    );
+
+    ok !$appliance->dim(1), q{can't dim an appliance unless it is dimmable};
+    is $appliance->text_colour, q{#000}, q{text defaults to black};
+
+    # make the appliance dimmable
+    $appliance->update(
+        {
+            dimable => 1,
+            setting => 1,
+        }
+    );
+
+    ok !$appliance->dim(1), q{dim doesn't do anything if the dim setting is already set};
+
+    $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F1}, q{10/31 22:06:52 Tx PL House: F Func: Bright} ]);
+    ok $appliance->dim(5), q{dim returns true if it has something to do};
+    is $self->{fake_mochad}->message, q{pl F1 bright 4} . "\n", q{dim sends bright message if it needs to};
+
+    $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F1}, q{10/31 22:06:52 Tx PL House: F Func: Dim} ]);
+    ok $appliance->dim(1), q{dim returns true if it has something to do - dim};
+    is $self->{fake_mochad}->message, q{pl F1 dim 4} . "\n", q{dim sends dim message if it needs to};
+
     return 1;
 }
 
