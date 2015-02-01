@@ -19,7 +19,7 @@ sub test_empty_creds {
             password => q{},
         }
     );
-    $ua->content_contains(q{Empty username or password.}, q{empty username and password gets the right error});
+    $ua->title_is(q{Login}, q{empty username and password stays on the login page});
 
     return 1;
 }
@@ -35,7 +35,7 @@ sub test_empty_password {
             password => q{},
         }
     );
-    $ua->content_contains(q{Empty username or password.}, q{empty password gets the right error});
+    $ua->title_is(q{Login}, q{empty password stays on the login page});
 
     return 1;
 }
@@ -52,7 +52,7 @@ sub test_empty_username {
             password => q{mypass},
         }
     );
-    $ua->content_contains(q{Empty username or password.}, q{empty username gets the right error});
+    $ua->title_is(q{Login}, q{empty username stays on the login page});
 
     return 1;
 }
@@ -89,30 +89,21 @@ sub test_bad_password {
     return 1;
 }
 
-sub test_good_login {
+sub test_redirect {
     my ($self) = @_;
 
-    my $ua = $self->{ua};
-    $ua->get(q{/login});
-
-    # login properly
+    my $ua  = $self->{ua};
+    my $url = q{/appliances/list?room=Amber};
+    $ua->get($url);
+    $ua->title_is(q{Login}, q{Check for login title});
     $ua->submit_form(
         fields => {
             username => q{test03},
             password => q{mypass},
         }
     );
-
-    # navigate back to the login page and submit an empty form, we should still be redirected
-    $ua->get_ok(q{/login}, q{get the login page});
-    $ua->submit_form(
-        fields => {
-            username => q{},
-            password => q{},
-        }
-    );
-    $ua->content_lacks(q{Empty username or password.},
-        q{empty username and password gets no error, as we're already logged in});
+    $url =~ s/[?]/[?]/;    #escape the ?
+    $ua->content_like(qr{<li class="active">\s*<a href="http://localhost$url">}, q{get redirected to Amber's room});
 
     return 1;
 }

@@ -90,7 +90,7 @@ Permissions error screen
 
 =cut
 
-sub error_noperms : Chained(q{/}) : PathPart(q{error_noperms}) : Args(0) {
+sub error_noperms : Chained('/') : PathPart('error_noperms') : Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(template => q{error_noperms.tt2});

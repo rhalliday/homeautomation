@@ -63,8 +63,8 @@ sub object : Chained('base') : PathPart('address') : CaptureArgs(1) {
     $c->detach('/default') if !$object;
 
     $c->stash(
-        object        => $object,
-        selected_room => $object->room->name,
+        object => $object,
+        selected_room => $object->room ? $object->room->name : q{},
     );
 
     return 1;
