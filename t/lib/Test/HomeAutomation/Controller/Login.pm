@@ -92,8 +92,9 @@ sub test_bad_password {
 sub test_redirect {
     my ($self) = @_;
 
-    my $ua = $self->{ua};
-    $ua->get(q{/appliances/list?room=Amber});
+    my $ua  = $self->{ua};
+    my $url = q{/appliances/list?room=Amber};
+    $ua->get($url);
     $ua->title_is(q{Login}, q{Check for login title});
     $ua->submit_form(
         fields => {
@@ -101,7 +102,8 @@ sub test_redirect {
             password => q{mypass},
         }
     );
-    $ua->content_like(qr{<li class="active">\s*<a href="http://localhost/appliances/list\?room=Amber">\s*Amber}, q{get redirected to Amber's room});
+    $url =~ s/[?]/[?]/;    #escape the ?
+    $ua->content_like(qr{<li class="active">\s*<a href="http://localhost$url">}, q{get redirected to Amber's room});
 
     return 1;
 }

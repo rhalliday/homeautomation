@@ -25,8 +25,8 @@ Readonly::Hash my %CONTENT => (
 );
 
 Readonly::Hash my %RE => (
-    tv_switch_off   => qr{onclick="FreezeScreen\('$TV_SWITCH_LINK'\)"\s*/>},
-    tv_switch_on    => qr{onclick="FreezeScreen\('$TV_SWITCH_LINK'\)"\s*checked\s*/>},
+    tv_switch_off   => qr{onclick="FreezeScreen[(]'$TV_SWITCH_LINK'[)]"\s*/>},
+    tv_switch_on    => qr{onclick="FreezeScreen[(]'$TV_SWITCH_LINK'[)]"\s*checked\s*/>},
     delete_button   => qr{class="btn btn-sm btn-danger"\s*>\s*Delete\s*</a>},
     edit_button     => qr{class="btn btn-sm btn-info"\s*>\s*Edit\s*</a>},
     schedule_button => qr{class="btn btn-sm btn-primary"\s*>\s*Schedule\s*</a>},

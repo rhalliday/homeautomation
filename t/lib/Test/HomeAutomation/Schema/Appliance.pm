@@ -8,6 +8,7 @@ use Test::Class::Moose extends => 'Test::HomeAutomation::Schema';
 use Readonly;
 
 Readonly::Scalar my $NUM_APPLIANCES => 16;
+Readonly::Scalar my $DIM_SETTING    => 5;
 
 our $VERSION = '1.00';
 
@@ -227,7 +228,7 @@ sub test_dim {
     ok !$appliance->dim(1), q{dim doesn't do anything if the dim setting is already set};
 
     $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F1}, q{10/31 22:06:52 Tx PL House: F Func: Bright} ]);
-    ok $appliance->dim(5), q{dim returns true if it has something to do};
+    ok $appliance->dim($DIM_SETTING), q{dim returns true if it has something to do};
     is $self->{fake_mochad}->message, q{pl F1 bright 4} . "\n", q{dim sends bright message if it needs to};
 
     $self->set_up_mochad([ q{10/31 22:06:52 Tx PL HouseUnit: F1}, q{10/31 22:06:52 Tx PL House: F Func: Dim} ]);

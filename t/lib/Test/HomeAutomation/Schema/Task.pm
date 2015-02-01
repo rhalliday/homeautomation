@@ -489,9 +489,9 @@ sub test_one_time_task_no_colour {
     eq_or_diff $task->full_calendar($url, $start, $end),
       [
         {
-            start           => q{2014-03-28T16:00:00Z},
-            title           => q{16:00: Lights On},
-            url             => $url,
+            start => q{2014-03-28T16:00:00Z},
+            title => q{16:00: Lights On},
+            url   => $url,
         }
       ],
       q{full_calendar result has no colours};
@@ -524,19 +524,19 @@ sub test_recurring_task_no_colour {
     eq_or_diff $task->full_calendar($url, $start, $end),
       [
         {
-            start           => q{2014-03-21T12:00:00Z},
-            title           => q{12:00: Lights On},
-            url             => $url,
+            start => q{2014-03-21T12:00:00Z},
+            title => q{12:00: Lights On},
+            url   => $url,
         },
         {
-            start           => q{2014-03-24T12:00:00Z},
-            title           => q{12:00: Lights On},
-            url             => $url,
+            start => q{2014-03-24T12:00:00Z},
+            title => q{12:00: Lights On},
+            url   => $url,
         },
         {
-            start           => q{2014-03-26T12:00:00Z},
-            title           => q{12:00: Lights On},
-            url             => $url,
+            start => q{2014-03-26T12:00:00Z},
+            title => q{12:00: Lights On},
+            url   => $url,
         },
       ],
       q{full_calendar result has no colours};
