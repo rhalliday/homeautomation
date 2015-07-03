@@ -146,7 +146,7 @@
 [% IF is_admin %]
 <hr/>
 <p>
-  <a href="[% c.uri_for(c.controller.action_for('create')) %]" class="btn btn-primary">Create</a>
+  <a href="[% c.uri_for(c.controller.action_for('create'), [], { selected_room => selected_room }) %]" class="btn btn-primary">Create</a>
 </p>
 [% END %]
 
