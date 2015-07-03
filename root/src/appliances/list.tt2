@@ -49,9 +49,26 @@
     }
 </script>
 
+[%# drop down menu for small devices %]
+<div class="dropdown visible-xs-block visible-xs">
+    <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default">
+        Rooms
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dLabel">
+    [% FOREACH room IN rooms %]
+        [% NEXT IF room.name == selected_room %]
+        <li>
+            <a href="[%- c.uri_for(c.controller.action_for('list'), [], { room => room.name}) %]">
+                [% room.name | ucfirst %]
+            </a>
+        </li>
+    [% END %]
+    </ul>
+</div>
 <ul class="nav nav-tabs" id="tabs">
 [% FOREACH room IN rooms %]
-    <li [% IF room.name == selected_room %]class="active"[% END %]>
+    <li class="[% IF room.name == selected_room; 'active'; ELSE; 'hidden-xs'; END; %]">
         <a href="[%- c.uri_for(c.controller.action_for('list'), [], { room => room.name}) %]">
             [% room.name | ucfirst %]
         </a>
@@ -67,7 +84,7 @@
         <tr>
             <th>Name</th>
             <th>Status</th>
-            [% IF is_admin %]<th>Address</th>[% END %]
+            [% IF is_admin %]<th class="hidden-xs">Address</th>[% END %]
             [% IF is_admin or is_schedule %]<th>Links</th>[% END %]
         </tr>
     </thead>
@@ -87,24 +104,24 @@
                 </label>
                 [% IF appliance.dimable && appliance.status %]
                 <br/>
-                <div id="[%- appliance.address -%]-dimmer"></div>
+                <div id="[%- appliance.address -%]-dimmer" class="dimmer-slider"></div>
                 [% END %]
             </td>
             [% IF is_admin %]
-            <td>[% appliance.address %]</td>
+            <td class="hidden-xs">[% appliance.address %]</td>
             [% END %]
             [% IF is_admin or is_schedule %]
             <td>
             [% IF is_admin %]
             <a
                 href="[% c.uri_for(c.controller.action_for('delete'), [appliance.address]) %]"
-                class="btn btn-sm btn-danger"
+                class="btn btn-sm btn-danger hidden-xs"
             >
                 Delete
             </a>
             <a
                 href="[% c.uri_for(c.controller.action_for('edit'), [appliance.address]) %]"
-                class="btn btn-sm btn-info"
+                class="btn btn-sm btn-info hidden-xs"
             >
                 Edit
             </a>
@@ -124,9 +141,9 @@
     </tbody>
 </table>
 
+<script language="JavaScript">
 [% FOREACH appliance IN appliances -%]
 [% NEXT UNLESS appliance.device && appliance.dimable && appliance.status %]
-<script language="JavaScript">
     $("#[%-appliance.address%]-dimmer").slider({
         step:      1,
         min:       1,
@@ -136,8 +153,8 @@
         var url = "[% c.uri_for(c.controller.action_for('dim'), [appliance.address]) %]/"+ev.value;
         window.location.href = url;
     });
-</script>
 [% END %]
+</script>
 [% ELSE %]
 <p>No devices in this room</p>
 [% END %]
@@ -146,7 +163,7 @@
 [% IF is_admin %]
 <hr/>
 <p>
-  <a href="[% c.uri_for(c.controller.action_for('create')) %]" class="btn btn-primary">Create</a>
+  <a href="[% c.uri_for(c.controller.action_for('create'), [], { selected_room => selected_room }) %]" class="btn btn-primary">Create</a>
 </p>
 [% END %]
 

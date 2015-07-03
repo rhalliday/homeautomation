@@ -18,6 +18,7 @@ has '+widget_wrapper' => (default => 'Bootstrap');
 
 has_field 'device' => (
     type          => 'Text',
+    required      => 1,
     element_class => ['form-control'],
     element_attr  => { placeholder => 'Device' },
     wrapper_class => ['form-group'],
@@ -25,7 +26,6 @@ has_field 'device' => (
 
 has_field 'room' => (
     type          => 'Select',
-    init_value    => 7,
     element_class => ['form-control'],
     wrapper_class => ['form-group'],
 );

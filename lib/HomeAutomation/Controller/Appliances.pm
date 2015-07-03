@@ -81,11 +81,12 @@ sub list : Chained('base') : PathParth('list') : Args(0) {
 
     my $room = $c->req->param('room') || 'Lounge';
 
-    $c->stash(rooms         => [ $c->model('DB::Room')->all ]);
-    $c->stash(selected_room => $room);
-    $c->stash(appliances    => [ $c->stash->{resultset}->appliances_in_room($room)->all ]);
-
-    $c->stash(template => 'appliances/list.tt2');
+    $c->stash(
+        rooms         => [ $c->model('DB::Room')->all ],
+        selected_room => $room,
+        appliances    => [ $c->stash->{resultset}->appliances_in_room($room)->all ],
+        template      => 'appliances/list.tt2',
+    );
 
     return 1;
 }
@@ -100,11 +101,15 @@ sub create : Chained('base') : PathPart('create') : Args(0) {
     my ($self, $c) = @_;
 
     my $appliance = $c->stash->{resultset}->next_appliance;
+    my $room_name = $c->req->param('selected_room') || 'Lounge';
+    my $room      = $c->model('DB::Room')->search({ name => $room_name })->first;
 
     $c->detach('/default') unless $appliance;
 
     # set some defaults
-    $appliance->update({ status => 1, protocol => 'pl', on_button_text => 'On', off_button_text => 'Off' });
+    $appliance->update(
+        { status => 1, protocol => 'pl', on_button_text => 'On', off_button_text => 'Off', room_id => $room->id });
+
     $c->stash->{object} = $appliance;
 
     return $self->form($c, $appliance);
@@ -135,7 +140,7 @@ sub form {
 
     # Set the template
     $c->stash(template => 'appliances/form.tt2', form => $form);
-    $form->process(item => $appliance, params => $c->req->params);
+    $form->process(item => $appliance, params => $c->req->body_params);
     return unless $form->validated;
 
     # Set a status message for the user & return to books list
