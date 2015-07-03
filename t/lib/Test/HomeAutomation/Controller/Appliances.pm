@@ -19,7 +19,7 @@ Readonly::Hash my %CONTENT => (
     logout        => q{/logout">Logout</a>},
     tv_column     => q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},
     tv_address    => q{<td>F1</td>},
-    create_button => q{/appliances/create" class="btn btn-primary">Create</a>},
+    create_button => q{/appliances/create?selected_room=Lounge" class="btn btn-primary">Create</a>},
     lights        => q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>},
     no_device     => q{<p>No devices in this room</p>},
 );
