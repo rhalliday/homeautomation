@@ -1,0 +1,49 @@
+[% META title = 'Room List';
+    IF c.check_user_roles('admin');
+        is_admin = 1; 
+    ELSE; 
+        is_admin = 0; 
+    END;
+-%]
+
+<div class="table-responsive"> 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                [% IF is_admin %]<th>Links</th>[% END %]
+            </tr>
+        </thead>
+        <tbody>
+        [% FOREACH room IN rooms %]
+            <tr>
+                <td>[% room.id %]</td>
+                <td>[% room.name %]</td>
+                [% IF is_admin %]
+                <td>
+                    <a
+                        href="[% c.uri_for(c.controller.action_for('delete'), [room.id]) %]"
+                        class="btn btn-sm btn-danger"
+                    >
+                        Delete
+                    </a>
+                    <a
+                        href="[% c.uri_for(c.controller.action_for('edit'), [room.id]) %]"
+                        class="btn btn-sm btn-info"
+                    >
+                        Edit
+                    </a>
+                </td>
+                [% END %]
+            </tr>
+        [% END %]
+        </tbody>
+    </table>
+</div>
+[% IF is_admin %]
+<hr/>
+<p>
+  <a href="[% c.uri_for(c.controller.action_for('create')) %]" class="btn btn-primary">Create</a>
+</p>
+[% END %]
