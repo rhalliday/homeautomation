@@ -49,34 +49,36 @@
                     <span class="message"><em>[% status_msg %]</em></span>
                     <span class="error"><em>[% error_msg %]</em></span>
                     [% content %]
-                </div>
+                </div> <!-- end of content -->
+                [%# hide menu on login screen %]
+                [% IF template.title != 'Login' %]
                 <div id="menu" class="col-sm-1 col-md-2" style="background-color:#eee">
                     <ul class="nav nav-pills nav-stacked">
-                        <li [% IF template.title == 'Appliance List' %]class="active"[% END %]>
-                            <a href="[% c.uri_for('/appliances/list') %]">Appliances</a>
-                        </li>
-                        [% IF c.check_user_roles('schedule') %]
-                            <li [% IF template.title == 'Schedule List' %]class="active"[% END %]>
-                                <a href="[% c.uri_for('/schedules/list') %]">Schedules</a>
-                            </li>
-                        [% END %]
-                        [% IF c.check_user_roles('usermanagement') %]
-                            <li [% IF template.title == 'User List' %]class="active"[% END %]>
-                                <a href="[% c.uri_for('/usermanagement/list') %]">Users</a>
-                            </li>
-                        [% END %]
-                        [% IF c.check_user_roles('user') %]
-                            <li [% IF template.title == 'Change Password' %]class="active"[% END %]>
-                                <a href="[% c.uri_for('/usermanagement/change_password') %]">Change Password</a>
-                            </li>
+                    [% 
+                        PROCESS nav_link title='Appliance List' endpoint='/appliances/list' label='Appliances';
+                        PROCESS nav_link title='Room List' endpoint='/rooms/list' label='Rooms';
+                        IF c.check_user_roles('schedule');
+                            PROCESS nav_link title='Schedule List' endpoint='/schedules/list' label='Schedules';
+                        END;
+                        IF c.check_user_roles('usermanagement');
+                            PROCESS nav_link title='User List' endpoint='/usermanagement/list' label='Users';
+                        END;
+                        IF c.check_user_roles('user');
+                            PROCESS nav_link title='Change Password' endpoint='/usermanagement/change_password' label='Change Password'; %]
                             <li><a href="[% c.uri_for('/logout') %]">Logout</a></li>
                         [% ELSE %]
                             <li><a href="[% c.uri_for('/login') %]">Login</a></li>
                         [% END %]
                     </ul>
-                </div>
-
-            </div>
-        </div>
+                </div> <!-- end of menu -->
+                [% END %]
+            </div> <!-- end of body block -->
+        </div> <!-- end of outer -->
     </body>
 </html>
+
+[% BLOCK nav_link %]
+<li [% IF template.title == title %]class="active"[% END %]>
+    <a href="[% c.uri_for(endpoint) %]">[% label %]</a>
+</li>
+[% END %]
