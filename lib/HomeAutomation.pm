@@ -35,7 +35,7 @@ use Catalyst qw/
 
 extends 'Catalyst';
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 # Configure the application.
 #
