@@ -3,6 +3,9 @@ use Moose;
 use namespace::autoclean;
 
 use HomeAutomation::Form::Appliance;
+use Readonly;
+
+Readonly::Scalar my $DEFAULT_ROOM => 'Lounge';
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -79,7 +82,7 @@ Display all the appliances
 sub list : Chained('base') : PathParth('list') : Args(0) {
     my ($self, $c) = @_;
 
-    my $room = $c->req->param('room') || 'Lounge';
+    my $room = $c->req->param('room') || $DEFAULT_ROOM;
 
     $c->stash(
         rooms         => [ $c->model('DB::Room')->all ],
@@ -101,8 +104,12 @@ sub create : Chained('base') : PathPart('create') : Args(0) {
     my ($self, $c) = @_;
 
     my $appliance = $c->stash->{resultset}->next_appliance;
-    my $room_name = $c->req->param('selected_room') || 'Lounge';
-    my $room      = $c->model('DB::Room')->search({ name => $room_name })->first;
+
+    # get the selected room or the first room
+    my $room_name = $c->req->param('selected_room');
+    my $search    = {};
+    $search->{name} = $room_name if $room_name;
+    my $room = $c->model('DB::Room')->search($search)->first;
 
     $c->detach('/default') unless $appliance;
 

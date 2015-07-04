@@ -62,9 +62,7 @@ sub object : Chained('base') : PathPart('') : CaptureArgs(1) {
     my $object = $c->stash->{resultset}->find($room_id);
     $c->detach('/default') if !$object;
 
-    $c->stash(
-        object => $object,
-    );
+    $c->stash(object => $object,);
 
     return 1;
 }
@@ -81,8 +79,8 @@ sub list : Chained('base') : PathParth('list') : Args(0) {
     my $room = $c->req->param('room') || 'Lounge';
 
     $c->stash(
-        rooms         => [ $c->stash->{resultset}->all ],
-        template      => 'rooms/list.tt2',
+        rooms    => [ $c->stash->{resultset}->all ],
+        template => 'rooms/list.tt2',
     );
 
     return 1;
@@ -136,11 +134,7 @@ sub form {
 
     # Set a status message for the user & return to rooms list
     $c->response->redirect(
-        $c->uri_for(
-            $self->action_for('list'),
-            { mid => $c->set_status_msg($room->name . ' created/updated') }
-        )
-    );
+        $c->uri_for($self->action_for('list'), { mid => $c->set_status_msg($room->name . ' created/updated') }));
 
     return 1;
 }
@@ -164,11 +158,7 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
 
     # Redirect to the list action/method in this controller
     $c->response->redirect(
-        $c->uri_for(
-            $self->action_for('list'),
-            { mid => $c->set_status_msg("Deleted appliance $room") }
-        )
-    );
+        $c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted room $room") }));
 
     return 1;
 }

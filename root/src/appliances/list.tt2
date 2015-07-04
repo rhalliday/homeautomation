@@ -52,7 +52,7 @@
 [%# drop down menu for small devices %]
 <div class="dropdown visible-xs-block visible-xs">
     <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default">
-        Rooms
+        [% selected_room | ucfirst %]
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -66,9 +66,10 @@
     [% END %]
     </ul>
 </div>
-<ul class="nav nav-tabs" id="tabs">
+[%# tabs for every other device %]
+<ul class="nav nav-tabs hidden-xs" id="tabs">
 [% FOREACH room IN rooms %]
-    <li class="[% IF room.name == selected_room; 'active'; ELSE; 'hidden-xs'; END; %]">
+    <li [% IF room.name == selected_room %]class="active"[% END %]>
         <a href="[%- c.uri_for(c.controller.action_for('list'), [], { room => room.name}) %]">
             [% room.name | ucfirst %]
         </a>
