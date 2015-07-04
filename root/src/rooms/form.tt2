@@ -1,0 +1,4 @@
+[% META 
+    title = 'Create/Update Room'
+-%]
+[% form.render %]
