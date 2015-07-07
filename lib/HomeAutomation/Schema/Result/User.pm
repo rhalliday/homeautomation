@@ -155,6 +155,8 @@ use Perl6::Junction qw/any/;
 sub has_role {
     my ($self, $role) = @_;
 
+    return unless $self->active;
+
     # Does this user posses the required role?
     return any(map { $_->role } $self->roles) eq $role;
 }
