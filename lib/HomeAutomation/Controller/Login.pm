@@ -44,11 +44,15 @@ sub index : Path : Args(0) {
             )
           )
         {
-            # If successful, then let them use the application
-            my $dest = $c->uri_for(q{/});
-            $dest = $c->flash->{redirect_after_login} if $c->flash->{redirect_after_login};
-            $c->response->redirect($dest);
-            return;
+            if ($c->user->active) {
+                # If successful, then let them use the application
+                my $dest = $c->uri_for(q{/});
+                $dest = $c->flash->{redirect_after_login} if $c->flash->{redirect_after_login};
+                $c->response->redirect($dest);
+                return;
+            }
+            # not an active user so give an appropriate message
+            $c->stash(error_msg => q{You no longer have access to this awesome application});
         } else {
 
             # Set an error message
