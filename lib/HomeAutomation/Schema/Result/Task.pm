@@ -77,6 +77,12 @@ __PACKAGE__->table(q{tasks});
   data_type: 'date'
   is_nullable: 1
 
+=head2 scene_id
+
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -86,6 +92,7 @@ __PACKAGE__->add_columns(
     q{time},          { data_type => q{text},    is_nullable    => 1 },
     q{recurrence_id}, { data_type => q{integer}, is_foreign_key => 1, is_nullable => 1 },
     q{day},           { data_type => q{date},    is_nullable    => 1 },
+    q{scene_id},      { data_type => q{integer}, is_foreign_key => 1, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -114,6 +121,26 @@ __PACKAGE__->belongs_to(
     q{appliance},
     q{HomeAutomation::Schema::Result::Appliance},
     { address => q{appliance} },
+    {
+        is_deferrable => 0,
+        join_type     => q{LEFT},
+        on_delete     => q{CASCADE},
+        on_update     => q{CASCADE},
+    },
+);
+
+=head2 scene
+
+Type: belongs_to
+
+Related object: L<Scene|HomeAutomation::Schema::Result::Scene>
+
+=cut
+
+__PACKAGE__->belongs_to(
+    q{scene},
+    q{HomeAutomation::Schema::Result::Scene},
+    { scene_id => q{scene_id} },
     {
         is_deferrable => 0,
         join_type     => q{LEFT},
@@ -218,7 +245,9 @@ sub full_calendar {
 
     # set up a title
     my $action = $self->action . q{_button_text};
-    my $title  = $self->time . q{: } . $self->appliance->device . q{ } . $self->appliance->$action;
+    my $title  = $self->appliance
+        ? $self->time . q{: } . $self->appliance->device . q{ } . $self->appliance->$action
+        : $self->time . q{: } . $self->scene->name;
 
     # if it's a task that is for a specific date
     if ($self->day) {
@@ -229,11 +258,7 @@ sub full_calendar {
         my $time_string = $self->time;
         $time =~ s/00:00/$time_string/;
         $time .= q{Z};
-        my $result_hash = { title => $title, start => $time, url => $url };
-        if ($self->appliance->colour) {
-            $result_hash->{backgroundColor} = $self->appliance->colour;
-            $result_hash->{textColor}       = $self->appliance->text_colour;
-        }
+        my $result_hash = $self->_get_result_hash({ title => $title, start => $time, url => $url });
         push @data, $result_hash;
     } else {
 
@@ -247,11 +272,7 @@ sub full_calendar {
         while ((!$self->recurrence->expires || $dt < $self->recurrence->expires) && $dt < $dt_end) {
             if (exists $days{ $dt->dow }) {
                 my $time = $dt->ymd . q{T} . $self->time . q{:00Z};
-                my $result_hash = { title => $title, start => $time, url => $url };
-                if ($self->appliance->colour) {
-                    $result_hash->{backgroundColor} = $self->appliance->colour;
-                    $result_hash->{textColor}       = $self->appliance->text_colour;
-                }
+                my $result_hash = $self->_get_result_hash({ title => $title, start => $time, url => $url });
                 push @data, $result_hash;
             }
             $dt = $dt->add(days => 1);
@@ -259,6 +280,16 @@ sub full_calendar {
     }
 
     return \@data;
+}
+
+sub _get_result_hash {
+    my ($self, $result_hash) = @_;
+
+    if ($self->appliance && $self->appliance->colour) {
+        $result_hash->{backgroundColor} = $self->appliance->colour;
+        $result_hash->{textColor}       = $self->appliance->text_colour;
+    }
+    return $result_hash;
 }
 
 =back

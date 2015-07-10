@@ -129,7 +129,7 @@
             [% END %]
             [% IF is_schedule %]
                 <a 
-                    href="[% c.uri_for(c.controller('Schedules').action_for('create'), [appliance.address]) %]"
+                    href="[% c.uri_for(c.controller('Schedules').action_for('create'), [appliance.address, 'appliance']) %]"
                     class="btn btn-sm btn-primary"
                 >
                     Schedule

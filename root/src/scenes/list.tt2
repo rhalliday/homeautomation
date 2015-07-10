@@ -1,0 +1,71 @@
+[% META title = 'Appliance List'; 
+
+    IF c.check_user_roles('admin');
+        is_admin = 1; 
+    ELSE; 
+        is_admin = 0; 
+    END;
+    IF c.check_user_roles('schedule');
+        is_schedule = 1; 
+    ELSE; 
+        is_schedule = 0; 
+    END;
+-%]
+
+[% IF scenes.size > 0 %]
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Room</th>
+            [% IF is_admin or is_schedule %]<th>Links</th>[% END %]
+        </tr>
+    </thead>
+    <tbody>
+    [% FOREACH scene IN scenes -%]
+        <tr>
+            <td>[%- scene.name -%]</td>
+            <td>[%- IF scene.room_id; scene.room.name; END; -%]</td>
+            [% IF is_admin or is_schedule %]
+            <td>
+            [% IF is_admin %]
+            <a
+                href="[% c.uri_for(c.controller.action_for('delete'), [scene.scene_id]) %]"
+                class="btn btn-sm btn-danger hidden-xs"
+            >
+                Delete
+            </a>
+            <a
+                href="[% c.uri_for(c.controller.action_for('edit'), [scene.scene_id]) %]"
+                class="btn btn-sm btn-info hidden-xs"
+            >
+                Edit
+            </a>
+            [% END %]
+            [% IF is_schedule %]
+                <a 
+                    href="[% c.uri_for(c.controller('Schedules').action_for('create'), [scene.scene_id, 'scene_id']) %]"
+                    class="btn btn-sm btn-primary"
+                >
+                    Schedule
+                </a>
+            [% END %]
+            </td>
+            [% END %]
+        </tr>
+    [% END -%]
+    </tbody>
+</table>
+
+[% ELSE %]
+<p>No Scenes</p>
+[% END %]
+</div>
+</div>
+[% IF is_admin %]
+<hr/>
+<p>
+  <a href="[% c.uri_for(c.controller.action_for('create'), [], { selected_room => selected_room }) %]" class="btn btn-primary">Create</a>
+</p>
+[% END %]
+

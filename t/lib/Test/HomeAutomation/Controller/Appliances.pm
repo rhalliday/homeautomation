@@ -18,7 +18,7 @@ Readonly::Hash my %CONTENT => (
     change_pass   => q{/usermanagement/change_password">Change Password</a>},
     logout        => q{/logout">Logout</a>},
     tv_column     => q{<td><span class="device-icon" style="background:#FFFFFF"></span>T.V.</td>},
-    tv_address    => q{<td>F1</td>},
+    tv_address    => q{<td class="hidden-xs">F1</td>},
     create_button => q{/appliances/create?selected_room=Lounge" class="btn btn-primary">Create</a>},
     lights        => q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>},
     no_device     => q{<p>No devices in this room</p>},
@@ -27,8 +27,8 @@ Readonly::Hash my %CONTENT => (
 Readonly::Hash my %RE => (
     tv_switch_off   => qr{onclick="FreezeScreen[(]'$TV_SWITCH_LINK'[)]"\s*/>},
     tv_switch_on    => qr{onclick="FreezeScreen[(]'$TV_SWITCH_LINK'[)]"\s*checked\s*/>},
-    delete_button   => qr{class="btn btn-sm btn-danger"\s*>\s*Delete\s*</a>},
-    edit_button     => qr{class="btn btn-sm btn-info"\s*>\s*Edit\s*</a>},
+    delete_button   => qr{class="btn btn-sm btn-danger hidden-xs"\s*>\s*Delete\s*</a>},
+    edit_button     => qr{class="btn btn-sm btn-info hidden-xs"\s*>\s*Edit\s*</a>},
     schedule_button => qr{class="btn btn-sm btn-primary"\s*>\s*Schedule\s*</a>},
 );
 
@@ -83,7 +83,7 @@ sub test_admin_user {
     $ua->title_is(q{Appliance List}, q{get redirected to the appliance list});
     $ua->content_contains(q{<td><span class="device-icon" style="background:#000001"></span>Lights</td>},
         q{new device is listed});
-    $ua->content_contains(q{<td>F3</td>}, q{new device is listed at address F3});
+    $ua->content_contains(q{<td class="hidden-xs">F3</td>}, q{new device is listed at address F3});
 
     $ua->get_ok(q{/appliances/address/F3/edit}, q{can get to the edit page for the new appliance});
     $ua->submit_form_ok(
