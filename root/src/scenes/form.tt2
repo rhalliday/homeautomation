@@ -1,4 +1,18 @@
 [% META 
     title = 'Create/Update Scene'
+    scene_enabled = 1
 -%]
 [% form.render %]
+
+<div id="scene-display" name="scene-display"></div>
+
+<script type="text/javascript">
+    jQuery(window)
+        .load(function () {
+            HomeAutomation.Scene.setup(
+                '#scene',
+                '#scene-display',
+                [% appliance_json %]
+            );
+        });
+</script>

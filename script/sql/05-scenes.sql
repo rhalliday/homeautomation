@@ -7,3 +7,4 @@ CREATE TABLE scenes (
 );
 
 ALTER TABLE tasks ADD COLUMN scene_id INTEGER REFERENCES scenes(scene_id) ON DELETE CASCADE ON UPDATE CASCADE; 
+INSERT INTO role (role) VALUES ('scenes');

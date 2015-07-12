@@ -1,4 +1,4 @@
-[% META title = 'Appliance List'; 
+[% META title = 'Scene List'; 
 
     IF c.check_user_roles('admin');
         is_admin = 1; 
@@ -12,6 +12,8 @@
     END;
 -%]
 
+<div class="tab-content">
+<div id="tab-pane" class="tab-pane active">
 [% IF scenes.size > 0 %]
 <table class="table">
     <thead>

@@ -1,4 +1,4 @@
-[% META title = 'Appliance List'; 
+[% META title = 'Appliance List' slider_enabled = 1;
 
     IF c.check_user_roles('admin');
         is_admin = 1; 
@@ -10,7 +10,6 @@
     ELSE; 
         is_schedule = 0; 
     END;
-    slider_enabled = 1;
 -%]
 
 <style type="text/css">

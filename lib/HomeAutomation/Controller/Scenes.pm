@@ -6,6 +6,9 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 our $VERSION = '0.01';
 
+use HomeAutomation::Form::Scene;
+use JSON qw/encode_json/;
+
 =head1 NAME
 
 HomeAutomation::Controller::Scenes - Set up scenes
@@ -75,7 +78,7 @@ sub list : Chained('base') : PathParth('list') : Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(
-        rooms    => [ $c->stash->{resultset}->all ],
+        scenes    => [ $c->stash->{resultset}->all ],
         template => 'scenes/list.tt2',
     );
 
@@ -123,12 +126,25 @@ sub form {
 
     my $form = HomeAutomation::Form::Scene->new;
 
+    my @appliances = map {
+        {
+            address => $_->address,
+            device  => $_->device,
+            dimable => $_->dimable,
+            room    => $_->room->name,
+            on      => $_->on_button_text,
+            off     => $_->off_button_text
+        }
+    } $c->model('DB::Appliance')->all_appliances->all;
+
+    my $appliance_json = encode_json \@appliances;
+
     # Set the template
-    $c->stash(template => 'scenes/form.tt2');
+    $c->stash(template => 'scenes/form.tt2', form => $form, appliance_json => $appliance_json);
     $form->process(item => $scene, params => $c->req->body_params);
     return unless $form->validated;
 
-    # Set a status message for the user & return to rooms list
+    # Set a status message for the user & return to scenes list
     $c->response->redirect(
         $c->uri_for($self->action_for('list'), { mid => $c->set_status_msg($scene->name . ' created/updated') }));
 
@@ -137,7 +153,7 @@ sub form {
 
 =head2 delete
     
-Delete a room
+Delete a scene
 
 =cut
 
@@ -148,13 +164,12 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
     $c->detach('/error_noperms')
       unless $c->stash->{object}->delete_allowed_by($c->user->get_object);
 
-    my $room = $c->stash->{object}->name;
+    my $scene = $c->stash->{object}->name;
 
     $c->stash->{object}->delete;
 
     # Redirect to the list action/method in this controller
-    $c->response->redirect(
-        $c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted room $room") }));
+    $c->response->redirect($c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted scene $scene") }));
 
     return 1;
 }
