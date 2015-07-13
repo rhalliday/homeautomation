@@ -18,6 +18,7 @@ use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends q{HomeAutomation::Schema::Base};
+use JSON qw/decode_json/;
 
 our $VERSION = q{0.01};
 
@@ -55,7 +56,7 @@ __PACKAGE__->table(q{scenes});
 
 __PACKAGE__->add_columns(
     q{scene_id}, { data_type => q{integer}, is_nullable    => 0 },
-    q{name},     { data_type => q{varchar}, is_nullable    => 1, size        => 50 },
+    q{name},     { data_type => q{varchar}, is_nullable    => 1, size => 50 },
     q{room_id},  { data_type => q{integer}, is_foreign_key => 1, is_nullable => 1 },
     q{scene},    { data_type => q{text},    is_nullable    => 1 },
 );
@@ -106,9 +107,8 @@ __PACKAGE__->has_many(
     q{tasks},
     q{HomeAutomation::Schema::Result::Task},
     { q{foreign.scene_id} => q{self.scene_id} },
-    { cascade_copy         => 0, cascade_delete => 0 },
+    { cascade_copy        => 0, cascade_delete => 0 },
 );
-
 
 =head1 Methods
 
@@ -125,6 +125,37 @@ sub delete_allowed_by {
 
     # Only allow delete if user has 'admin' role
     return $user->has_role(q{admin});
+}
+
+=item run
+
+Runs the actions stored in the config.
+
+=cut
+
+sub run {
+    my ($self) = @_;
+
+    # convert scene from JSON to an array ref
+    my $instructions = decode_json $self->scene;
+
+    my $schema       = $self->result_source->schema;
+    my $appliance_rs = $schema->resultset(q{Appliance});
+
+    for my $instruction (@{$instructions}) {
+        if ($instruction->{delay}) {
+            sleep $instruction->{delay};
+            next;
+        }
+
+        # grab the appliance, if it doesn't exist, then skip
+        my $appliance = $appliance_rs->find({ address => $instruction->{address} })
+          or next;
+
+        # call control on the appliance with the state
+        $appliance->control($instruction->{state});
+    }
+    return 1;
 }
 
 =back

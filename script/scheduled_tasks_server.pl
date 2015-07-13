@@ -18,7 +18,11 @@ sub run_tasks {
     my @tasks = $schema->resultset('Task')->active_tasks();
 
     for my $task (@tasks) {
-        $task->appliance->control($task->action);
+        if ($task->scene_id) {
+            $task->scene->run();
+        } else {
+            $task->appliance->control($task->action);
+        }
     }
     return 1;
 }

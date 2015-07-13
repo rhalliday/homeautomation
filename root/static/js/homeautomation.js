@@ -273,4 +273,4 @@ HomeAutomation.Scene = (function ($) {
     return {
         setup: setup
     };
-})(jQuery);
+}(jQuery));
