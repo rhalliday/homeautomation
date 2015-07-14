@@ -132,8 +132,6 @@ sub form {
             device  => $_->device,
             dimable => $_->dimable,
             room    => $_->room->name,
-            on      => $_->on_button_text,
-            off     => $_->off_button_text
         }
     } $c->model('DB::Appliance')->all_appliances->all;
 
@@ -172,6 +170,20 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
     $c->response->redirect($c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted scene $scene") }));
 
     return 1;
+}
+
+=head2 run
+
+Run a scene.
+
+=cut
+
+sub run : Chained('object') : PathPart('run') : Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash->{object}->run;
+
+    $c->response->redirect($c->uri_for_action('/appliances/list', { selected_room => $c->req->param('selected_room') }));
 }
 
 =head1 AUTHOR

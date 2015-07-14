@@ -33,7 +33,9 @@ input[type="checkbox"].ios-switch + div {
 
 /* Tiny Track */
 input[type="checkbox"].tinyswitch.ios-switch + div {
-    width: 34px;    height: 18px;
+    width: 34px;
+    height: 18px;
+    margin: 2px 1.2em 2px 1em;
 }
 
 /* Green Track */
@@ -72,7 +74,8 @@ input[type="checkbox"].ios-switch:checked + div > div {
 /* Tiny Knob */
 input[type="checkbox"].tinyswitch.ios-switch + div > div {
     width: 16px; height: 16px;
-    margin-top: 1px;
+    /*margin-top: 1px; */
+    margin-left: 0px;
 }
 
 /* Green Knob */
@@ -88,16 +91,53 @@ span.menu {
 
 span.dropzone {
     float: right;
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 250px;
+    max-width: 250px;
     overflow: hidden;
     height: 400px;
     border: #CCC 1px dotted;
+    background-color: #EEE;
+    padding: 5px;
 }
 
 .dragItem {
-    min-width: 100px;
+    min-width: 196px;
+    min-height: 25px;
     border: #BBB 1px solid;
     border-radius: 5px;
     background-color: #F0F8FF;
+    cursor: pointer;
+    margin-top: 3px;
+}
+
+.item-remove {
+    float: right;
+    margin-top: 5px;
+    margin-right: 3px;
+}
+
+.item-text {
+    float: left;
+    margin-top: 5px;
+    margin-left: 3px;
+    min-width: 100px;
+    max-width: 100px;
+}
+
+.appliance-text {
+    margin: 5px;
+}
+
+.item-state {
+    display: inline-block;
+    margin-top: 3px;
+}
+
+.item-remove:hover {
+    color: #D94440;
+}
+
+.appliance ul {
+    list-style: none;
+    padding: 0;
 }

@@ -86,6 +86,7 @@ sub list : Chained('base') : PathParth('list') : Args(0) {
 
     $c->stash(
         rooms         => [ $c->model('DB::Room')->all ],
+        scenes        => [ $c->model('DB::Scene')->scenes_in_room($room)->all ],
         selected_room => $room,
         appliances    => [ $c->stash->{resultset}->appliances_in_room($room)->all ],
         template      => 'appliances/list.tt2',

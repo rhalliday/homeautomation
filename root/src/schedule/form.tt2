@@ -2,6 +2,13 @@
     title = 'Create/Update Schedule'
     calendar_enabled = 1
 %]
-<h3>Schedule for device: <strong>[% c.stash.object.appliance.device %]</strong></h3>
+
+<h3>Schedule for
+[% IF c.stash.object.appliance %]
+device: <strong>[% c.stash.object.appliance.device %]</strong>
+[% ELSE %]
+scene: <strong>[% c.stash.object.scene.name %]</strong>
+[% END %]
+</h3>
 [%# Render the HTML::FormHandler Form %]
 [% form.render %]

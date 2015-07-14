@@ -114,32 +114,41 @@ HomeAutomation.Scene = (function ($) {
     }
 
     Interface.prototype.buildDropItem = function (index, appliance) {
-        var self = this;
-        appliance.state = appliance.state || appliance.on;
+        var self = this,
+            switcher = $('<label>', { 'class': 'item-state' });
+
+        appliance.state = appliance.state || 'on';
+
+        // switcher needs a checkbox to store the state
+        switcher.append($('<input>', {
+                'class': "ios-switch tinyswitch green",
+                'type': "checkbox"
+            })
+            .prop("checked", (appliance.state === 'on'))
+            .click(function () {
+                if ($(this).prop("checked")) {
+                    appliance.state = 'on';
+                } else {
+                    appliance.state = 'off';
+                }
+            })
+        );
+        // the following 2 divs are for the switches
+        switcher.append($('<div><div></div></div>'));
+
         return $('<div>', {
             id: index,
             'class': 'dragItem',
         })
-            .text(appliance.room + ': ' + appliance.device)
+            .append($('<span>', { 'class': "item-text" }).text(appliance.room + ': ' + appliance.device))
             .append(
-                $('<button>', {'class': "btn-xs btn-default"})
-                    .text(appliance.state)
-                    .click(function () {
-                        if ($(this).text() === appliance.on) {
-                            appliance.state = appliance.off;
-                        } else {
-                            appliance.state = appliance.on;
-                        }
-                        $(this).text(appliance.state);
-                    })
-            ).append(
-                $('<button>', { 'class': "btn-xs btn-danger"})
-                    .text('Delete')
+                $('<span>', { 'class': "glyphicon glyphicon-remove-sign alert-danger item-remove"})
                     .click(function () {
                         self.config.remove(index);
                         $('#' + index).remove();
                     })
-            );
+            ).append(switcher)
+            .append($('<div>', { 'class': "clearfix" }));
     };
 
     Interface.prototype.setConfigFromInput = function () {
@@ -168,27 +177,16 @@ HomeAutomation.Scene = (function ($) {
 
     // drop down element that lets you select appliances to drag
     Interface.prototype.applianceMenu = function () {
-        var container = $('<div>', { 'class': "dropdown" }),
-            button = $('<button>', {
-                id:   "dLabel",
-                type: "button",
-                'data-toggle': "dropdown",
-                'aria-haspopup': "true",
-                'aria-expanded': "false",
-                'class': "btn btn-default"
-            }).text('Appliances').append($('<span>', { 'class': "caret" })),
-            list = $('<ul>', {
-                'class': "dropdown-menu",
-                'aria-labelledby': "dLabel"
-            });
+        var container = $('<div>', { 'class': "appliance" });
+
+        // create a div for each appliance
         $.each(this.appliances, function (index, appliance) {
-            var listItem = $('<li>'),
-                applianceSpan = $('<span>', {
+                var applianceSpan = $('<div>', {
                     id: appliance.address,
                     'class': 'dragItem'
                 });
 
-            applianceSpan.text(appliance.room + ': ' + appliance.device);
+            applianceSpan.append($('<span class="appliance-text">').text(appliance.room + ': ' + appliance.device));
             applianceSpan.draggable({
                 containment: 'document',
                 cursor:      'move',
@@ -198,20 +196,21 @@ HomeAutomation.Scene = (function ($) {
                     draggedItem = appliance;
                     counter = counter + 1;
                 }
-            }).appendTo(listItem);
-            listItem.appendTo(list);
+            }).appendTo(container);
             return index;
         });
-        container.append(button);
-        container.append(list);
 
         return container;
     };
 
     // returns a jQuery element for the draggable menu
     Interface.prototype.menu = function () {
-        var menu = $('<span>', { 'class': "menu" });
+        var menu = $('<span>', {
+            'class': "menu",
+            title:   "Drag an item from here and drop it into the scene"
+        });
 
+        menu.append($('<h1>').text('Items'));
         this.applianceMenu().appendTo(menu);
         // implement delays
         //this.delay().appendTo(menu);
@@ -222,7 +221,10 @@ HomeAutomation.Scene = (function ($) {
     // returns a dropable div
     Interface.prototype.dropZone = function () {
         var self = this;
-        this.dropZone = $('<span>', { 'class': 'dropzone' });
+        this.dropZone = $('<span>', {
+            'class': 'dropzone',
+            title:   "Click the switches to indicate if the appliance should be turned on or off"
+        });
         this.dropZone.droppable({
             drop: function () {
                 // build up an element added to the dropZone
@@ -239,6 +241,7 @@ HomeAutomation.Scene = (function ($) {
                 $(this).append(element);
             }
         });
+        this.dropZone.append($('<h1>').text('Scene'));
         return this.dropZone;
     };
 

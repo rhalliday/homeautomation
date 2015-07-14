@@ -156,7 +156,33 @@
 [% END %]
 </script>
 [% ELSE %]
-<p>No devices in this room</p>
+<p class="bg-warning">No devices in this room</p>
+[% END %]
+[% IF scenes.size > 0 %]
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    [% FOREACH scene IN scenes -%]
+        <tr>
+            <td>[%- scene.name -%]</td>
+            <td>
+                <a href="[% c.uri_for(
+                    c.controller('Scenes').action_for('run'),
+                    [scene.scene_id],
+                    { selected_room => selected_room })
+                %]" class="text-success"><span class="glyphicon glyphicon-play"></span></a>
+            </td>
+        </tr>
+    [% END -%]
+    </tbody>
+</table>
+[% ELSE %]
+<p class="bg-warning">No scenes in this room</p>
 [% END %]
 </div>
 </div>
