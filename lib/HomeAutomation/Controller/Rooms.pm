@@ -157,8 +157,7 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
     $c->stash->{object}->delete;
 
     # Redirect to the list action/method in this controller
-    $c->response->redirect(
-        $c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted room $room") }));
+    $c->response->redirect($c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted room $room") }));
 
     return 1;
 }

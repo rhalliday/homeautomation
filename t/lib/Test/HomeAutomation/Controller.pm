@@ -87,6 +87,16 @@ sub test_startup {
 
     $self->{ua} = Test::WWW::Mechanize::Catalyst->new;
 
+    $self->{room_count} = $schema->resultset(q{Room})->search({})->count;
+
+    $self->{scene} = $schema->resultset(q{Scene})->create(
+        {
+            name  => q{evening mode},
+            scene => <<'EOS',
+[{"dimable":1,"device":"light1","room":"Lounge","address":"F2","state":"on"},{"device":"light2","address":"F6","room":"Lounge","dimable":1,"state":"on"},{"address":"F3","device":"Curtains","dimable":0,"room":"Lounge","state":"off"},{"room":"Dining","dimable":0,"device":"Curtains","address":"F4","state":"off"}]
+EOS
+        }
+    );
     return 1;
 }
 

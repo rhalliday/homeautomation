@@ -90,6 +90,27 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-06-10 23:32:51
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MMGJjHq/pmBENCxjllOnIg
 
+=head2 Methods
+
+=over
+
+=item delete_allowed_by
+
+Can the specified user delete the current book?
+
+=cut
+
+sub delete_allowed_by {
+    my ($self, $user) = @_;
+
+    # Only allow delete if user has 'admin' role
+    return $user->has_role(q{admin});
+}
+
+=back
+
+=cut
+
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 1;

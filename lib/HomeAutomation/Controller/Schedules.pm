@@ -121,10 +121,10 @@ Create a new schedule
 
 =cut
 
-sub create : Chained('base') : PathPart('create') : Args(1) {
-    my ($self, $c, $appliance_id) = @_;
+sub create : Chained('base') : PathPart('create') : Args(2) {
+    my ($self, $c, $id, $id_col) = @_;
 
-    my $schedule = $c->stash->{resultset}->new_result({ appliance => $appliance_id });
+    my $schedule = $c->stash->{resultset}->new_result({ $id_col => $id });
 
     $c->stash->{object} = $schedule;
 
@@ -168,13 +168,20 @@ sub form {
     my ($self, $c, $schedule) = @_;
 
     # get the button labels
-    my $labels = { on => $schedule->appliance->on_button_text, off => $schedule->appliance->off_button_text };
+    my $labels   = {};
+    my $inactive = [];
+
+    if ($schedule->appliance) {
+        $labels = { on => $schedule->appliance->on_button_text, off => $schedule->appliance->off_button_text };
+    } else {
+        $inactive = ['action'];
+    }
 
     my $form = HomeAutomation::Form::Schedule->new(action_labels => $labels);
 
     # Set the template
     $c->stash(template => 'schedule/form.tt2', form => $form);
-    $form->process(item => $schedule, params => $c->req->params);
+    $form->process(item => $schedule, params => $c->req->params, inactive => $inactive);
     return unless $form->validated;
 
     # Set a status message for the user & return to books list
