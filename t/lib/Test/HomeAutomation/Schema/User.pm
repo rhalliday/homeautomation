@@ -7,7 +7,7 @@ use Test::Class::Moose extends => 'Test::HomeAutomation::Schema';
 
 use Readonly;
 
-Readonly my @ROLES => (qw(admin schedule user usermanagement));
+Readonly my @ROLES => (qw(admin schedule user usermanagement scenes));
 
 our $VERSION = '1.00';
 
