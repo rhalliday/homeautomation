@@ -21,7 +21,7 @@ Readonly::Hash my %CONTENT => (
     tv_address    => q{<td class="hidden-xs">F1</td>},
     create_button => q{/appliances/create?selected_room=Lounge" class="btn btn-primary">Create</a>},
     lights        => q{<td><span class="device-icon" style="background:#000000"></span>Lights</td>},
-    no_device     => q{<p>No devices in this room</p>},
+    no_device     => q{No devices in this room</p>},
 );
 
 Readonly::Hash my %RE => (

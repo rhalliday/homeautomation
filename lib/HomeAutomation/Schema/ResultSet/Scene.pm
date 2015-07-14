@@ -18,8 +18,10 @@ sub scenes_in_room {
     return $self->search(
         {
             -or => [
+
                 # anything that doesn't have a room id is valid for this room
                 room_id => undef,
+
                 # all the scenes with this room
                 q{room.name} => $room
             ],

@@ -245,9 +245,10 @@ sub full_calendar {
 
     # set up a title
     my $action = $self->action . q{_button_text};
-    my $title  = $self->appliance
-        ? $self->time . q{: } . $self->appliance->device . q{ } . $self->appliance->$action
-        : $self->time . q{: } . $self->scene->name;
+    my $title =
+        $self->appliance
+      ? $self->time . q{: } . $self->appliance->device . q{ } . $self->appliance->$action
+      : $self->time . q{: } . $self->scene->name;
 
     # if it's a task that is for a specific date
     if ($self->day) {

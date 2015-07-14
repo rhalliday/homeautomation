@@ -27,9 +27,7 @@ has_field 'room' => (
     wrapper_class => ['form-group'],
 );
 
-has_field 'scene' => (
-    type          => 'Hidden',
-);
+has_field 'scene' => (type => 'Hidden',);
 
 has_field 'submit' => (
     type          => 'Submit',

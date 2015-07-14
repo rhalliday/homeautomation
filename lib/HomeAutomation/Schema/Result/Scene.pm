@@ -144,12 +144,12 @@ sub run {
 
     for my $instruction (@{$instructions}) {
         if ($instruction->{delay}) {
-            sleep $instruction->{delay};
+            my $sleep = sleep $instruction->{delay};
             next;
         }
 
         # grab the appliance, if it doesn't exist, then skip
-        my $appliance = $appliance_rs->find({ address => $instruction->{address} })
+        my $appliance = $appliance_rs->all_appliances->find({ address => $instruction->{address} })
           or next;
 
         # call control on the appliance with the state

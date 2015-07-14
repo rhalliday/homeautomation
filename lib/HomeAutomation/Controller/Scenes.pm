@@ -78,7 +78,7 @@ sub list : Chained('base') : PathParth('list') : Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(
-        scenes    => [ $c->stash->{resultset}->all ],
+        scenes   => [ $c->stash->{resultset}->all ],
         template => 'scenes/list.tt2',
     );
 
@@ -126,14 +126,9 @@ sub form {
 
     my $form = HomeAutomation::Form::Scene->new;
 
-    my @appliances = map {
-        {
-            address => $_->address,
-            device  => $_->device,
-            dimable => $_->dimable,
-            room    => $_->room->name,
-        }
-    } $c->model('DB::Appliance')->all_appliances->all;
+    my @appliances =
+      map { { address => $_->address, device => $_->device, dimable => $_->dimable, room => $_->room->name, } }
+      $c->model('DB::Appliance')->all_appliances->all;
 
     my $appliance_json = encode_json \@appliances;
 
@@ -167,7 +162,8 @@ sub delete : Chained('object') : PathPart('delete') : Args(0) {
     $c->stash->{object}->delete;
 
     # Redirect to the list action/method in this controller
-    $c->response->redirect($c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted scene $scene") }));
+    $c->response->redirect(
+        $c->uri_for($self->action_for('list'), { mid => $c->set_status_msg("Deleted scene $scene") }));
 
     return 1;
 }
@@ -183,7 +179,10 @@ sub run : Chained('object') : PathPart('run') : Args(0) {
 
     $c->stash->{object}->run;
 
-    $c->response->redirect($c->uri_for_action('/appliances/list', { selected_room => $c->req->param('selected_room') }));
+    $c->response->redirect(
+        $c->uri_for_action('/appliances/list', { selected_room => $c->req->param('selected_room') }));
+
+    return 1;
 }
 
 =head1 AUTHOR
