@@ -15,6 +15,7 @@ requires 'Catalyst::Runtime', '5.90075';
 requires 'Catalyst::View::JSON', '0.35';
 requires 'Catalyst::View::TT', '0.42';
 requires 'Config::General', '2.56';
+requires 'Data::GUID', '0.048';
 requires 'DBIx::Class', '0.082810';
 requires 'DBIx::Class::PassphraseColumn', '0.02';
 requires 'DBIx::Class::Schema::Loader', '0.07042';
