@@ -2618,6 +2618,17 @@ DISTRIBUTIONS
     provides:
       Digest::CRC 0.18
     requirements:
+  Digest-HMAC-1.03
+    pathname: G/GA/GAAS/Digest-HMAC-1.03.tar.gz
+    provides:
+      Digest::HMAC 1.03
+      Digest::HMAC_MD5 1.01
+      Digest::HMAC_SHA1 1.03
+    requirements:
+      Digest::MD5 2
+      Digest::SHA 1
+      ExtUtils::MakeMaker 0
+      perl 5.004
   Digest-MD4-1.9
     pathname: M/MI/MIKEM/DigestMD4/Digest-MD4-1.9.tar.gz
     provides:
@@ -3339,6 +3350,14 @@ DISTRIBUTIONS
       Encode 2.10
       Exporter 5.57
       ExtUtils::MakeMaker 6.30
+  IO-Socket-IP-0.37
+    pathname: P/PE/PEVANS/IO-Socket-IP-0.37.tar.gz
+    provides:
+      IO::Socket::IP 0.37
+    requirements:
+      IO::Socket 0
+      Socket 1.97
+      Test::More 0.88
   IO-stringy-2.110
     pathname: D/DS/DSKOLL/IO-stringy-2.110.tar.gz
     provides:
@@ -4483,6 +4502,109 @@ DISTRIBUTIONS
       MooseX::Types 0.04
       Path::Class 0.16
       Test::More 0.88
+  Net-DNS-1.05
+    pathname: N/NL/NLNETLABS/Net-DNS-1.05.tar.gz
+    provides:
+      Net::DNS 1.05
+      Net::DNS::Domain 1456
+      Net::DNS::DomainName 1456
+      Net::DNS::DomainName1035 1456
+      Net::DNS::DomainName2535 1456
+      Net::DNS::Header 1381
+      Net::DNS::Mailbox 1406
+      Net::DNS::Mailbox1035 1406
+      Net::DNS::Mailbox2535 1406
+      Net::DNS::Nameserver 1406
+      Net::DNS::Packet 1446
+      Net::DNS::Parameters 1464
+      Net::DNS::Question 1381
+      Net::DNS::RR 1464
+      Net::DNS::RR::A 1388
+      Net::DNS::RR::AAAA 1441
+      Net::DNS::RR::AFSDB 1406
+      Net::DNS::RR::APL 1390
+      Net::DNS::RR::APL::Item 1390
+      Net::DNS::RR::CAA 1406
+      Net::DNS::RR::CDNSKEY 1339
+      Net::DNS::RR::CDS 1339
+      Net::DNS::RR::CERT 1390
+      Net::DNS::RR::CNAME 1406
+      Net::DNS::RR::CSYNC 1390
+      Net::DNS::RR::DHCID 1390
+      Net::DNS::RR::DLV 1339
+      Net::DNS::RR::DNAME 1456
+      Net::DNS::RR::DNSKEY 1456
+      Net::DNS::RR::DS 1456
+      Net::DNS::RR::EUI48 1390
+      Net::DNS::RR::EUI64 1390
+      Net::DNS::RR::GPOS 1382
+      Net::DNS::RR::HINFO 1406
+      Net::DNS::RR::HIP 1390
+      Net::DNS::RR::IPSECKEY 1390
+      Net::DNS::RR::ISDN 1406
+      Net::DNS::RR::KEY 1381
+      Net::DNS::RR::KX 1406
+      Net::DNS::RR::L32 1408
+      Net::DNS::RR::L64 1408
+      Net::DNS::RR::LOC 1390
+      Net::DNS::RR::LP 1406
+      Net::DNS::RR::MB 1406
+      Net::DNS::RR::MG 1406
+      Net::DNS::RR::MINFO 1406
+      Net::DNS::RR::MR 1406
+      Net::DNS::RR::MX 1406
+      Net::DNS::RR::NAPTR 1406
+      Net::DNS::RR::NID 1408
+      Net::DNS::RR::NS 1406
+      Net::DNS::RR::NSEC 1406
+      Net::DNS::RR::NSEC3 1456
+      Net::DNS::RR::NSEC3PARAM 1390
+      Net::DNS::RR::NULL 1348
+      Net::DNS::RR::OPENPGPKEY 1390
+      Net::DNS::RR::OPT 1388
+      Net::DNS::RR::PTR 1406
+      Net::DNS::RR::PX 1406
+      Net::DNS::RR::RP 1406
+      Net::DNS::RR::RRSIG 1456
+      Net::DNS::RR::RT 1406
+      Net::DNS::RR::SIG 1456
+      Net::DNS::RR::SMIMEA 1456
+      Net::DNS::RR::SOA 1408
+      Net::DNS::RR::SPF 1382
+      Net::DNS::RR::SRV 1406
+      Net::DNS::RR::SSHFP 1456
+      Net::DNS::RR::TKEY 1406
+      Net::DNS::RR::TLSA 1456
+      Net::DNS::RR::TSIG 1456
+      Net::DNS::RR::TXT 1382
+      Net::DNS::RR::URI 1406
+      Net::DNS::RR::X25 1406
+      Net::DNS::Resolver 1456
+      Net::DNS::Resolver::Base 1458
+      Net::DNS::Resolver::MSWin32 1456
+      Net::DNS::Resolver::Recurse 1422
+      Net::DNS::Resolver::UNIX 1408
+      Net::DNS::Resolver::android 1406
+      Net::DNS::Resolver::cygwin 1406
+      Net::DNS::Resolver::os2 1406
+      Net::DNS::Text 1406
+      Net::DNS::Update 1455
+      Net::DNS::ZoneFile 1464
+      Net::DNS::ZoneFile::Generator 1464
+      Net::DNS::ZoneFile::Text 1464
+    requirements:
+      Digest::HMAC 1.03
+      Digest::MD5 2.13
+      Digest::SHA 5.23
+      ExtUtils::MakeMaker 0
+      File::Spec 0.86
+      IO::Socket 1.16
+      IO::Socket::INET 1.25
+      IO::Socket::IP 0.32
+      MIME::Base64 2.11
+      Test::More 0.52
+      Time::Local 1.19
+      perl 5.00404
   Net-HTTP-6.07
     pathname: M/MS/MSCHILLI/Net-HTTP-6.07.tar.gz
     provides:
