@@ -45,6 +45,8 @@ sub test_empty_scene {
 
     my $scene = $self->{resultset}->create({ name => q{empty one} });
     ok $scene->run, q{runs without errors};
+
+    return 1;
 }
 
 # scene with appliance and delay
@@ -74,6 +76,8 @@ sub test_appliance_and_delay {
 
     # reset the status
     $self->{first_appliance}->update({ status => 1 });
+
+    return 1;
 }
 
 # scene with just appliance
@@ -101,7 +105,9 @@ sub test_just_appliance {
 
     # reset the status
     $self->{first_appliance}->update({ status => 1 });
-};
+
+    return 1;
+}
 
 # scene with just delay
 sub test_delay {
@@ -120,6 +126,8 @@ sub test_delay {
         }
     );
     ok $scene->run, q{runs ok};
+
+    return 1;
 }
 
 # scene with appliance that doesn't exist
@@ -151,7 +159,8 @@ sub test_appliance_not_exists {
 
     # reset the status
     $self->{first_appliance}->update({ status => 1 });
-};
 
+    return 1;
+}
 
 1;

@@ -100,7 +100,8 @@ sub test_inactive_user {
             first_name    => q{test04},
             last_name     => q{Inactive},
             active        => 0,
-            user_roles    => [ map { { role_id => $_->id } } $self->{schema}->resultset(q{Role})->search({ role => [q{user}] })->all ],
+            user_roles =>
+              [ map { { role_id => $_->id } } $self->{schema}->resultset(q{Role})->search({ role => [q{user}] })->all ],
         },
     );
     my $ua = $self->{ua};

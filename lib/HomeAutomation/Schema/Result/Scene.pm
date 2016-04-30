@@ -153,6 +153,7 @@ sub run {
 
         # force a sleep of 1 second to prevent X10 devices from getting confused
         my $sleep = sleep 1;
+
         # grab the appliance, if it doesn't exist, then skip
         my $appliance = $appliance_rs->all_appliances->find({ address => $instruction->{address} })
           or next;

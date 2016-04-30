@@ -244,8 +244,9 @@ sub full_calendar {
     my @data;
 
     # set up a title
-    my $action = $self->action . q{_button_text}
-        if $self->action;
+    my $action;
+    $action = $self->action . q{_button_text}
+      if $self->action;
 
     my $title =
         $self->appliance

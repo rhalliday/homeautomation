@@ -564,9 +564,9 @@ sub test_one_time_task_for_a_scene {
 
     my $task = $self->{resultset}->create(
         {
-            scene_id  => $self->{scene}->id,
-            time      => '16:00',
-            day       => $self->{today}->ymd,
+            scene_id => $self->{scene}->id,
+            time     => '16:00',
+            day      => $self->{today}->ymd,
         }
     );
 
