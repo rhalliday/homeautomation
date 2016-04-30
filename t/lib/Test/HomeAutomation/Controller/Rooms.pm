@@ -81,7 +81,7 @@ sub test_admin_user {
     $ua->get_ok(qq{/rooms/$id/delete}, q{can delete our new room});
     $ua->content_lacks(q{<td>Dance Floor</td>}, q{our new room no longer exists});
 
-    $ua->get(qq{/appliances/$id/edit});
+    $ua->get(qq{/rooms/$id/edit});
     $ua->content_contains(q{Page not found}, q{page not found is returned for an unknown room});
 
     return 1;

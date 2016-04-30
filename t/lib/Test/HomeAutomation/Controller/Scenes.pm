@@ -54,7 +54,7 @@ sub test_admin_user {
     $ua->get_ok(q{/scenes/list}, q{index redirects to list});
     $ua->title_is(q{Scene List}, q{check the title is correct});
 
-    # create appliance
+    # create scene
     $ua->get_ok(q{/scenes/create}, q{can create a scene});
     $ua->title_is(q{Create/Update Scene}, q{check we are on the create page});
     $ua->submit_form_ok(
@@ -94,6 +94,10 @@ EOJ
       q{dark mode should only trigger one command as F6 doesn't exist};
     $ua->title_is(q{Appliance List}, q{get redirected to the appliance list after run});
     $ua->content_contains(q{<td class="hidden-xs">F1</td>}, q{we are placed back in the lounge});
+
+    # schedule a scene
+    $ua->get_ok(q{/schedules/create/2/scene_id}, q{can schedule a scene});
+    $ua->content_lacks(q{<input type="radio" name="action"}, q{have a form with no action input});
 
     $ua->get_ok(q{/scenes/2/delete}, q{can delete our new scene});
     $ua->content_lacks(q{<td>dark mode</td>}, q{our new scene no longer exists});

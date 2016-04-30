@@ -25,6 +25,7 @@ requires 'FCGI::ProcManager', '0.25';
 requires 'FindBin::libs', '2.10';
 requires 'HTML::FormHandler', '0.40057';
 requires 'HTML::FormHandler::Model::DBIC', '0.29';
+requires 'HTTP::Server::Simple::CGI', '0.51';
 requires 'Moose', '2.1403';
 requires 'MooseX::NonMoose', '0.26';
 requires 'Net::DNS', '1.04';
