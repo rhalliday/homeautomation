@@ -89,6 +89,34 @@ sub test_bad_password {
     return 1;
 }
 
+sub test_inactive_user {
+    my ($self) = @_;
+
+    my $user = $self->{schema}->resultset(q{User})->create(
+        {
+            username      => q{test04},
+            password      => q{mypass},
+            email_address => q{test03@example.com},
+            first_name    => q{test04},
+            last_name     => q{Inactive},
+            active        => 0,
+            user_roles    => [ map { { role_id => $_->id } } $self->{schema}->resultset(q{Role})->search({ role => [q{user}] })->all ],
+        },
+    );
+    my $ua = $self->{ua};
+    $ua->get(q{/login});
+    $ua->submit_form(
+        fields => {
+            username => q{test04},
+            password => q{mypass},
+        }
+    );
+    $ua->content_contains(q{You no longer have access to this awesome application}, q{can't login if not active});
+
+    $user->delete;
+    return 1;
+}
+
 sub test_redirect {
     my ($self) = @_;
 

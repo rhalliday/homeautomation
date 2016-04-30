@@ -96,8 +96,6 @@ sub create : Chained('base') : PathPart('create') : Args(0) {
 
     my $scene = $c->stash->{resultset}->new_result({});
 
-    $c->detach('/default') unless $scene;
-
     $c->stash->{object} = $scene;
 
     return $self->form($c, $scene);

@@ -136,6 +136,9 @@ Runs the actions stored in the config.
 sub run {
     my ($self) = @_;
 
+    # don't error if the scene is empty
+    return 1 unless $self->scene;
+
     # convert scene from JSON to an array ref
     my $instructions = decode_json $self->scene;
 

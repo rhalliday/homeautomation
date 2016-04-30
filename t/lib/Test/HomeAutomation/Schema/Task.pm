@@ -6,6 +6,7 @@ use warnings;
 use Test::Class::Moose extends => 'Test::HomeAutomation::Schema';
 
 use DateTime;
+use JSON;
 use Readonly;
 
 Readonly::Scalar my $TODAY_EPOCH  => 1_396_041_043;
@@ -54,8 +55,22 @@ sub test_startup {
         ),
     ];
 
+    my $scene_config = [
+        {
+            appliance => $self->{appliances}[0]->address,
+            state     => q{on},
+        },
+    ];
+
+    $self->{scene} = $self->{schema}->resultset(q{Scene})->create(
+        {
+            name  => q{task scene},
+            scene => encode_json $scene_config,
+        }
+    );
+
     # set up a load of useful? DateTime objects
-    $self->{today}     = DateTime->from_epoch(epoch => $TODAY_EPOCH, time_zone => 'Europe/London');    # is a friday
+    $self->{today}     = DateTime->from_epoch(epoch => $TODAY_EPOCH, time_zone => q{Europe/London});    # is a friday
     $self->{last_week} = $START_EPOCH;
     $self->{next_week} = $END_EPOCH;
 
@@ -538,6 +553,37 @@ sub test_recurring_task_no_colour {
             title => q{12:00: Lights On},
             url   => $url,
         },
+      ],
+      q{full_calendar result has no colours};
+
+    return 1;
+}
+
+sub test_one_time_task_for_a_scene {
+    my ($self) = @_;
+
+    my $task = $self->{resultset}->create(
+        {
+            scene_id  => $self->{scene}->id,
+            time      => '16:00',
+            day       => $self->{today}->ymd,
+        }
+    );
+
+    is $task->all_days,          q{}, q{all days should return an empty string for one off events};
+    is $task->recurrence_expiry, q{}, q{one off event shouldn't have a recurrence expiry};
+    my $start = $self->{last_week};
+    my $end   = $self->{next_week};
+    is $self->{resultset}->scheduled_tasks($start, $end)->count, 1, q{scheduled task is returned};
+
+    my $url = q{http://example.com/task/view};
+    eq_or_diff $task->full_calendar($url, $start, $end),
+      [
+        {
+            start => q{2014-03-28T16:00:00Z},
+            title => q{16:00: task scene},
+            url   => $url,
+        }
       ],
       q{full_calendar result has no colours};
 
