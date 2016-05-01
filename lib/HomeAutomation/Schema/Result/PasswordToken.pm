@@ -19,7 +19,6 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends q{HomeAutomation::Schema::Base};
 
-use Data::GUID;
 use DateTime;
 
 our $VERSION = q{0.01};
@@ -104,21 +103,22 @@ __PACKAGE__->belongs_to(
 
 =over
 
-=back
+=item link($c, $user)
+
+Generates a link for use in the reset emails.
+Requires a user and a context object.
 
 =cut
 
-# override the new method so that we can generate a token
-sub new {
-    my ($class, $attrs) = @_;
+sub link {
+    my ($self, $c, $user) = @_;
 
-    $attrs->{token}  = Data::GUID->new->as_string;
-    $attrs->{active} = 1;
-
-    my $new = $class->next::method($attrs);
-
-    return $new;
+    return $c->uri_for_action(q{/usermanagement/reset_password},[ $user->id, $self->token ]);
 }
+
+=back
+
+=cut
 
 __PACKAGE__->meta->make_immutable;
 1;

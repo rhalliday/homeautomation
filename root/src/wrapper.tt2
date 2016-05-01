@@ -56,7 +56,7 @@
                     [% content %]
                 </div> <!-- end of content -->
                 [%# hide menu on login screen %]
-                [% IF template.title != 'Login' %]
+                [% IF template.title != 'Login' AND template.title != 'Forgot Password' %]
                 <div id="menu" class="col-sm-1 col-md-2" style="background-color:#eee">
                     <ul class="nav nav-pills nav-stacked">
                     [% 

@@ -192,6 +192,48 @@ sub change_password : Chained('base') : PathPart('change_password') : Args(0) {
     return $self->change_form($c, $c->user->get_object);
 }
 
+=head2 reset_password /usermanagement/reset_password/$user_id/$token
+
+Makes sure that the token is valid for the user, if it is display a form
+letting them change their password.
+
+=cut
+
+sub reset_password : Chained('base') : PathPart('reset_password') : Args(2) : NoAuth {
+    my ($self, $c, $user_id, $token) = @_;
+
+    my $token_rs = $c->model('DB::PasswordToken');
+    # send user to the change password form if the token is valid
+    if (my $reset_token = $token_rs->validate_token($token, $user_id)->single) {
+        return $self->change_form($c, $reset_token->user, q{reset});
+    }
+
+    # otherwise error
+    $c->detach('/default');
+    return;
+}
+
+=head2 forgot_password /usermanagement/forgot_password
+
+Displays a form for a user to enter their username or password.
+Sends an email with the reset_password link.
+
+=cut
+
+sub forgot_password : Chained('base') : PathPart('forgot_password') : Args(0) : NoAuth {
+    my ($self, $c) = @_;
+
+    # if we were posted the user
+    if (my $username = scalar $c->request->body_parameters->{username}) {
+        # bang this into the user resultset to get a user, it could be a username or
+        # email address
+        my $user = $c->stash->{resultset}->username_or_email($username)->single;
+        $user->forgot_password($c);
+        $c->response->redirect($c->uri_for('/login', { mid => $c->set_status_msg(q{Please follow the instructions in the email}) }));
+    }
+    $c->stash(template => 'usermanagement/forgot_password.tt2');
+}
+
 =head2 change_form
 
 Process the FormHandler change password form
@@ -199,28 +241,42 @@ Process the FormHandler change password form
 =cut
 
 sub change_form {
-    my ($self, $c, $user) = @_;
+    my ($self, $c, $user, $reset) = @_;
 
     my $form = HomeAutomation::Form::ChangePassword->new(user => $user);
 
     # Set the template
     $c->stash(template => 'usermanagement/change_form.tt2', form => $form);
 
-    return unless $form->process(posted => ($c->req->method eq 'POST'), params => $c->req->params, no_update => 1);
-    unless ($c->authenticate({ username => $c->user->username, password => $c->req->param('current_password') })) {
+    my %process_args = (posted => ($c->req->method eq 'POST'), params => $c->req->params, no_update => 1,);
+    $process_args{inactive} = [q{current_password}] if $reset;
+
+    return unless $form->process(%process_args);
+
+    # if this is not a reset password form then check that the user has entered the current password
+    unless ($reset
+        or $c->authenticate({ username => $c->user->username, password => $c->req->param('current_password') }))
+    {
         $form->field('current_password')->add_error('incorrect password');
         return;
     }
 
     # update the password
     $user->update({ password => $form->field('new_password')->value });
-    $c->user->persist_user();
 
-    # Set a status message for the user & return to appliances list
-    $c->response->redirect($c->uri_for('/appliances/list', { mid => $c->set_status_msg(q{Password Changed}) }));
+    if ($reset) {
+        # redirect to login
+        $c->response->redirect($c->uri_for('/login', { mid => $c->set_status_msg(q{Password Changed}) }));
+    } else {
+        $c->user->persist_user();
+
+        # Set a status message for the user & return to appliances list
+        $c->response->redirect($c->uri_for('/appliances/list', { mid => $c->set_status_msg(q{Password Changed}) }));
+    }
 
     return 1;
 }
+
 
 =head1 AUTHOR
 

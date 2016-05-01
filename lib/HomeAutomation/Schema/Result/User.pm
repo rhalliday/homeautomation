@@ -19,7 +19,14 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends q{HomeAutomation::Schema::Base};
 
+use Data::GUID;
+use Email::Sender::Simple qw/sendmail/;
+use Email::Simple;
+use Readonly;
+
 our $VERSION = q{0.01};
+
+Readonly my $FROM_ADDRESS => q{rob@jenniferhalliday.co.uk};
 
 =head1 COMPONENTS LOADED
 
@@ -126,6 +133,19 @@ Composing rels: L</user_roles> -> role
 
 __PACKAGE__->many_to_many(q{roles}, q{user_roles}, q{role});
 
+=head2 reset_token
+
+Type: has_many
+
+Related object: L<PasswordToken|HomeAutomation::Schema::Result::PasswordToken>
+
+=cut
+
+__PACKAGE__->has_many(
+    reset_tokens => q{HomeAutomation::Schema::Result::PasswordToken},
+    { q{foreign.user_id} => q{self.id} }, { cascade_copy => 0, cascade_delete => 1 },
+);
+
 # Have the 'password' column use a SHA-1 hash and 20-byte salt
 # with RFC 2307 encoding; Generate the 'check_password' method
 __PACKAGE__->add_columns(
@@ -229,6 +249,37 @@ sub role_list {
     }
 
     return join(q{, }, @roles);
+}
+
+=item forgot_password
+
+Will generate a password token for the user, and send the user and email
+with a link to reset the password.
+
+=cut
+
+sub forgot_password {
+    my ($self, $c) = @_;
+
+    # generate a token
+    my $token = $self->create_related(q{reset_tokens}, { token => Data::GUID->new->as_string, active => 1});
+
+    # create an email
+    my $email = Email::Simple->create(
+        header => [
+            To      => $self->email_address,
+            From    => $FROM_ADDRESS,
+            Subject => 'HA password reset',
+        ],
+        body => join(qq{\n},
+            q{You have requested a reset of your password.},
+            q{Please click on the following link:},
+            $token->link($c, $self), q{Thank you,}, q{Rob}),
+    );
+
+    # send it to the user
+    sendmail($email);
+    return 1;
 }
 
 =back

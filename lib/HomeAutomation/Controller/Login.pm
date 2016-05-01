@@ -65,6 +65,8 @@ sub index : Path : Args(0) {
     # If either of above don't work out, send to the login page
     $c->stash(template => q{login.tt2});
 
+    $c->load_status_msgs;
+
     return 1;
 }
 
