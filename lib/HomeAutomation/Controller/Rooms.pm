@@ -76,8 +76,6 @@ Display all the rooms
 sub list : Chained('base') : PathParth('list') : Args(0) {
     my ($self, $c) = @_;
 
-    my $room = $c->req->param('room') || 'Lounge';
-
     $c->stash(
         rooms    => [ $c->stash->{resultset}->all ],
         template => 'rooms/list.tt2',
@@ -96,8 +94,6 @@ sub create : Chained('base') : PathPart('create') : Args(0) {
     my ($self, $c) = @_;
 
     my $room = $c->stash->{resultset}->new_result({});
-
-    $c->detach('/default') unless $room;
 
     $c->stash->{object} = $room;
 

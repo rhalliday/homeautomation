@@ -64,7 +64,7 @@ Check if there is a user and, if not, forward to login page
 sub auto : Private {
     my ($self, $c) = @_;
 
-    if ($c->controller eq $c->controller(q{Login})) {
+    if ($c->controller eq $c->controller(q{Login}) or $c->action->attributes->{NoAuth}) {
         return 1;
     }
 

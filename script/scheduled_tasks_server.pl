@@ -27,7 +27,7 @@ sub run_tasks {
     return 1;
 }
 
-my $schema = HomeAutomation::Schema->connect('dbi:SQLite:ha.db');
+my $schema = HomeAutomation::Schema->connect('dbi:SQLite:/home/pi/homeautomation/ha.db');
 my $socket = IO::Socket::INET->new(
     LocalHost => q{localhost},
     LocalPort => q{4015},

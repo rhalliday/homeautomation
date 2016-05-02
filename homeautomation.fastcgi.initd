@@ -9,9 +9,8 @@ use Daemon::Control;
 # 3) install to runlevels
 # update-rc.d cat-homeautomation defaults
 
-
-my $app_home = '/var/www/HomeAutomation';
-my $perl     = '/var/www/.plenv/shims/carton exec perl';
+my $app_home = $ENV{PLENV_DIR};
+my $perl     = $ENV{PLENV_ROOT} . '/shims/carton exec -- perl';
 my $program  = $app_home . '/script/homeautomation_fastcgi.pl';
 my $name     = 'homeautomation';
 my $workers  = 4;
@@ -26,8 +25,8 @@ Daemon::Control->new({
     lsb_desc     => $name,
     path         => $app_home . '/homeautomation.fastcgi.initd',
 
-    user         => 'www-data',
-    group        => 'www-data',
+    user         => 'pi',
+    group        => 'pi',
     directory    => $app_home,
     program      => "$perl $program --nproc $workers --listen $socket",
 

@@ -104,6 +104,10 @@ sub test_admin_user {
     $ua->get_ok(q{/appliances/address/F3/delete}, q{can delete our new device});
     $ua->content_lacks(q{<td>F3</td>}, q{our new device no longer exists});
 
+    # create a device in a specific room
+    $ua->get_ok(q{/appliances/create?selected_room=Hall}, q{can pass selected_room param to create});
+    $ua->content_contains(q{selected="selected">Hall</option>}, q{Hall is the preselected room});
+
     $ua->get(q{/appliances/address/F30/edit});
     $ua->content_contains(q{Page not found}, q{page not found is returned for an unknown device});
 
