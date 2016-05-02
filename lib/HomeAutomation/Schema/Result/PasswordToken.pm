@@ -113,7 +113,7 @@ Requires a user and a context object.
 sub link {
     my ($self, $c, $user) = @_;
 
-    return $c->uri_for_action(q{/usermanagement/reset_password},[ $user->id, $self->token ]);
+    return $c->uri_for_action(q{/usermanagement/reset_password}, [ $user->id, $self->token ]);
 }
 
 =back

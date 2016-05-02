@@ -203,14 +203,14 @@ sub reset_password : Chained('base') : PathPart('reset_password') : Args(2) : No
     my ($self, $c, $user_id, $token) = @_;
 
     my $token_rs = $c->model('DB::PasswordToken');
+
     # send user to the change password form if the token is valid
     if (my $reset_token = $token_rs->validate_token($token, $user_id)->single) {
         return $self->change_form($c, $reset_token->user, q{reset});
     }
 
     # otherwise error
-    $c->detach('/default');
-    return;
+    return $c->detach('/default');
 }
 
 =head2 forgot_password /usermanagement/forgot_password
@@ -225,13 +225,16 @@ sub forgot_password : Chained('base') : PathPart('forgot_password') : Args(0) : 
 
     # if we were posted the user
     if (my $username = scalar $c->request->body_parameters->{username}) {
+
         # bang this into the user resultset to get a user, it could be a username or
         # email address
         my $user = $c->stash->{resultset}->username_or_email($username)->single;
         $user->forgot_password($c);
-        $c->response->redirect($c->uri_for('/login', { mid => $c->set_status_msg(q{Please follow the instructions in the email}) }));
+        $c->response->redirect(
+            $c->uri_for('/login', { mid => $c->set_status_msg(q{Please follow the instructions in the email}) }));
     }
     $c->stash(template => 'usermanagement/forgot_password.tt2');
+    return 1;
 }
 
 =head2 change_form
@@ -265,6 +268,7 @@ sub change_form {
     $user->update({ password => $form->field('new_password')->value });
 
     if ($reset) {
+
         # redirect to login
         $c->response->redirect($c->uri_for('/login', { mid => $c->set_status_msg(q{Password Changed}) }));
     } else {
@@ -276,7 +280,6 @@ sub change_form {
 
     return 1;
 }
-
 
 =head1 AUTHOR
 

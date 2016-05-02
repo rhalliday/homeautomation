@@ -5,6 +5,10 @@ use warnings;
 
 use Test::Class::Moose extends => 'Test::HomeAutomation::Controller';
 
+BEGIN {
+    $ENV{EMAIL_SENDER_TRANSPORT} //= q{Test};
+}
+
 our $VERSION = '1.00';
 
 sub test_basic_user {
@@ -74,10 +78,11 @@ sub test_admin_user {
     $ua->submit_form_ok(
         {
             fields => {
-                username      => q{test04},
-                password      => q{mypass},
-                first_name    => q{bob},
-                last_name     => q{e},
+                username   => q{test04},
+                password   => q{mypass},
+                first_name => q{bob},
+                last_name  => q{e},
+
                 email_address => q{bob.e@example.com},
                 active        => 1,
 
@@ -109,6 +114,87 @@ sub test_admin_user {
 
     $ua->get_ok(q{/usermanagement/id/4/delete}, q{can delete the new user});
     $ua->content_lacks(q{test04}, q{test04 has now gone});
+
+    return 1;
+}
+
+sub test_forgotten_password_username {
+    my ($self) = @_;
+
+    $self->_forgot_password;
+
+    return 1;
+}
+
+sub test_forgotten_password_email {
+    my ($self) = @_;
+
+    $self->_forgot_password(1);
+
+    return 1;
+}
+
+sub _forgot_password {
+    my ($self, $use_email) = @_;
+
+    my $transport = Email::Sender::Simple->default_transport;
+    $transport->clear_deliveries;
+
+    my $ua = $self->{ua};
+
+    my $email_address = q{test01@example.com};
+    my $username = $use_email ? $email_address : q{test01};
+
+    $ua->get_ok(q{http://localhost/usermanagement/forgot_password}, q{can get to forgot password without logging in});
+    $ua->title_is(q{Forgot Password}, q{we definitely have the forgot password form});
+
+    $ua->submit_form_ok({ fields => { username => $username } }, q{can submit the form with a username or email});
+
+    is $transport->delivery_count, 1, q{got an email};
+
+    my $email = $transport->shift_deliveries->{email};
+
+    is $email->get_header('To'), $email_address, q{email is sent to the correct user};
+    my $guid    = qr{[[:upper:][:digit:]-]};
+    my $link_re = qr{http://localhost/usermanagement/reset_password/1/$guid+};
+    like $email->get_body, $link_re, q{link is in the email};
+
+    my ($link) = $email->get_body =~ /($link_re)/;
+    $ua->get_ok($link, q{can get to the reset link});
+    $ua->submit_form_ok(
+        {
+            fields => {
+                new_password      => q{newpass},
+                new_password_conf => q{newpass},
+            },
+        },
+        q{can submit the reset password form}
+    );
+    $ua->title_is(q{Login}, q{redirected to login});
+    $ua->submit_form_ok(
+        {
+            fields => {
+                username => q{test01},
+                password => q{newpass},
+            },
+        },
+        q{can login with new password}
+    );
+    $ua->title_is(q{Appliance List}, q{can change password});
+    $ua->follow_link_ok({ text => q{Change Password} }, q{can get to the change password form});
+    $ua->submit_form(
+        fields => {
+            current_password  => q{newpass},
+            new_password      => q{mypass},
+            new_password_conf => q{mypass},
+        }
+    );
+    $ua->content_contains(q{Password Changed}, q{password changed successfully});
+
+    # check that reset_password doesn't work with an incorrect guid
+    $link =~ s/$guid$//;
+    $ua->get($link);
+    $ua->content_contains(q{Page not found}, q{can't reset password without correct token});
 
     return 1;
 }
