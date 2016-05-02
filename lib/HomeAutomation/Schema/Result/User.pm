@@ -265,15 +265,17 @@ sub forgot_password {
     my $token = $self->create_related(q{reset_tokens}, { token => Data::GUID->new->as_string, active => 1 });
 
     # create an email
-    my $link = join q{}, q{<a href="}, $token->link($c, $self), q{">here</a>};
     my $email = Email::Simple->create(
         header => [
             To      => $self->email_address,
             From    => $FROM_ADDRESS,
             Subject => 'HA password reset',
         ],
-        body =>
-          join(qq{\n}, q{You have requested a reset of your password.}, qq{Please click $link}, q{Thank you,}, q{Rob}),
+        body => join(qq{\n},
+            q{You have requested a reset of your password.},
+            qq{Please click the following link:},
+            $token->link($c, $self),
+            q{Thank you,}, q{Rob}),
     );
 
     # send it to the user
