@@ -51,8 +51,16 @@
 
             <div id="bodyblock" class="row">
                 <div id="content" class="col-sm-6 col-md-9">
-                    <span class="message"><em>[% status_msg %]</em></span>
-                    <span class="error"><em>[% error_msg %]</em></span>
+                    [% IF status_msg %]
+                    <div class="alert alert-success" role="alert">
+                        [% status_msg %]
+                    </div>
+                    [% END %]
+                    [% IF error_msg %]
+                    <div class="alert alert-danger" role="alert">
+                        [% error_msg %]
+                    </div>
+                    [% END %]
                     [% content %]
                 </div> <!-- end of content -->
                 [%# hide menu on login screen %]

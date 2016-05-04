@@ -4,6 +4,7 @@ use namespace::autoclean;
 
 use HomeAutomation::Form::Appliance;
 use Readonly;
+use Try::Tiny;
 
 Readonly::Scalar my $DEFAULT_ROOM => 'Lounge';
 
@@ -199,12 +200,7 @@ Change the status of the appliance.
 sub switch : Chained('object') : PathPart('switch') : Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash->{object}->switch;
-
-    # Redirect to the list action/method in this controller
-    $c->response->redirect($c->uri_for($self->action_for('list'), { room => $c->stash->{selected_room} }));
-
-    return 1;
+    return $self->_perform_action($c, q{switch});
 }
 
 =head2 dim
@@ -216,10 +212,24 @@ Change the dim setting of a dimmable device.
 sub dim : Chained('object') : PathPart('dim') : Args(1) {
     my ($self, $c, $dim) = @_;
 
-    $c->stash->{object}->dim($dim);
+    return $self->_perform_action($c, q{dim}, [$dim]);
+}
 
-    # Redirect to the list
-    $c->response->redirect($c->uri_for($self->action_for('list'), { room => $c->stash->{selected_room} }));
+sub _perform_action {
+    my ($self, $c, $action, $args) = @_;
+
+    $args //= [];
+    my $params = { room => $c->stash->{selected_room}, };
+
+    try {
+        $c->stash->{object}->$action(@{$args});
+    }
+    catch {
+        $params->{mid} = $c->set_error_msg($_);
+    };
+
+    # Redirect to the list action/method in this controller
+    $c->response->redirect($c->uri_for($self->action_for('list'), $params));
 
     return 1;
 }

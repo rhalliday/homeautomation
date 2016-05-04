@@ -8,6 +8,7 @@ our $VERSION = '0.01';
 
 use HomeAutomation::Form::Scene;
 use JSON qw/encode_json/;
+use Try::Tiny;
 
 =head1 NAME
 
@@ -175,10 +176,16 @@ Run a scene.
 sub run : Chained('object') : PathPart('run') : Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash->{object}->run;
+    my $params = { selected_room => $c->req->param('selected_room'), };
 
-    $c->response->redirect(
-        $c->uri_for_action('/appliances/list', { selected_room => $c->req->param('selected_room') }));
+    try {
+        $c->stash->{object}->run;
+    }
+    catch {
+        $params->{mid} = $c->set_error_msg($_);
+    };
+
+    $c->response->redirect($c->uri_for_action('/appliances/list', $params));
 
     return 1;
 }
