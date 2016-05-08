@@ -273,7 +273,7 @@ sub forgot_password {
         ],
         body => join(qq{\n},
             q{You have requested a reset of your password.},
-            qq{Please click the following link:},
+            q{Please click the following link:},
             $token->link($c, $self),
             q{Thank you,}, q{Rob}),
     );

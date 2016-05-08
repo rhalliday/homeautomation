@@ -225,7 +225,9 @@ sub _perform_action {
         $c->stash->{object}->$action(@{$args});
     }
     catch {
-        $params->{mid} = $c->set_error_msg($_);
+        my $e = $_;
+        $params->{mid} = $c->set_error_msg($e);
+        $c->log->error($e->log);
     };
 
     # Redirect to the list action/method in this controller
