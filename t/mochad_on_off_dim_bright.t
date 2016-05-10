@@ -60,7 +60,7 @@ is $fake_mochad->message, qq{pl H4 on\npl H4 off\n}, q{timer will turn the devic
 
 # make connections fail
 $fake_mochad->return_object(0);
-throws_ok { $light->on() } qr/Connection failed!/, q{croaks if it can't get a connection};
+throws_ok { $light->on() } 'Exception::ConnectionFailed', q{croaks if it can't get a connection};
 $fake_mochad->return_object(1);
 
 $fake_mochad->clear_message;
