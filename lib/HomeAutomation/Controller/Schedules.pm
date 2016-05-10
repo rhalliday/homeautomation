@@ -2,8 +2,6 @@ package HomeAutomation::Controller::Schedules;
 use Moose;
 use namespace::autoclean;
 
-use Carp;
-
 use HomeAutomation::Form::Schedule;
 use DateTime;
 

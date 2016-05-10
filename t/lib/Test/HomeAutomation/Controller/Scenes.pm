@@ -95,6 +95,12 @@ EOJ
     $ua->title_is(q{Appliance List}, q{get redirected to the appliance list after run});
     $ua->content_contains(q{<td class="hidden-xs">F1</td>}, q{we are placed back in the lounge});
 
+    # run a broken scene
+    $self->{fake_mochad}->return_object(0);
+    $ua->get_ok(q{/scenes/2/run?selected_room=Lounge}, q{can run the broken scene});
+    $ua->content_like(qr/Unable to connect to device/, q{Error message is displayed});
+    $self->{fake_mochad}->return_object(1);
+
     # schedule a scene
     $ua->get_ok(q{/schedules/create/2/scene_id}, q{can schedule a scene});
     $ua->content_lacks(q{<input type="radio" name="action"}, q{have a form with no action input});

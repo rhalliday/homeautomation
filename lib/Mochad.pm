@@ -4,7 +4,7 @@ use 5.014002;
 use Moose;
 use namespace::autoclean;
 use IO::Socket::INET;
-use Carp;
+use Exception::ConnectionFailed;
 
 =head1 NAME
 
@@ -177,7 +177,13 @@ sub _send_message {
     my ($self, $type) = @_;
 
     my $sock = IO::Socket::INET->new(%{ $self->connection })
-      or croak 'Connection failed! ', $@;
+      or Exception::ConnectionFailed->throw(
+        {
+            connection => $self->connection,
+            device     => $self->address,
+            message    => $@,
+        }
+      );
 
     # send the message
     $sock->print(join(q{ }, $self->via, $self->address, $type) . qq{\n});

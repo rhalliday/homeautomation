@@ -192,6 +192,13 @@ sub _basic_checks {
     $self->{appliances}[1]->status(1);    # make sure the light is on
     $ua->get_ok($DIM_LINK, q{can dim/brighten the light});
 
+    # broken device
+    $self->{fake_mochad}->return_object(0);
+    $ua->get_ok($TV_SWITCH_LINK, q{even though the device dies the page doesn't});
+    $ua->content_like(qr/Unable to connect to device/, q{Error message is displayed});
+    $ua->content_like($RE{tv_switch_on}, q{T.V. is still set to on});
+    $self->{fake_mochad}->return_object(1);
+
     # room with another device
     $ua->get_ok(q{/appliances/list?room=Imogen}, q{can go to another room});
     $ua->content_contains($CONTENT{lights}, q{Imogen's room has a lights device});
