@@ -182,7 +182,9 @@ sub run : Chained('object') : PathPart('run') : Args(0) {
         $c->stash->{object}->run;
     }
     catch {
-        $params->{mid} = $c->set_error_msg($_);
+        my $e = $_;
+        $params->{mid} = $c->set_error_msg($e);
+        $c->log->error($e->log);
     };
 
     $c->response->redirect($c->uri_for_action('/appliances/list', $params));
