@@ -206,7 +206,7 @@ sub reset_password : Chained('base') : PathPart('reset_password') : Args(2) : No
 
     # send user to the change password form if the token is valid
     if (my $reset_token = $token_rs->validate_token($token, $user_id)->single) {
-        return $self->change_form($c, $reset_token->user, q{reset});
+        return $self->change_form($c, $reset_token->user, $reset_token);
     }
 
     # otherwise error
@@ -268,6 +268,9 @@ sub change_form {
     $user->update({ password => $form->field('new_password')->value });
 
     if ($reset) {
+
+        # deactivate the token
+        $reset->update({ active => 0 });
 
         # redirect to login
         $c->response->redirect($c->uri_for('/login', { mid => $c->set_status_msg(q{Password Changed}) }));
