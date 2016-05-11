@@ -19,11 +19,16 @@ sub validate_token {
 
     return $self->search(
         {
-            token     => $token,
-            user_id   => $user_id,
+            token   => $token,
+            user_id => $user_id,
+
+            # make sure the token hasn't been active
             timestamp => {
                 q{>} => \q{datetime('now','-1 hours')},
             },
+
+            # make sure the token hasn't already been used
+            active => 1,
         }
     );
 }

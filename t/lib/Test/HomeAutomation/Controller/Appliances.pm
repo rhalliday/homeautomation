@@ -196,7 +196,7 @@ sub _basic_checks {
     $self->{fake_mochad}->return_object(0);
     $ua->get_ok($TV_SWITCH_LINK, q{even though the device dies the page doesn't});
     $ua->content_like(qr/Unable to connect to device/, q{Error message is displayed});
-    $ua->content_like($RE{tv_switch_on}, q{T.V. is still set to on});
+    $ua->content_like($RE{tv_switch_on},               q{T.V. is still set to on});
     $self->{fake_mochad}->return_object(1);
 
     # room with another device
