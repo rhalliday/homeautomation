@@ -34,7 +34,7 @@ use Catalyst qw/
   /;
 
 extends 'Catalyst';
-use version; our $VERSION = version->new('v1.1.1');
+use version; our $VERSION = version->new('v1.2.0');
 
 # Configure the application.
 #
