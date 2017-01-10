@@ -166,12 +166,7 @@ sub test_appliance_not_exists {
 sub test_fuzzy_match {
     my ($self) = @_;
 
-    $self->{resultset}->populate([
-        [qw/name/],
-        [q{rise and shine}],
-        [q{bedtime}],
-        [q{evening mode}],
-    ]);
+    $self->{resultset}->populate([ [qw/name/], [q{rise and shine}], [q{bedtime}], [q{evening mode}], ]);
 
     my $scene = $self->{resultset}->fuzzy_match(q{ride am sign});
     is $scene->name, q{rise and shine}, q{get the right scene from something close};
