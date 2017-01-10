@@ -83,7 +83,7 @@ Display all the appliances
 sub list : Chained('base') : PathParth('list') : Args(0) {
     my ($self, $c) = @_;
 
-    my $room = $c->req->param('room') || $DEFAULT_ROOM;
+    my $room = $c->req->param('room') ? $c->req->param('room') : $DEFAULT_ROOM;
 
     $c->stash(
         rooms         => [ $c->model('DB::Room')->all ],

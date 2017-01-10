@@ -5924,6 +5924,13 @@ DISTRIBUTIONS
       Algorithm::Diff 1.19
       Exporter 0
       ExtUtils::MakeMaker 0
+  Text-Fuzzy-0.25
+    pathname: B/BK/BKB/Text-Fuzzy-0.25.tar.gz
+    provides:
+      Text::Fuzzy 0.25
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.008001
   Text-German-0.06
     pathname: U/UL/ULPFR/Text-German-0.06.tar.gz
     provides:

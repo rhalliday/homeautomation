@@ -38,3 +38,4 @@ requires 'Test::More','0.88';
 requires 'Test::Class::Moose', '0.58';
 requires 'Test::MockObject', '1.20140408';
 requires 'Test::WWW::Mechanize::Catalyst', '0.60';
+requires 'Text::Fuzzy', '0.25';

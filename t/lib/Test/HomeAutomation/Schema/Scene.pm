@@ -163,4 +163,23 @@ sub test_appliance_not_exists {
     return 1;
 }
 
+sub test_fuzzy_match {
+    my ($self) = @_;
+
+    $self->{resultset}->populate([ [qw/name/], [q{rise and shine}], [q{bedtime}], [q{evening mode}], ]);
+
+    my $scene = $self->{resultset}->fuzzy_match(q{ride am sign});
+    is $scene->name, q{rise and shine}, q{get the right scene from something close};
+
+    $scene = $self->{resultset}->fuzzy_match(q{evelyn node});
+    is $scene->name, q{evening mode}, q{evening mode found};
+
+    $scene = $self->{resultset}->fuzzy_match(q{bedtime});
+    is $scene->name, q{bedtime}, q{exact match works};
+
+    ok $self->{resultset}->fuzzy_match(q{why the face}), q{always match something};
+
+    return 1;
+}
+
 1;

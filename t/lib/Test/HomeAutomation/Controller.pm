@@ -104,6 +104,7 @@ sub test_shutdown {
     my ($self) = @_;
 
     $self->{schema}->resultset(q{User})->delete_all;
+    $self->{schema}->resultset(q{Scene})->delete_all;
 
     for my $appliance (@{ $self->{appliances} }) {
         $appliance->clear;
