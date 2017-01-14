@@ -6,6 +6,7 @@ our $VERSION = '1.00';
 
 use Test::Class::Moose extends => 'Test::HomeAutomation::Controller';
 use MIME::Base64 qw/encode_base64/;
+use JSON qw/decode_json/;
 use Readonly;
 
 Readonly my $ENDPOINT  => q{/api};
@@ -32,7 +33,7 @@ sub test_startup {
     );
 
     # empty scene
-    $self->{schema}->resultset(q{Scene})->create({ name => q{api scene} });
+    $self->{api_scene} = $self->{schema}->resultset(q{Scene})->create({ name => q{api scene} });
 
     return 1;
 }
@@ -89,6 +90,12 @@ sub test_valid_user_and_scene {
     my ($self) = @_;
 
     $self->_make_post(q{test01:mypass});
+    my $content = $self->{ua}->content();
+    my $json    = decode_json $content;
+    is $json->{message}, $self->{api_scene}->name,     q{get the scene name in the message};
+    is $json->{scene},   $self->{api_scene}->scene_id, q{get the scene id back};
+
+    $self->_make_post(q{test01:mypass}, { content => sprintf(q|{"scene":%d}|, $json->{scene}) });
     $self->{ua}->content_contains(q{Running api scene}, q{get running scene message});
 
     return 1;
@@ -116,7 +123,10 @@ sub test_no_scene {
     my @scenes = $scene_rs->all;
     $scene_rs->delete_all;
     $self->_make_post(q{test01:mypass});
-    $self->{ua}->content_contains(q{Failed to find scene api scene}, q{get running scene message});
+    $self->{ua}->content_contains(q{Failed to find scene api scene}, q{get failed to find message});
+
+    $self->_make_post(q{test01:mypass}, { content => q|{"scene":3}| });
+    $self->{ua}->content_contains(q{Failed to find scene 3}, q{get failed to find message for id});
 
     # add the scenes back into the db
     for my $scene (@scenes) {
