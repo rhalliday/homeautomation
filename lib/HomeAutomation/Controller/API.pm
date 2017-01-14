@@ -31,7 +31,11 @@ Catalyst Controller to enable programs to connect to the app.
 sub index : Chained('/') : Path : Args(0) : NoAuth {
     my ($self, $c) = @_;
 
-    $c->stash->{json_data} = { message => $self->_api($c) };
+    my ($message, $scene_id) = $self->_api($c);
+    my $data = { message => $message };
+    $data->{scene} = $scene_id if $scene_id;
+
+    $c->stash->{json_data} = $data;
     $c->forward('View::JSON');
     return 1;
 }
@@ -63,7 +67,22 @@ sub _api {
     };
 
     return q{Invalid body request} unless $json and exists $json->{scene};
-    my $scene = $c->model('DB::Scene')->fuzzy_match($json->{scene});
+
+    my $scene_rs = $c->model('DB::Scene');
+
+    # if we've been passed text then perform a fuzzy match and return the scene name and id
+    if ($json->{scene} !~ /^\d+$/) {
+        my $scene = $scene_rs->fuzzy_match($json->{scene});
+
+        if ($scene) {
+            return $scene->name, $scene->scene_id;
+        }
+        return q{Failed to find scene } . $json->{scene};
+    }
+
+    # if it's an id then we find the scene and run it, returning the message
+    my $scene_id = $json->{scene} + 0;
+    my $scene    = $scene_rs->find($scene_id);
     if ($scene) {
         $scene->run;
         return q{Running } . $scene->name;

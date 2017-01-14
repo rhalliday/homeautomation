@@ -43,10 +43,26 @@ Returns the scene that is closest to the input text
 sub fuzzy_match {
     my ($self, $search) = @_;
 
+    # normalise both the strings to make it more likely we get the right scene
+    $search = _normalise_string($search);
     my $tf = Text::Fuzzy->new($search, trans => 1);
-    my @scenes = map { $_->name } $self->search({}, { columns => [qw/name/] })->all;
-    my $match = $tf->nearestv(\@scenes);
-    return $self->search_rs({ name => $match })->first();
+
+    # store the normalised name with the dbic row so we only make one trip to the db
+    my %scenes = map { _normalise_string($_->name) => $_ } $self->search({})->all;
+    my @scenes = keys %scenes;
+    my $match  = $tf->nearestv(\@scenes);
+
+    return $match ? $scenes{$match} : undef;
+}
+
+sub _normalise_string {
+    my ($string) = @_;
+
+    # remove spaces
+    $string =~ s/\s+//g;
+
+    # return the lower cased version of the string
+    return lc $string;
 }
 
 1;
