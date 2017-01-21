@@ -6,6 +6,9 @@ use warnings;
 use Test::Class::Moose extends => 'Test::HomeAutomation::Schema';
 
 use JSON qw/encode_json/;
+use Readonly;
+
+Readonly my $MAX_SCENES => 3;
 
 our $VERSION = '1.00';
 
@@ -168,16 +171,17 @@ sub test_fuzzy_match {
 
     $self->{resultset}->populate([ [qw/name/], [q{rise and shine}], [q{bedtime}], [q{evening mode}], ]);
 
-    my $scene = $self->{resultset}->fuzzy_match(q{ride am sign});
-    is $scene->name, q{rise and shine}, q{get the right scene from something close};
+    my $scenes = $self->{resultset}->fuzzy_match(q{ride am sign});
+    is scalar @{$scenes}, $MAX_SCENES, q{we get all the scenes};
+    is $scenes->[0]->name, q{rise and shine}, q{get the right scene from something close};
 
-    $scene = $self->{resultset}->fuzzy_match(q{evelyn node});
-    is $scene->name, q{evening mode}, q{evening mode found};
+    $scenes = $self->{resultset}->fuzzy_match(q{evelyn node});
+    is $scenes->[0]->name, q{evening mode}, q{evening mode found};
 
-    $scene = $self->{resultset}->fuzzy_match(q{bedtime});
-    is $scene->name, q{bedtime}, q{exact match works};
+    $scenes = $self->{resultset}->fuzzy_match(q{bedtime});
+    is $scenes->[0]->name, q{bedtime}, q{exact match works};
 
-    ok $self->{resultset}->fuzzy_match(q{why the face}), q{always match something};
+    ok scalar @{ $self->{resultset}->fuzzy_match(q{why the face}) }, q{always match something};
 
     return 1;
 }
