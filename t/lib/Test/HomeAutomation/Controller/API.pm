@@ -92,11 +92,11 @@ sub test_valid_user_and_scene {
     $self->_make_post(q{test01:mypass});
     my $content = $self->{ua}->content();
     my $json    = decode_json $content;
-    is $json->{message}, $self->{api_scene}->name,     q{get the scene name in the message};
-    is $json->{scene},   $self->{api_scene}->scene_id, q{get the scene id back};
+    is $json->{scenes}[0]{scene},    $self->{api_scene}->name,     q{get the scene name in the message};
+    is $json->{scenes}[0]{scene_id}, $self->{api_scene}->scene_id, q{get the scene id back};
 
-    $self->_make_post(q{test01:mypass}, { content => sprintf(q|{"scene":%d}|, $json->{scene}) });
-    $self->{ua}->content_contains(q{Running api scene}, q{get running scene message});
+    $self->_make_post(q{test01:mypass}, { content => sprintf(q|{"scene":%d}|, $json->{scenes}[0]{scene_id}) });
+    $self->{ua}->content_contains(q{api scene has been run}, q{get running scene message});
 
     return 1;
 }

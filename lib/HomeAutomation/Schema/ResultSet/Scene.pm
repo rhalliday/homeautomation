@@ -5,6 +5,9 @@ use warnings;
 use base 'DBIx::Class::ResultSet';
 
 use Text::Fuzzy;
+use Readonly;
+
+Readonly my $MAX_SCENES => 3;
 
 our $VERSION = '0.01';
 
@@ -47,12 +50,17 @@ sub fuzzy_match {
     $search = _normalise_string($search);
     my $tf = Text::Fuzzy->new($search, trans => 1);
 
-    # store the normalised name with the dbic row so we only make one trip to the db
-    my %scenes = map { _normalise_string($_->name) => $_ } $self->search({})->all;
-    my @scenes = keys %scenes;
-    my $match  = $tf->nearestv(\@scenes);
+    my $scene_rs = $self->search({});
+    my @scene_scores;
+    while (my $scene = $scene_rs->next) {
+        push @scene_scores, [ $tf->distance(_normalise_string($scene->name)), $scene ];
+    }
 
-    return $match ? $scenes{$match} : undef;
+    my @ordered_scenes = map { $_->[1] } sort { $a->[0] <=> $b->[0] } @scene_scores;
+
+    splice @ordered_scenes, $MAX_SCENES;
+
+    return \@ordered_scenes;
 }
 
 sub _normalise_string {
