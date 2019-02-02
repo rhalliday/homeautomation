@@ -96,5 +96,5 @@ Composing rels: L<user_roles|/user_roles> -> user
 
 __PACKAGE__->many_to_many(q{users}, q{user_roles}, q{user});
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

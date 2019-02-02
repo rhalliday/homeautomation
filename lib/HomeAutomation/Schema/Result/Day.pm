@@ -96,5 +96,5 @@ Composing rels: L<tasks_days|/tasks_days> -> recurrence
 
 __PACKAGE__->many_to_many(q{recurrences}, q{tasks_days}, q{recurrence});
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
