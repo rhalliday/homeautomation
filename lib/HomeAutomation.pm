@@ -1,9 +1,9 @@
 package HomeAutomation;
-use 5.014;
+use 5.028001;
 use Moose;
 use namespace::autoclean;
 
-use Catalyst::Runtime 5.80;
+use Catalyst::Runtime;
 
 # Set flags and add plugins for the application.
 #
@@ -34,7 +34,7 @@ use Catalyst qw/
   /;
 
 extends 'Catalyst';
-use version; our $VERSION = version->new('v1.2.2');
+use version; our $VERSION = version->new('v1.3.1');
 
 # Configure the application.
 #
