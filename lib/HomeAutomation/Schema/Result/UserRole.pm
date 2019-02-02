@@ -106,5 +106,5 @@ __PACKAGE__->belongs_to(
     { is_deferrable => 0, on_delete => q{CASCADE}, on_update => q{CASCADE} },
 );
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

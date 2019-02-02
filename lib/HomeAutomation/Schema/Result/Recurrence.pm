@@ -140,5 +140,5 @@ Composing rels: L<task_days|/tasks_days> -> day
 
 __PACKAGE__->many_to_many(q{days}, q{tasks_days}, q{day});
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
